@@ -1,0 +1,57 @@
+<view class="page-bg">
+  <!-- 状态 Tab -->
+  <view class="status-tabs">
+    <scroll-view scroll-x>
+      <view class="tab {{activeTab === item.key ? 'active' : ''}}"
+              wx:for="{{tabs}}" wx:key="key"
+              data-key="{{item.key}}" bindtap="switchTab">{{item.name}}</view>
+    </scroll-view>
+  </view>
+
+  <!-- 骨架屏 -->
+  <block wx:if="{{loading}}">
+    <view wx:for="{{[1,2,3]}}" wx:key="this" class="card order-skel"></view>
+  </block>
+
+  <block wx:else>
+    <!-- 订单卡片 -->
+    <view class="card order-card" wx:for="{{orders}}" wx:key="id" data-id="{{item.id}}" bindtap="goDetail">
+      <view class="order-head">
+        <text class="order-no">订单号：{{item.orderNo}}</text>
+        <text class="status-badge status-{{item.status}}">{{statusMap[item.status]}}</text>
+      </view>
+      <view class="order-body">
+        <view class="thumb-row">
+          <image mode="aspectFill" class="order-thumb" wx:for="{{item.thumbs}}" wx:for-item="th" wx:key="*this"
+                 src="{{th}}" binderror="onImgError" data-src="{{th}}"></image>
+        </view>
+        <view class="order-items-info">
+          <view class="item-count">共{{item.items.length}}件商品</view>
+          <view class="order-time">{{item.createTimeText}}</view>
+        </view>
+        <view class="order-pay">
+          <view class="price-num">{{item.payYuan}}</view>
+          <view class="pay-label">实付</view>
+        </view>
+      </view>
+      <!-- 状态操作按钮 -->
+      <view class="order-actions">
+        <view class="act-btn ghost" wx:if="{{item.status === 1}}" catchtap="quickCancel" data-id="{{item.id}}">取消订单</view>
+        <view class="act-btn primary" wx:if="{{item.status === 1}}" catchtap="quickPay" data-id="{{item.id}}">去支付</view>
+        <view class="act-btn primary" wx:if="{{item.status === 3 || item.status === 4}}" catchtap="quickConfirm" data-id="{{item.id}}">确认收货</view>
+        <view class="act-btn ghost" wx:if="{{item.status === 5 && !item.isReviewed}}" catchtap="goReview" data-id="{{item.id}}">去评价</view>
+        <view class="act-btn ghost" wx:if="{{item.status === 5}}" catchtap="rebuy" data-id="{{item.id}}">再来一单</view>
+        <view class="act-btn ghost" wx:if="{{item.status === 2}}" catchtap="goDetail" data-id="{{item.id}}">查看详情</view>
+      </view>
+    </view>
+
+    <!-- 空态 -->
+    <view class="empty-box" wx:if="{{orders.length === 0}}">
+      <image class="empty-img" src="/static/images/default.png" binderror="onImgError" data-src="/static/images/default.png"></image>
+      <view class="empty-text">暂无相关订单</view>
+      <view class="btn-primary go-shop-btn" bindtap="goShop">去逛逛 →</view>
+    </view>
+
+    <view class="list-footer" wx:if="{{!hasMore && orders.length > 0}}">—— 没有更多了 ——</view>
+  </block>
+</view>

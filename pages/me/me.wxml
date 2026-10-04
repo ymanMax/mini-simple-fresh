@@ -1,37 +1,56 @@
-<view>
-    <view class='user'>
-        <open-data class="pic"type="userAvatarUrl" ></open-data>
-        <view class='userinfo'>
-            <open-data type="userNickName" class="username"></open-data>
-            <view class='ber'>普通会员</view>
+<view class="page-bg me-page">
+  <!-- 用户卡片 -->
+  <view class="user-card">
+    <view class="user-info">
+      <image class="avatar" src="{{userInfo.avatarUrl}}" binderror="onImgError" data-src="{{userInfo.avatarUrl}}"></image>
+      <view class="user-text">
+        <view class="nickname">{{userInfo.nickName}}</view>
+        <view class="member-badge" wx:if="{{member}}">{{member.levelName}}</view>
+      </view>
+    </view>
+    <view class="user-stats">
+      <view class="stat" bindtap="goPoints">
+        <view class="stat-num">{{points}}</view>
+        <view class="stat-label">积分</view>
+      </view>
+      <view class="stat" bindtap="goCoupon">
+        <view class="stat-num">{{couponCount}}</view>
+        <view class="stat-label">优惠券</view>
+      </view>
+      <view class="stat" bindtap="goAllOrders">
+        <view class="stat-num">全部</view>
+        <view class="stat-label">订单</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 订单快捷入口 -->
+  <view class="card order-quick">
+    <view class="quick-head" bindtap="goAllOrders">
+      <text>我的订单</text>
+      <text class="all-link">全部订单 ›</text>
+    </view>
+    <view class="quick-grid">
+      <view class="quick-item" wx:for="{{orderEntries}}" wx:key="status"
+            data-status="{{item.status}}" bindtap="goOrderList">
+        <view class="quick-icon-wrap">
+          <image mode="aspectFit" src="{{item.icon}}" binderror="onImgError" data-src="{{item.icon}}"></image>
+          <view class="red-dot" wx:if="{{orderCounts[item.status] > 0}}">{{orderCounts[item.status]}}</view>
         </view>
+        <text>{{item.name}}</text>
+      </view>
     </view>
+  </view>
 
-
-<!-- 会员专享 -->
-    <view class='member'>
-        <view class='m-title'>会员权益</view>
-        <view class='m-go'>开通会员<arrdow></arrdow></view>
-        <view class='m-text'>成为优享会员,预计1年将为你 <text>节省{{num}}元</text></view>
-        <view class='icon'>
-           <view wx:for="{{member}}" wx:key="this" class='i'>
-                <image src='https://localhost:3001/images/me-icon/{{item.img}}'></image>
-                <view class='text'>{{item.text}}</view>
-           </view>
-        </view>
+  <!-- 菜单分组 -->
+  <view class="card menu-group" wx:for="{{menuGroups}}" wx:key="title">
+    <view class="group-title">{{item.title}}</view>
+    <view class="menu-item" wx:for="{{item.items}}" wx:for-item="mi" wx:key="name"
+          data-item="{{mi}}" bindtap="onMenuTap">
+      <image mode="aspectFit" class="menu-icon" src="{{mi.icon}}" binderror="onImgError" data-src="{{mi.icon}}"></image>
+      <text class="menu-name">{{mi.name}}</text>
+      <view class="red-dot" wx:if="{{mi.redDot && (!mi.redDotKey || redDots[mi.redDotKey])}}"></view>
+      <text class="menu-arrow">›</text>
     </view>
-
-
-    <!-- 我的 -->
-    <view class='ul'>
-        <navigator open-type='navigate' url='{{item.url}}' wx:for="{{list}}" wx:key="this" class='li'>
-            <view class='content'>
-                <text class='title'>{{item.title}}</text>
-                <arrdow class="list-arrdow"></arrdow>
-            <block wx:if="{{item.color}}">
-                <text class='value'style="color: {{item.color}}">{{item.value}}</text>
-            </block>
-            </view>
-        </navigator>
-    </view>
+  </view>
 </view>

@@ -1,59 +1,86 @@
-<!-- 搜索部分 -->
- <view class="search" catchtap="goSearch">搜索</view>
-<!-- 顶部列表 -->
-  <view class="list">
-  <block catchtap="changeStyle" id="list">
-    <text wx:for="{{list}}" wx:key="this" data-cur="cur">{{item}}</text>
+<!-- 顶部搜索栏 -->
+<view class="search-bar" catchtap="goSearch">
+  <image class="search-icon" src="/https/images/icons/search.png" binderror="onImgError" data-src="/https/images/icons/search.png"></image>
+  <text class="search-placeholder">搜索：车厘子 / 牛排 / 牛奶</text>
+</view>
+
+<view class="page-bg">
+  <!-- 骨架屏 -->
+  <block wx:if="{{loading}}">
+    <view class="skeleton banner-skeleton"></view>
+    <view class="skeleton grid-skeleton"></view>
+    <view wx:for="{{[1,2,3,4]}}" wx:key="this" class="goods-card">
+      <view class="skeleton goods-img"></view>
+      <view class="skeleton info-skeleton"></view>
+    </view>
   </block>
 
-  </view>
-  <!-- 滚动视图部分 -->
-  <scroll-view scroll-y style="height: {{height}}px;">
-    <!-- banner部分 -->
-    <swiper interval='2000' autoplay>
-      <swiper-item wx:for="{{banner}}" wx:key="this">
-         <image src="{{item.path}}"></image>
-     </swiper-item>
-    </swiper> 
-    <!-- lanternArea部分 -->
-    <view class="lanternArea">
-      <view class="item" wx:for="{{lanternArea}}" wx:key="this"> 
-        <image src="{{item.image}}"></image>
-        <view class="lanternText">{{item.name}}</view>
+  <block wx:else>
+    <!-- 轮播图 -->
+    <swiper class="banner" interval="3000" autoplay circular indicator-dots indicator-color="rgba(255,255,255,.5)" indicator-active-color="#fff">
+      <swiper-item wx:for="{{banner}}" wx:key="index" catchtap="openLink" data-link="{{item.link}}">
+        <image mode="aspectFill" src="{{item.path}}" binderror="onImgError" data-src="{{item.path}}"></image>
+      </swiper-item>
+    </swiper>
+
+    <!-- 金刚区：分类入口 -->
+    <view class="cat-grid card">
+      <view class="cat-item" wx:for="{{categories}}" wx:key="index" data-link="{{item.link}}" catchtap="openLink">
+        <image mode="aspectFit" src="{{item.image}}" binderror="onImgError" data-src="{{item.image}}"></image>
+        <text>{{item.name}}</text>
       </view>
     </view>
-    <!-- tileArea部分 -->
-    <view class="tileArea">
-      <view class="item" wx:for="{{tileArea}}" wx:key="this">
-        <image src="{{item.image}}"></image>
-        <view class="lanternText">{{item.name}}</view>
+
+    <!-- 活动入口 -->
+    <view class="tile-row card">
+      <view class="tile-item" wx:for="{{tiles}}" wx:key="index" data-link="{{item.link}}" catchtap="openLink">
+        <image mode="aspectFit" src="{{item.image}}" binderror="onImgError" data-src="{{item.image}}"></image>
+        <text>{{item.name}}</text>
       </view>
     </view>
-    <!-- todayHot -->
-    <view class="todayHot">
-      <image mode="aspectFit" src="../../images/hot.png"></image>
-    </view>
-    <!-- hotList -->
-    <view class="hotList" wx:for="{{products}}" wx:key="this">
-        <view class="item" catchtap="goDetail">
-          <image src="{{item.image}}"></image>
-          <view class="content" >
-            <view class="item-name">{{item.name}}</view>
-            <view class="item-subtitle">{{item.subtitle}}</view>
-            <view class="item-product_tags-name">{{item.product_tags.name}}</view>
-            <view class="item-info">
-              <view class="item-price">
-                 <view class="item-price-up">¥{{item.non_vip_price_pro.price_up.price}}</view>
-                  <view class="item-price-down">¥{{item.non_vip_price_pro.price_down.price}}</view>
-              </view>
-              <view class="buy">
-                <text class="item-add" bindtap='addProductNum' data-type="{{index}}" data-id="{{product_index}}">+</text>
-                <text class="item-num" hidden='{{product_item.num <= 0}}'>{{product_item.num}}</text>
-                <text class="item-reduce" hidden='{{product_item.num <= 0}}' data-type="{{index}}" data-id="{{product_index}}" bindtap="reduceProductNum">-</text>
-              </view>
-            
-            </view>
-          </view>
+
+    <!-- 限时抢购模块 -->
+    <view class="seckill-module card" wx:if="{{seckill.length > 0}}">
+      <view class="seckill-head" catchtap="goPromotion">
+        <view class="seckill-title">⚡ 限时抢购</view>
+        <view class="seckill-countdown">{{countdownText}}</view>
+        <view class="seckill-more">更多 ›</view>
+      </view>
+      <scroll-view scroll-x class="seckill-scroll">
+        <view class="seckill-card" wx:for="{{seckill}}" wx:key="goodsId" catchtap="goDetail" data-id="{{item.goodsId}}">
+          <image mode="aspectFill" class="seckill-img" src="{{item.pic}}" binderror="onImgError" data-src="{{item.pic}}"></image>
+          <view class="seckill-price">¥{{item.seckillPriceYuan}}</view>
+          <view class="seckill-origin">¥{{item.originalPriceYuan}}</view>
+          <view class="seckill-progress"><view class="progress-fill" style="width: {{item.soldPercent}}%"></view></view>
+          <view class="seckill-buy" catchtap="seckillAdd" data-id="{{item.goodsId}}">抢</view>
         </view>
+      </scroll-view>
     </view>
-</scroll-view>
+
+    <!-- 今日热卖标题 -->
+    <view class="section-title">
+      <image mode="aspectFit" src="/images/hot.png" binderror="onImgError" data-src="/images/hot.png"></image>
+    </view>
+
+    <!-- 商品列表 -->
+    <view class="goods-card" wx:for="{{products}}" wx:key="id" catchtap="goDetail" data-id="{{item.id}}">
+      <image mode="aspectFill" class="goods-img" src="{{item.pic}}" binderror="onImgError" data-src="{{item.pic}}"></image>
+      <view class="info">
+        <view class="goods-name ellipsis-2">{{item.name}}</view>
+        <view class="goods-sub ellipsis">{{item.subtitle}}</view>
+        <view class="tag-row">
+          <text class="tag-pill" wx:for="{{item.tags}}" wx:for-item="tag" wx:key="*this">{{tag}}</text>
+        </view>
+        <view class="goods-bottom">
+          <view class="price-box">
+            <text class="price-num">{{item.priceYuan}}</text>
+            <text class="price-old">¥{{item.originalYuan}}</text>
+          </view>
+          <view class="add-btn" catchtap="addToCart" data-id="{{item.id}}">+</view>
+        </view>
+      </view>
+    </view>
+
+    <view class="list-footer" wx:if="{{!hasMore && products.length > 0}}">—— 没有更多了 ——</view>
+  </block>
+</view>

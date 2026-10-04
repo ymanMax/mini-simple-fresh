@@ -1,103 +1,42 @@
-.user {
-    position: relative;
-    padding: 20px 15px;
-    height: 60px;
-    background-color: #FAFAFA;
-}
-arrdow {
-    display: inline-block;
-    margin-left: 5px;
-}
-.pic {
-    display: block;
-    overflow: hidden;
-    height: 60px;
-    width: 60px;
-    border: 1px solid transparent;
-    border-radius: 100px;
-}
-.userinfo {
-    position: absolute;
-    top: 28px;
-    left: 85px;
-}
-.username {
-    margin-bottom: 5px;
-    font-weight: bold;
-}
-.ber {
-    font-size: 10px;
-    background-color: #CACAC8;
-    border-radius: 15px;
-    height: 15px;
-    width: 40px;
-    padding: 0px 5px;
-    border: 1px solid transparent;
-}
-.username {
-    display: inline-block;
+.me-page { padding-bottom: 60rpx; }
 
+/* 用户卡片 */
+.user-card {
+  background: linear-gradient(135deg, #e4393c, #f08080);
+  margin: 0; padding: 40rpx 32rpx; color: #fff;
+  display: flex; align-items: center; justify-content: space-between;
 }
+.user-info { display: flex; align-items: center; }
+.avatar { width: 110rpx; height: 110rpx; border-radius: 50%; border: 3rpx solid rgba(255,255,255,.6); }
+.user-text { margin-left: 20rpx; }
+.nickname { font-size: 34rpx; font-weight: 600; }
+.member-badge {
+  display: inline-block; margin-top: 8rpx; padding: 4rpx 16rpx;
+  background: rgba(255,255,255,.25); border-radius: 999rpx; font-size: 22rpx;
+}
+.user-stats { display: flex; gap: 32rpx; }
+.stat { text-align: center; }
+.stat-num { font-size: 34rpx; font-weight: 600; }
+.stat-label { font-size: 22rpx; opacity: .9; margin-top: 4rpx; }
 
+/* 订单快捷 */
+.order-quick { margin-top: 16rpx; }
+.quick-head { display: flex; justify-content: space-between; font-weight: 600; font-size: 28rpx; margin-bottom: 16rpx; }
+.all-link { color: #999; font-weight: normal; font-size: 24rpx; }
+.quick-grid { display: flex; }
+.quick-item { flex: 1; display: flex; flex-direction: column; align-items: center; }
+.quick-icon-wrap { position: relative; width: 64rpx; height: 64rpx; display: flex; align-items: center; justify-content: center; }
+.quick-icon-wrap image { width: 56rpx; height: 56rpx; }
+.quick-item text { font-size: 22rpx; margin-top: 6rpx; color: #555; }
 
-.member {
-    padding: 20px 10px 0px 10px;
-    font-size: 12px;
-    position: relative;
+/* 菜单 */
+.menu-group { padding: 8rpx 24rpx; }
+.group-title { font-size: 24rpx; color: #999; padding: 12rpx 0 4rpx; }
+.menu-item {
+  display: flex; align-items: center; padding: 20rpx 0;
+  border-bottom: 2rpx solid #f5f6f7;
 }
-.member .m-title {
-    font-size: 18px;
-    font-weight: bold;
-}
-.member .m-go {
-    position: absolute;
-    top:20px;
-    right: 15px;
-    color: #666;
-}
-.member .m-text {
-    padding: 2px 0px;
-}
-.member .m-text text {
-    color: #D45A89;
-}
-
-.i {
-    flex: 1;
-    text-align: center;
-}
-.icon {
-    display: flex;
-    border-bottom: 1px solid #999;
-    padding: 20px 0 30px 0px;
-}
-.icon image {
-    width: 30px;
-    height: 30px;
-}
-.icon .text {
-    font-size: 12px;
-}
-
-
-
-
-.ul {
-    padding: 0px 10px;
-}
-.ul .li {
-    border-bottom: 1px solid #999;
-    padding: 15px 0px;
-}
-.gt {
-    float: right;
-    margin-right: 5px;
-}
-.value {
-    float: right;
-    margin-right: 10px;
-}
-.list-arrdow {
-    float: right;
-    margin-top: 7px;
-}
+.menu-item:last-child { border-bottom: none; }
+.menu-icon { width: 40rpx; height: 40rpx; margin-right: 16rpx; }
+.menu-name { flex: 1; font-size: 28rpx; }
+.menu-arrow { color: #ccc; font-size: 36rpx; }

@@ -1,0 +1,32 @@
+.review-page { padding-bottom: 140rpx; }
+.rv-goods { display: flex; align-items: center; margin-bottom: 16rpx; }
+.rv-goods .goods-name { flex: 1; margin-left: 16rpx; }
+
+.star-row, .shop-score-row { display: flex; align-items: center; padding: 8rpx 0; }
+.star-label { width: 140rpx; font-size: 26rpx; color: #555; }
+.stars { display: flex; gap: 6rpx; }
+.star { font-size: 40rpx; color: #ddd; }
+.star.on { color: #ff9500; }
+
+.tag-wrap { display: flex; flex-wrap: wrap; gap: 12rpx; margin: 10rpx 0; }
+.rv-tag {
+  padding: 8rpx 20rpx; background: #f2f3f5; border-radius: 999rpx;
+  font-size: 24rpx; color: #555;
+}
+.rv-tag.active { background: #fdecec; color: #e4393c; }
+
+.rv-textarea {
+  width: 100%; min-height: 120rpx; background: #f7f8f9; border-radius: 12rpx;
+  padding: 16rpx; font-size: 26rpx; margin-top: 10rpx;
+}
+
+.img-row { display: flex; gap: 12rpx; margin-top: 12rpx; flex-wrap: wrap; }
+.rv-img { width: 100rpx; height: 100rpx; border-radius: 10rpx; }
+.img-add {
+  width: 100rpx; height: 100rpx; border-radius: 10rpx; border: 2rpx dashed #ccc;
+  display: flex; align-items: center; justify-content: center;
+  color: #999; font-size: 22rpx;
+}
+
+.submit-btn { width: 100%; padding: 20rpx 0; }
+.submit-btn.disabled { background: #f5a8ab; }

@@ -1,0 +1,66 @@
+.order-detail { padding-bottom: 140rpx; }
+
+.status-header { padding: 40rpx 32rpx; color: #fff; border-radius: 0 0 24rpx 24rpx; }
+.status-bg-1 { background: linear-gradient(135deg, #e4393c, #f08080); }
+.status-bg-2 { background: linear-gradient(135deg, #ff9500, #ffb84d); }
+.status-bg-3, .status-bg-4 { background: linear-gradient(135deg, #1677ff, #5aa0ff); }
+.status-bg-5 { background: linear-gradient(135deg, #52a352, #7fc97f); }
+.status-bg-6 { background: #999; }
+.status-title { font-size: 36rpx; font-weight: 600; }
+.status-sub { font-size: 24rpx; opacity: .9; margin-top: 8rpx; }
+
+.section-title { font-weight: 600; font-size: 28rpx; margin-bottom: 14rpx; }
+.addr-line { font-size: 28rpx; font-weight: 500; }
+.addr-detail { color: #666; font-size: 24rpx; margin-top: 6rpx; }
+
+.timeline { padding-left: 10rpx; }
+.tl-item { display: flex; padding: 10rpx 0; position: relative; }
+.tl-dot {
+  width: 16rpx; height: 16rpx; border-radius: 50%; background: #ddd;
+  margin: 8rpx 16rpx 0 0; flex-shrink: 0;
+}
+.tl-dot.done { background: #e4393c; }
+.tl-status { font-weight: 500; font-size: 26rpx; }
+.tl-remark { color: #666; font-size: 24rpx; margin-top: 4rpx; }
+.tl-time { color: #999; font-size: 20rpx; margin-top: 4rpx; }
+.rider { margin-top: 10rpx; color: #1677ff; font-size: 24rpx; }
+
+.d-item { display: flex; align-items: center; padding: 12rpx 0; }
+.d-item-info { flex: 1; margin-left: 16rpx; }
+.d-item-right { text-align: right; }
+.qty { color: #999; font-size: 22rpx; }
+
+.amount-row { display: flex; justify-content: space-between; padding: 10rpx 0; font-size: 26rpx; color: #555; }
+.amount-row.total { font-weight: 600; font-size: 28rpx; }
+.price-num.big { font-size: 36rpx; }
+
+.action-bar { gap: 16rpx; justify-content: flex-end; }
+.action-bar .btn-ghost, .action-bar .btn-primary { width: 200rpx; padding: 16rpx 0; }
+
+.detail-banner { height: 120rpx; }
+.detail-info { height: 300rpx; margin: 16rpx 24rpx; }
+
+/* 骑手卡片 */
+.rider-card {
+  display: flex; align-items: center; margin-top: 16rpx;
+  background: #f7f8f9; border-radius: 12rpx; padding: 16rpx;
+}
+.rider-avatar { width: 72rpx; height: 72rpx; border-radius: 50%; }
+.rider-info { flex: 1; margin-left: 12rpx; }
+.rider-name { font-weight: 600; font-size: 28rpx; }
+.rider-phone { color: #666; font-size: 24rpx; margin-top: 4rpx; }
+.rider-call { padding: 10rpx 24rpx; background: #e4393c; color: #fff; border-radius: 999rpx; font-size: 24rpx; }
+
+/* 退款弹层 */
+.refund-mask {
+  position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,.5); z-index: 300; display: flex; align-items: flex-end;
+}
+.refund-panel { width: 100%; background: #fff; border-radius: 24rpx 24rpx 0 0; padding: 24rpx; }
+.refund-title { text-align: center; font-weight: 600; font-size: 30rpx; }
+.refund-tip { text-align: center; color: #999; font-size: 22rpx; margin: 8rpx 0 16rpx; }
+.refund-reason {
+  padding: 18rpx; text-align: center; background: #f7f8f9; border-radius: 12rpx;
+  margin-bottom: 12rpx; font-size: 28rpx;
+}
+.refund-cancel { text-align: center; padding: 18rpx; color: #666; font-size: 28rpx; }

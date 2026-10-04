@@ -1,0 +1,130 @@
+<view class="page-bg order-detail" wx:if="{{order}}">
+  <!-- 状态头部 -->
+  <view class="status-header status-bg-{{order.status}}">
+    <view class="status-title">{{statusMap[order.status]}}</view>
+    <view class="status-sub" wx:if="{{order.status === 1}}">请尽快完成支付</view>
+    <view class="status-sub" wx:if="{{order.status === 2}}">仓库正在为您分拣打包</view>
+    <view class="status-sub" wx:if="{{order.status === 3}}">骑手正在配送，请保持电话畅通</view>
+    <view class="status-sub" wx:if="{{order.status === 4}}">请确认收货</view>
+    <view class="status-sub" wx:if="{{order.status === 5}}">感谢购买，期待再次光临</view>
+    <view class="status-sub" wx:if="{{order.status === 6}}">订单已取消</view>
+  </view>
+
+  <!-- 配送跟踪 timeline -->
+  <view class="card" wx:if="{{order.timeline && order.timeline.length > 0}}">
+    <view class="section-title">配送跟踪</view>
+    <view class="timeline">
+      <view class="tl-item" wx:for="{{order.timeline}}" wx:key="index">
+        <view class="tl-dot {{index === 0 ? 'done' : ''}}"></view>
+        <view class="tl-content">
+          <view class="tl-status">{{item.status}}</view>
+          <view class="tl-remark">{{item.remark}}</view>
+          <view class="tl-time">{{item.time}}</view>
+        </view>
+      </view>
+    </view>
+    <!-- 骑手卡片 -->
+    <view class="rider-card" wx:if="{{order.rider}}">
+      <image class="rider-avatar" src="{{order.rider.avatar || '/https/images/me-icon/02.png'}}" binderror="onImgError" data-src="{{order.rider.avatar || '/https/images/me-icon/02.png'}}"></image>
+      <view class="rider-info">
+        <view class="rider-name">{{order.rider.name}} 骑手</view>
+        <view class="rider-phone">{{order.rider.phone}}</view>
+      </view>
+      <view class="rider-call" bindtap="contactRider">联系骑手</view>
+    </view>
+  </view>
+
+  <!-- 收货地址 -->
+  <view class="card">
+    <view class="section-title">收货信息</view>
+    <view class="addr-line">{{order.addressSnapshot.name}} {{order.addressSnapshot.phone}}</view>
+    <view class="addr-detail">{{order.addressSnapshot.address}}</view>
+    <view class="addr-detail">配送：{{order.deliverySlot}}</view>
+  </view>
+
+  <!-- 商品清单 -->
+  <view class="card">
+    <view class="section-title">商品清单</view>
+    <view class="d-item" wx:for="{{order.items}}" wx:key="index">
+      <image mode="aspectFill" class="goods-img" src="{{item.pic}}" binderror="onImgError" data-src="{{item.pic}}"></image>
+      <view class="d-item-info">
+        <view class="goods-name ellipsis-2">{{item.name}}</view>
+        <view class="spec-text">{{item.specText}}</view>
+      </view>
+      <view class="d-item-right">
+        <view class="price-num">{{item.priceYuan}}</view>
+        <view class="qty">×{{item.count}}</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 金额明细 -->
+  <view class="card">
+    <view class="amount-row"><text>商品总价</text><text>¥{{totalYuan}}</text></view>
+    <view class="amount-row" wx:if="{{order.discountAmount > 0}}"><text>优惠券（{{order.couponTitle}}）</text><text class="theme-color">-¥{{discountYuan}}</text></view>
+    <view class="amount-row" wx:if="{{order.fullReduceAmount > 0}}"><text>满减优惠</text><text class="theme-color">-¥{{fullReduceYuan}}</text></view>
+    <view class="amount-row"><text>配送费</text><text>¥{{freightYuan}}</text></view>
+    <view class="divider"></view>
+    <view class="amount-row total"><text>实付金额</text><text class="price-num big">{{payYuan}}</text></view>
+  </view>
+
+  <!-- 售后记录 -->
+  <view class="card" wx:if="{{order.aftersale}}">
+    <view class="section-title">售后记录</view>
+    <view class="amount-row"><text>退款状态</text><text class="theme-color">{{order.aftersale.status}}</text></view>
+    <view class="amount-row"><text>退款原因</text><text>{{order.aftersale.reason}}</text></view>
+    <view class="amount-row"><text>退款金额</text><text>¥{{order.aftersale.amountYuan}}</text></view>
+    <view class="amount-row"><text>退款时间</text><text>{{order.aftersale.time}}</text></view>
+  </view>
+
+  <!-- 订单信息 -->
+  <view class="card">
+    <view class="section-title">订单信息</view>
+    <view class="amount-row"><text>订单号</text><text bindtap="copyOrderNo">{{order.orderNo}}（点击复制）</text></view>
+    <view class="amount-row"><text>下单时间</text><text>{{order.createTimeText}}</text></view>
+    <view class="amount-row"><text>支付方式</text><text>{{order.payType === 1 ? '微信支付' : '货到付款'}}</text></view>
+    <view class="amount-row" wx:if="{{order.remark}}"><text>订单备注</text><text>{{order.remark}}</text></view>
+  </view>
+
+  <!-- 底部操作按钮 -->
+  <view class="bottom-bar action-bar">
+    <block wx:if="{{order.status === 1}}">
+      <view class="btn-ghost" bindtap="cancel">取消订单</view>
+      <view class="btn-primary" bindtap="pay">模拟支付</view>
+    </block>
+    <block wx:if="{{order.status === 2}}">
+      <view class="btn-ghost" bindtap="rebuy">再来一单</view>
+      <view class="btn-primary" bindtap="advanceProgress">{{advancing ? '推进中...' : '催发货/推进配送'}}</view>
+    </block>
+    <block wx:if="{{order.status === 3 || order.status === 4}}">
+      <view class="btn-ghost" bindtap="rebuy">再来一单</view>
+      <view class="btn-primary" bindtap="advanceProgress" wx:if="{{order.status === 3}}">{{advancing ? '推进中...' : '推进配送'}}</view>
+      <view class="btn-primary" bindtap="confirmReceive">确认收货</view>
+    </block>
+    <block wx:if="{{order.status === 5}}">
+      <view class="btn-ghost" bindtap="rebuy">再来一单</view>
+      <view class="btn-ghost" bindtap="openRefund" wx:if="{{!order.aftersale}}">申请退款</view>
+      <view class="btn-primary" bindtap="goReview" wx:if="{{!order.isReviewed}}">去评价</view>
+    </block>
+    <block wx:if="{{order.status === 6}}">
+      <view class="btn-primary" bindtap="rebuy">再来一单</view>
+    </block>
+  </view>
+
+  <!-- 退款原因弹层 -->
+  <view class="refund-mask" wx:if="{{refundShow}}" bindtap="closeRefund">
+    <view class="refund-panel" catchtap="">
+      <view class="refund-title">申请退款</view>
+      <view class="refund-tip">选择退款原因（演示环境，金额原路退回）</view>
+      <view class="refund-reason" wx:for="{{refundReasons}}" wx:key="*this"
+            data-reason="{{item}}" bindtap="submitRefund">{{item}}</view>
+      <view class="refund-cancel" bindtap="closeRefund">取消</view>
+    </view>
+  </view>
+</view>
+
+<!-- 骨架屏 -->
+<view class="page-bg" wx:if="{{loading}}">
+  <view class="skeleton detail-banner"></view>
+  <view class="skeleton detail-info"></view>
+</view>

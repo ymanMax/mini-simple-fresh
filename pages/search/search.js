@@ -1,151 +1,146 @@
 // pages/search/search.js
+var api = require('../../utils/api.js')
+var F = require('../../utils/format.js')
+var toast = require('../../utils/toast.js')
+var img = require('../../utils/img.js')
+
 Page({
-
-  /**
-   * 页面的初始数据
-   */
   data: {
-      data: {},
-      products: {},
-      search: '',
-      history: [],
-      historyArr: [],
-      dis: false
-      
+    keyword: '',
+    hotWords: [],
+    history: [],
+    allGoods: [],
+    // 联想
+    suggest: [],
+    // 结果
+    results: [],
+    page: 1,
+    pageSize: 10,
+    hasMore: false,
+    searching: false,
+    sort: 'default', // default / priceAsc / priceDesc / sales
+    DEFAULT_IMG: api.DEFAULT_IMG
   },
-  //点击热门搜索，添加到搜索框
-  hotSearch(e) {
-    //   console.log(e)
-      this.setData({
-          search: e.target.dataset.id
-      })
-  },
-    //点击搜索，保存搜索结果到本地
-    goSearch() {
-       
-        console.log(this.data.history)
-        var arr = this.data.historyArr
-        arr.push(this.data.search)
-        
-       this.setData({
-           historyArr: arr
-       });
-        
-        wx.setStorage({
-            key: 'history',
-            data: this.data.historyArr,
-            success: function(res) {
-                // console.log(res)
-            },
-        })
-    },
-    clear() {
-        wx.removeStorage({
-            key: 'history',
-        })
-        wx.setStorage({
-            key: 'history',
-            data: [],
-            success: function(res) {
-               this.setData({
-                history: [],
-                dis: false
-               })
-               console.log(this.data.dis)
-            }.bind(this)
-        })
-        this.onLoad();
-       
-    },  
-    addCar() {
 
-    },
-  /**
-   * 生命周期函数--监听页面加载
-   */
   onLoad: function () {
-      wx.request({
-          url: 'https://localhost:3001/data/searchMsg.json',
-          success: function(res) {
-              if (res.errMsg == "request:ok") {
-                //   console.log(res.data.like_result.product_list)
-                  this.setData({
-                      data: res.data.data,
-                      products: res.data.like_result.product_list,
-                  })
-              }
-            //   console.log(this.data.products)
-             
-          }.bind(this)
-      });
-   
-        var his = wx.getStorageSync('history');
-        // console.log(his)
-        this.setData({
-            history: his
+    var that = this
+    api.hotWords().then(function (res) {
+      that.setData({ hotWords: (res && res.data) || [] })
+    })
+    api.getGoods({ page: 1, pageSize: 100 }).then(function (res) {
+      var list = (res && res.list) || []
+      list = list.map(function (g) {
+        return Object.assign({}, g, {
+          priceYuan: F.fen2yuan(g.minPrice),
+          originalYuan: F.fen2yuan(g.originalPrice),
+          salesText: g.salesVolume > 10000 ? (g.salesVolume / 10000).toFixed(1) + '万' : g.salesVolume + ''
         })
-        // wx.getStorage({
-        //     key: 'history',
-        //     success: function(res) {
-        //         // this.data.history = res
-        //         var s = res.data
-        //         this.setData({
-        //             history: s
-        //         })
-        //         console.log(this.data.history)
-        //     },
-        // })
-    
-       
-     
+      })
+      that.allGoods = list
+    })
+    this.setData({ history: wx.getStorageSync('search_history') || [] })
   },
 
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady: function () {
-      console.log(this.products)
+  onInput: function (e) {
+    var kw = e.detail.value.trim()
+    this.setData({ keyword: kw })
+    this.buildSuggest(kw)
   },
 
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow: function () {
-  
+  buildSuggest: function (kw) {
+    if (!kw || !this.allGoods) { this.setData({ suggest: [] }); return }
+    var lower = kw.toLowerCase()
+    var sug = this.allGoods.filter(function (g) {
+      return g.name.toLowerCase().indexOf(lower) >= 0
+    }).slice(0, 8)
+    this.setData({ suggest: sug })
   },
 
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide: function () {
-  
+  // 触发搜索
+  doSearch: function (kw) {
+    kw = (kw !== undefined ? kw : this.data.keyword).trim()
+    if (!kw) { toast.toast('请输入搜索关键词'); return }
+    // 保存历史
+    var history = this.data.history.filter(function (h) { return h !== kw })
+    history.unshift(kw)
+    if (history.length > 12) history = history.slice(0, 12)
+    wx.setStorageSync('search_history', history)
+    this.setData({ history: history, keyword: kw, suggest: [] })
+    this.runSearch(kw, this.data.sort, 1, true)
   },
 
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload: function () {
-  
+  onSearchConfirm: function (e) {
+    this.doSearch(e.detail.value)
   },
 
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh: function () {
-  
+  tapHot: function (e) {
+    this.doSearch(e.currentTarget.dataset.word)
   },
 
-  /**
-   * 页面上拉触底事件的处理函数
-   */
+  tapHistory: function (e) {
+    this.doSearch(e.currentTarget.dataset.word)
+  },
+
+  runSearch: function (kw, sort, page, reset) {
+    var that = this
+    var list = this.allGoods.filter(function (g) {
+      var k = kw.toLowerCase()
+      return g.name.toLowerCase().indexOf(k) >= 0 ||
+        g.subtitle.toLowerCase().indexOf(k) >= 0 ||
+        g.categoryName.indexOf(kw) >= 0
+    })
+    // 排序
+    if (sort === 'priceAsc') list.sort(function (a, b) { return a.minPrice - b.minPrice })
+    else if (sort === 'priceDesc') list.sort(function (a, b) { return b.minPrice - a.minPrice })
+    else if (sort === 'sales') list.sort(function (a, b) { return b.salesVolume - a.salesVolume })
+
+    var start = (page - 1) * this.data.pageSize
+    var pageList = list.slice(start, start + this.data.pageSize)
+    this.setData({
+      results: reset ? pageList : this.data.results.concat(pageList),
+      total: list.length,
+      page: page,
+      hasMore: start + this.data.pageSize < list.length,
+      searching: true,
+      sort: sort
+    })
+  },
+
+  setSort: function (e) {
+    var sort = e.currentTarget.dataset.sort
+    this.runSearch(this.data.keyword, sort, 1, true)
+  },
+
   onReachBottom: function () {
-  
+    if (!this.data.hasMore || !this.data.searching) return
+    this.runSearch(this.data.keyword, this.data.sort, this.data.page + 1, false)
   },
 
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage: function () {
-  
-  }
+  onPullDownRefresh: function () {
+    if (this.data.searching) this.runSearch(this.data.keyword, this.data.sort, 1, true)
+    wx.stopPullDownRefresh()
+  },
+
+  clearHistory: function () {
+    wx.removeStorageSync('search_history')
+    this.setData({ history: [] })
+  },
+
+  removeHistory: function (e) {
+    var w = e.currentTarget.dataset.word
+    var history = this.data.history.filter(function (h) { return h !== w })
+    wx.setStorageSync('search_history', history)
+    this.setData({ history: history })
+  },
+
+  cancelSearch: function () {
+    this.setData({ keyword: '', suggest: [], searching: false, results: [] })
+  },
+
+  goDetail: function (e) {
+    var id = e.currentTarget.dataset.id
+    wx.navigateTo({ url: '/pages/detail/detail?id=' + id })
+  },
+
+  onImgError: function (e) { img.make(this)(e) }
 })

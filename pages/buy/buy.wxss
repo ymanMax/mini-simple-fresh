@@ -1,1 +1,80 @@
-/* pages/buy/buy.wxss */
+.buy-page { padding-bottom: 140rpx; }
+
+.address-card { position: relative; }
+.addr-line1 { display: flex; align-items: center; gap: 16rpx; }
+.addr-name { font-weight: 600; font-size: 30rpx; }
+.addr-phone { color: #666; font-size: 26rpx; }
+.addr-detail { color: #555; font-size: 26rpx; margin-top: 8rpx; }
+.addr-arrow { position: absolute; right: 24rpx; top: 50%; transform: translateY(-50%); font-size: 40rpx; color: #ccc; }
+
+.buy-item { display: flex; padding: 12rpx 0; }
+.buy-item-info { flex: 1; margin-left: 16rpx; display: flex; flex-direction: column; }
+.buy-item-bottom { display: flex; justify-content: space-between; align-items: baseline; margin-top: auto; }
+.qty { color: #999; font-size: 24rpx; }
+
+.row-title { font-weight: 600; margin-bottom: 14rpx; }
+.delivery-tabs { display: flex; gap: 16rpx; }
+.delivery-tab {
+  padding: 12rpx 24rpx; border-radius: 999rpx; background: #f2f3f5;
+  font-size: 26rpx; color: #555; border: 2rpx solid transparent;
+}
+.delivery-tab.active { background: #fdecec; color: #e4393c; border-color: #e4393c; }
+.slot-list { display: flex; flex-wrap: wrap; gap: 12rpx; margin-top: 14rpx; }
+.slot { padding: 10rpx 20rpx; background: #f2f3f5; border-radius: 8rpx; font-size: 24rpx; }
+.slot.active { background: #fdecec; color: #e4393c; }
+
+.row-card { display: flex; align-items: center; justify-content: space-between; }
+.row-right { display: flex; align-items: center; gap: 8rpx; }
+.muted { color: #999; font-size: 26rpx; }
+.arrow { color: #ccc; font-size: 36rpx; }
+
+.pay-row { display: flex; gap: 32rpx; }
+.pay-item { display: flex; align-items: center; gap: 10rpx; font-size: 26rpx; }
+.radio {
+  width: 36rpx; height: 36rpx; border-radius: 50%; border: 2rpx solid #ccc;
+  display: flex; align-items: center; justify-content: center; color: #fff; font-size: 22rpx;
+}
+.radio.checked { background: #e4393c; border-color: #e4393c; }
+.remark-box { margin-top: 16rpx; background: #f7f8f9; border-radius: 12rpx; padding: 16rpx; }
+.remark-box input { font-size: 26rpx; }
+
+.amount-row { display: flex; justify-content: space-between; padding: 10rpx 0; font-size: 26rpx; color: #555; }
+.amount-row.total { font-size: 28rpx; font-weight: 600; }
+.price-num.big { font-size: 38rpx; }
+.demo-tip { text-align: center; color: #bbb; font-size: 20rpx; margin-top: 8rpx; }
+
+.bottom-bar { gap: 16rpx; }
+.pay-total { font-size: 26rpx; }
+.submit-btn { width: 240rpx; padding: 18rpx 0; }
+.submit-btn.disabled { background: #f5a8ab; }
+
+/* 优惠券弹层 */
+.coupon-mask {
+  position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,.5); z-index: 200;
+  display: flex; align-items: flex-end;
+}
+.coupon-panel {
+  width: 100%; background: #f5f6f7; border-radius: 24rpx 24rpx 0 0;
+  padding: 24rpx; max-height: 70vh; display: flex; flex-direction: column;
+}
+.panel-title { text-align: center; font-weight: 600; font-size: 30rpx; margin-bottom: 16rpx; }
+.panel-list { flex: 1; }
+.coupon-item {
+  display: flex; background: #fff; border-radius: 12rpx; margin-bottom: 14rpx; overflow: hidden;
+}
+.coupon-item.disabled { opacity: 0.6; }
+.coupon-left {
+  width: 160rpx; background: #e4393c; color: #fff; padding: 24rpx 12rpx;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+}
+.coupon-item.disabled .coupon-left { background: #bbb; }
+.coupon-amount { font-size: 36rpx; font-weight: bold; }
+.coupon-cond { font-size: 18rpx; margin-top: 6rpx; }
+.coupon-right { flex: 1; padding: 20rpx; }
+.coupon-name { font-weight: 600; font-size: 28rpx; }
+.coupon-scope { color: #999; font-size: 20rpx; margin-top: 6rpx; }
+.coupon-reason { color: #e4393c; font-size: 20rpx; margin-top: 6rpx; }
+.no-coupon {
+  text-align: center; padding: 24rpx; color: #666; background: #fff;
+  border-radius: 12rpx; margin-top: 8rpx;
+}

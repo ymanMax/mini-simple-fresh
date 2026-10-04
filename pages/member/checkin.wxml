@@ -1,0 +1,43 @@
+<view class="page-bg checkin-page">
+  <!-- 顶部积分 -->
+  <view class="checkin-header">
+    <view class="points-num">{{points}}</view>
+    <view class="points-label">我的积分</view>
+    <view class="streak-info">连续签到 {{streak}} 天 · 累计签到 {{totalDays}} 天</view>
+  </view>
+
+  <block wx:if="{{!loading}}">
+    <!-- 当月签到日历 -->
+    <view class="card calendar-card">
+      <view class="cal-title">{{year}}年{{month}}月签到</view>
+      <view class="cal-week">
+        <view class="cal-week-cell" wx:for="{{['一','二','三','四','五','六','日']}}" wx:key="*this">{{item}}</view>
+      </view>
+      <view class="cal-grid">
+        <view class="cal-cell {{cell.signed ? 'signed' : ''}} {{cell.isToday ? 'today' : ''}}"
+              wx:for="{{days}}" wx:key="day" wx:for-item="cell">
+          {{cell.day}}
+        </view>
+      </view>
+    </view>
+
+    <!-- 7天梯度奖励 -->
+    <view class="card">
+      <view class="section-title">连续签到奖励</view>
+      <view class="reward-row">
+        <view class="reward-item {{index < streak ? 'done' : ''}}" wx:for="{{rewards}}" wx:key="index">
+          <view class="reward-day">第{{index + 1}}天</view>
+          <view class="reward-points">+{{item}}</view>
+        </view>
+      </view>
+      <view class="checkin-btn {{todaySigned ? 'disabled' : ''}}" bindtap="doCheckin">
+        {{todaySigned ? '今日已签到' : '立即签到 +' + todayReward + '积分'}}
+      </view>
+      <view class="rule-tip">断签后连续签到天数重新计算；签到积分可在积分明细查看</view>
+    </view>
+  </block>
+
+  <view wx:if="{{loading}}">
+    <view wx:for="{{[1,2]}}" wx:key="this" class="skeleton checkin-skel"></view>
+  </view>
+</view>

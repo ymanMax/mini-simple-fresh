@@ -1,0 +1,116 @@
+.cat-page { padding-bottom: 120rpx; }
+
+/* 左侧导航：固定，页面自然滚动以便触底加载 */
+.side-nav {
+  position: fixed; left: 0; top: 0; bottom: 0; width: 180rpx;
+  background: #f2f3f5; overflow-y: auto; z-index: 10;
+}
+.nav-item {
+  padding: 30rpx 16rpx; text-align: center; font-size: 26rpx; color: #555;
+  position: relative; display: flex; flex-direction: column; align-items: center;
+}
+.nav-item.active { background: #fff; color: #e4393c; font-weight: 600; border-left: 6rpx solid #e4393c; }
+.nav-count { font-size: 20rpx; color: #999; margin-top: 4rpx; }
+.nav-item.active .nav-count { color: #e4393c; }
+.nav-skel { height: 80rpx; margin: 12rpx 16rpx; border-radius: 8rpx; }
+
+/* 右侧内容 */
+.right-content { margin-left: 180rpx; padding: 12rpx 16rpx 120rpx; }
+
+/* 顶部搜索框 */
+.search-bar {
+  display: flex; align-items: center; padding: 8rpx 0 12rpx;
+}
+.search-box {
+  flex: 1; display: flex; align-items: center; background: #fff;
+  border-radius: 999rpx; padding: 10rpx 20rpx;
+}
+.search-icon { width: 30rpx; height: 30rpx; margin-right: 10rpx; }
+.search-input { flex: 1; font-size: 26rpx; }
+.clear-kw { color: #999; padding: 0 10rpx; }
+.cancel-btn { color: #e4393c; font-size: 26rpx; margin-left: 14rpx; padding: 0 6rpx; }
+
+/* 吸顶排序栏 */
+.sort-bar {
+  position: sticky; top: 0; z-index: 20; background: #fff;
+  display: flex; align-items: center; padding: 12rpx 8rpx;
+  border-radius: 12rpx; margin-bottom: 12rpx;
+}
+.sort-item {
+  flex: 1; text-align: center; font-size: 26rpx; color: #555;
+  display: flex; align-items: center; justify-content: center; gap: 2rpx;
+}
+.sort-item.active { color: #e4393c; font-weight: 600; }
+.sort-arrow { font-size: 20rpx; }
+.filter-btn {
+  width: 110rpx; text-align: center; font-size: 26rpx; color: #555;
+  border-left: 2rpx solid #f2f3f5;
+}
+.filter-btn.active { color: #e4393c; font-weight: 600; }
+
+.result-tip { font-size: 22rpx; color: #999; padding: 4rpx 8rpx 10rpx; }
+
+/* 推荐 */
+.rec-section { background: #fff; margin: 0 0 16rpx; border-radius: 16rpx; padding: 16rpx; }
+.rec-title { font-size: 26rpx; font-weight: 600; margin-bottom: 10rpx; padding-left: 8rpx; }
+.rec-scroll { white-space: nowrap; }
+.rec-item {
+  display: inline-block; width: 140rpx; margin-right: 14rpx; text-align: center;
+}
+.rec-item image { width: 140rpx; height: 140rpx; border-radius: 12rpx; }
+.rec-name { display: block; font-size: 22rpx; margin-top: 6rpx; }
+
+.tag-row { margin-top: 8rpx; }
+.add-btn {
+  width: 48rpx; height: 48rpx; line-height: 44rpx; text-align: center;
+  border-radius: 50%; background: #e4393c; color: #fff; font-size: 36rpx;
+}
+.price-box { display: flex; align-items: baseline; gap: 10rpx; }
+.info-skeleton { flex: 1; height: 160rpx; margin-left: 20rpx; }
+.rec-skel { height: 180rpx; margin: 0 0 16rpx; border-radius: 16rpx; }
+.list-footer { text-align: center; color: #999; padding: 30rpx; font-size: 24rpx; }
+
+/* 筛选抽屉 */
+.filter-mask {
+  position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,.5); z-index: 300; display: flex; align-items: flex-end;
+}
+.filter-panel {
+  width: 100%; background: #fff; border-radius: 24rpx 24rpx 0 0;
+  padding: 24rpx; max-height: 75vh;
+}
+.filter-title { text-align: center; font-weight: 600; font-size: 30rpx; margin-bottom: 16rpx; }
+.filter-block { margin-bottom: 18rpx; }
+.filter-label { font-size: 26rpx; font-weight: 500; margin-bottom: 10rpx; color: #333; }
+
+.price-range { display: flex; align-items: center; gap: 12rpx; }
+.price-input {
+  flex: 1; background: #f7f8f9; border-radius: 12rpx; padding: 14rpx 16rpx;
+  font-size: 26rpx;
+}
+.range-sep { color: #999; }
+
+.switch-row { display: inline-block; }
+.switch {
+  width: 80rpx; height: 44rpx; border-radius: 999rpx; background: #ddd;
+  display: flex; align-items: center; padding: 4rpx; transition: all .2s;
+}
+.switch.on { background: #e4393c; justify-content: flex-end; }
+.switch-dot { width: 36rpx; height: 36rpx; border-radius: 50%; background: #fff; }
+
+.chip-wrap { display: flex; flex-wrap: wrap; gap: 12rpx; }
+.chip {
+  padding: 8rpx 20rpx; background: #f2f3f5; border-radius: 999rpx;
+  font-size: 24rpx; color: #555;
+}
+.chip.active { background: #fdecec; color: #e4393c; border: 2rpx solid #e4393c; }
+
+.filter-btns { display: flex; gap: 16rpx; margin-top: 20rpx; }
+.filter-reset {
+  flex: 1; text-align: center; padding: 18rpx 0; border-radius: 999rpx;
+  background: #f2f3f5; font-size: 28rpx; color: #555;
+}
+.filter-confirm {
+  flex: 2; text-align: center; padding: 18rpx 0; border-radius: 999rpx;
+  background: #e4393c; color: #fff; font-size: 28rpx; font-weight: 600;
+}

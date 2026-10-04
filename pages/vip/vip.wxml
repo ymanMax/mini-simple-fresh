@@ -1,64 +1,84 @@
-<view class="header">
-    <view class="content">
-        <view class="userimg">
-            <open-data class="user-img" type="userAvatarUrl"></open-data>
-        </view>
-        <view class="username">
-            <open-data type='userNickName'></open-data>
-        </view>
-        <view class="open-vip">
-            <button>立即开通</button>
-        </view>
+<view class="page-bg vip-page">
+  <!-- 会员头 -->
+  <view class="vip-header" wx:if="{{member}}">
+    <view class="vip-level">{{member.levelName}}</view>
+    <view class="vip-expire">有效期至 {{member.validDate}}</view>
+    <view class="growth-bar">
+      <view class="growth-fill" style="width: {{growthPercent}}%"></view>
     </view>
-    <view class="arrow"></view>
-    <view class="free">
-        <text class="free-exp">免费体验></text>
+    <view class="growth-text">成长值 {{member.growthValue}} / {{member.nextLevelGrowth}}，距升级还差 {{member.nextLevelGrowth - member.growthValue}}</view>
+    <view class="vip-points">
+      <view class="points-num">{{member.points}}</view>
+      <view class="points-label">我的积分</view>
     </view>
-    <view class="discount">预计一年为您节省
-        <text>1121.30</text>元</view>
-</view>
-<view class="little-tag">
-    <view class="icons">
-        <view class="item" wx:for='{{list}}' wx:key="this" data-id="a{{item.id}}">
-            <image src="{{item.descSelectIcon}}" bindtouchstart='tonewPage'></image>
-            <view>{{item.primaryName}}</view>
+  </view>
 
+  <!-- 生日福利横幅 -->
+  <view class="birthday-banner" wx:if="{{birthdayGift}}" bindtap="goCoupon">
+    <view class="birthday-icon">🎁</view>
+    <view class="birthday-text">生日月专属礼包已到账：生日8.8折券 + 双倍积分卡，点击查看 ›</view>
+  </view>
+
+  <!-- 骨架屏 -->
+  <view wx:if="{{loading}}">
+    <view class="skeleton vip-skel"></view>
+    <view wx:for="{{[1,2]}}" wx:key="this" class="skeleton goods-card"></view>
+  </view>
+
+  <block wx:else>
+    <!-- 成长体系表 -->
+    <view class="card">
+      <view class="section-title">会员成长体系</view>
+      <view class="tier-row {{member.levelName === item.level ? 'current' : ''}}" wx:for="{{growthTiers}}" wx:key="level">
+        <view class="tier-level">{{item.level}}</view>
+        <view class="tier-min">{{item.min}}成长值</view>
+        <view class="tier-discount">{{item.discount}}</view>
+        <view class="tier-freight">{{item.freeFreight}}</view>
+      </view>
+      <view class="growth-acquire">成长值获取：购物1元=1成长值 · 签到+5 · 评价+20</view>
+    </view>
+
+    <!-- 会员权益 -->
+    <view class="card">
+      <view class="section-title">会员权益</view>
+      <view class="benefit-grid">
+        <view class="benefit-item" wx:for="{{benefits}}" wx:key="name">
+          <image mode="aspectFit" src="/https/images/icons/card_bag.png" binderror="onImgError" data-src="/https/images/icons/card_bag.png"></image>
+          <view class="benefit-name">{{item.name}}</view>
+          <view class="benefit-value">{{item.value}}</view>
         </view>
+      </view>
     </view>
-    <view class="redbags">
-        <block wx:for="{{redbag}}" wx:key="this">
-            <image id="b{{item.id}}"src="{{item.src}}" bindtouchstart='totips'></image>
-        </block>
+
+    <!-- 我的红包/优惠券 -->
+    <view class="card" bindtap="goCoupon">
+      <view class="section-title row-title">
+        <text>我的红包 / 优惠券</text>
+        <text class="all-link">查看全部 ›</text>
+      </view>
+      <view class="packet-row" wx:if="{{couponPackets.length > 0}}">
+        <view class="packet" wx:for="{{couponPackets}}" wx:key="id">
+          <view class="packet-amount">{{item.type === 2 ? (item.discount/10)+'折' : '¥'+item.discount}}</view>
+          <view class="packet-name">{{item.name}}</view>
+        </view>
+      </view>
+      <view class="empty-text" wx:else>暂无优惠券，去领券中心领取 →</view>
     </view>
-</view>
-<view class="vip-title">
-    <view class="up-title">会员商品&会员专享价</view>
-    <view class="down-title">以下商品已抢光</view>
-</view>
-<view class="vip-product">
-    <view class="products">
-        <block wx:for="{{products}}" wx:key="this">
-            <view class="pro-item">
-                <view class="img-info">
-                    <image src="{{item.img}}" bindtouchstart='toDetailpage'></image>
-                </view>
-                <view class="pro-info">
-                    <view class="item-txt">{{item.text}}</view>
-                    <view class="item-subtxt">{{item.subtext}}</view>
-                    <view class="item-info">
-                        <view class="price">
-                            <text class="origin-pri">￥{{item.originPrice}}</text>
-                            <text class="vip-pri">￥{{item.vipPrice}}</text>
-                        </view>
-                        <text class="item-ari" bindtap='showword'>{{item.arrive}}</text>
-                    </view>
-                </view>
-            </view>
-        </block>
+
+    <!-- 会员专享商品 -->
+    <view class="card">
+      <view class="section-title">会员专享价</view>
+      <view class="vip-goods-grid">
+        <view class="vip-goods" wx:for="{{goods}}" wx:key="id" data-id="{{item.id}}" bindtap="goDetail">
+          <image mode="aspectFill" src="{{item.pic}}" binderror="onImgError" data-src="{{item.pic}}"></image>
+          <view class="ellipsis vip-goods-name">{{item.name}}</view>
+          <view class="price-row">
+            <text class="price-red">¥{{item.memberYuan}}</text>
+            <text class="price-old">¥{{item.priceYuan}}</text>
+          </view>
+          <view class="vip-add" catchtap="addToCart" data-id="{{item.id}}">+</view>
+        </view>
+      </view>
     </view>
-</view>
-<view class="nomore">没有更多商品啦~</view>
-<view class="footer">
-    <text>开通优享会员预计一年为您节省1121元</text>
-    <button>立即开通</button>
+  </block>
 </view>

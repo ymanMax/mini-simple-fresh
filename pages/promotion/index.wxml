@@ -1,0 +1,89 @@
+<view class="page-bg promo-page">
+  <!-- 顶部活动 Tab -->
+  <view class="top-tabs">
+    <view class="tab {{activeTab === item.key ? 'active' : ''}}"
+          wx:for="{{tabs}}" wx:key="key"
+          data-key="{{item.key}}" bindtap="switchTab">{{item.name}}</view>
+  </view>
+
+  <block wx:if="{{!loading}}">
+    <!-- ============ 限时抢购 ============ -->
+    <block wx:if="{{activeTab === 'seckill'}}">
+      <!-- 场次条 -->
+      <view class="session-bar">
+        <view class="session {{item.status === 2 ? 'active' : ''}} {{item.status === 3 ? 'ended' : ''}}"
+              wx:for="{{sessions}}" wx:key="sessionId"
+              data-id="{{item.sessionId}}" bindtap="selectSession">
+          <view class="session-name">{{item.name}}</view>
+          <view class="session-status">{{item.status === 2 ? '抢购中' : (item.status === 1 ? '未开始' : '已结束')}}</view>
+        </view>
+      </view>
+
+      <!-- 倒计时 -->
+      <view class="countdown-box">
+        <view class="countdown-title">距本场结束</view>
+        <view class="countdown-time">{{countdownText}}</view>
+      </view>
+
+      <!-- 抢购商品 -->
+      <view class="seckill-goods card" wx:for="{{seckillGoods}}" wx:key="goodsId" bindtap="goDetail" data-id="{{item.goodsId}}">
+        <image mode="aspectFill" class="goods-img" src="{{item.pic}}" binderror="onImgError" data-src="{{item.pic}}"></image>
+        <view class="sk-info">
+          <view class="goods-name ellipsis-2">{{item.name}}</view>
+          <view class="sk-price-row">
+            <text class="price-num sk-price">¥{{item.seckillPriceYuan}}</text>
+            <text class="price-old">¥{{item.originalPriceYuan}}</text>
+          </view>
+          <!-- 抢购进度条 -->
+          <view class="progress">
+            <view class="progress-fill" style="width: {{item.soldPercent}}%"></view>
+          </view>
+          <view class="progress-text">已抢{{item.soldPercent}}% · 剩余库存{{item.stock}}</view>
+        </view>
+        <view class="sk-btn" catchtap="seckillBuy" data-id="{{item.goodsId}}">马上抢</view>
+      </view>
+    </block>
+
+    <!-- ============ 满减专区 ============ -->
+    <block wx:if="{{activeTab === 'fullreduce'}}">
+      <view class="card">
+        <view class="section-title">满减阶梯</view>
+        <view class="fullreduce-item" wx:for="{{fullReduceRules}}" wx:key="threshold">
+          <view class="fr-threshold">满{{item.threshold}}元</view>
+          <view class="fr-reduce">减{{item.reduce}}元</view>
+        </view>
+        <view class="fr-tip">满减自动按最高可享阶梯减免，可与优惠券叠加（先满减后用券）</view>
+      </view>
+      <view class="card">
+        <view class="section-title">参与满减商品</view>
+        <view class="fr-goods" wx:for="{{seckillGoods}}" wx:key="goodsId" bindtap="goDetail" data-id="{{item.goodsId}}">
+          <image mode="aspectFill" class="goods-img small" src="{{item.pic}}" binderror="onImgError" data-src="{{item.pic}}"></image>
+          <view class="goods-name ellipsis-2">{{item.name}}</view>
+          <view class="price-red">¥{{item.originalPriceYuan}}</view>
+        </view>
+      </view>
+    </block>
+
+    <!-- ============ 领券中心 ============ -->
+    <block wx:if="{{activeTab === 'coupon'}}">
+      <view class="coupon-card center" wx:for="{{couponCenter}}" wx:key="id">
+        <view class="coupon-left">
+          <view class="coupon-amount">{{item.amountText}}</view>
+          <view class="coupon-cond">{{item.condText}}</view>
+        </view>
+        <view class="coupon-right">
+          <view class="coupon-name">{{item.name}}</view>
+          <view class="coupon-scope">{{item.scope}} · {{item.expireDays}}天有效</view>
+          <view class="coupon-remain">剩余 {{item.remain}} 张</view>
+        </view>
+        <view class="claim-btn" data-id="{{item.id}}" bindtap="claim">立即领取</view>
+      </view>
+      <view class="mine-link" bindtap="goCouponMine">查看我的优惠券 ›</view>
+    </block>
+  </block>
+
+  <!-- 骨架屏 -->
+  <view wx:if="{{loading}}">
+    <view wx:for="{{[1,2,3]}}" wx:key="this" class="skeleton promo-skel"></view>
+  </view>
+</view>

@@ -1,0 +1,36 @@
+.checkin-page { padding-bottom: 60rpx; }
+.checkin-header {
+  background: linear-gradient(135deg, #b8860b, #e4393c);
+  padding: 40rpx 32rpx; color: #fff; text-align: center;
+}
+.points-num { font-size: 56rpx; font-weight: 700; }
+.points-label { font-size: 24rpx; opacity: .9; }
+.streak-info { font-size: 22rpx; opacity: .9; margin-top: 8rpx; }
+
+.cal-title { font-weight: 600; font-size: 28rpx; margin-bottom: 14rpx; }
+.cal-week { display: flex; }
+.cal-week-cell { flex: 1; text-align: center; font-size: 22rpx; color: #999; padding: 8rpx 0; }
+.cal-grid { display: flex; flex-wrap: wrap; }
+.cal-cell {
+  width: 14.28%; text-align: center; padding: 18rpx 0; font-size: 26rpx;
+  border-radius: 8rpx; color: #555;
+}
+.cal-cell.signed { background: #fdecec; color: #e4393c; font-weight: 600; }
+.cal-cell.today { border: 2rpx solid #e4393c; }
+
+.section-title { font-weight: 600; font-size: 28rpx; margin-bottom: 14rpx; }
+.reward-row { display: flex; }
+.reward-item { flex: 1; text-align: center; }
+.reward-day { font-size: 20rpx; color: #999; }
+.reward-points { font-size: 26rpx; font-weight: 600; color: #e4393c; margin-top: 4rpx; }
+.reward-item.done .reward-points { color: #52a352; }
+
+.checkin-btn {
+  margin: 24rpx auto 0; width: 80%; text-align: center;
+  background: #e4393c; color: #fff; border-radius: 999rpx;
+  padding: 20rpx 0; font-size: 30rpx; font-weight: 600;
+}
+.checkin-btn.disabled { background: #f5a8ab; }
+.rule-tip { text-align: center; color: #999; font-size: 20rpx; margin-top: 14rpx; }
+
+.checkin-skel { height: 160rpx; margin: 16rpx 24rpx; border-radius: 16rpx; }

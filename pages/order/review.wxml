@@ -1,0 +1,76 @@
+<view class="page-bg review-page">
+  <!-- 逐商品评价 -->
+  <view class="card goods-review" wx:for="{{items}}" wx:key="index" wx:for-index="idx">
+    <view class="rv-goods">
+      <image mode="aspectFill" class="goods-img" src="{{item.pic}}" binderror="onImgError" data-src="{{item.pic}}"></image>
+      <view class="goods-name ellipsis-2">{{item.name}}</view>
+    </view>
+
+    <!-- 星级 -->
+    <view class="star-row">
+      <text class="star-label">商品评分</text>
+      <view class="stars">
+        <text wx:for="{{[1,2,3,4,5]}}" wx:for-item="s" wx:key="*this"
+              class="star {{item.score >= s ? 'on' : ''}}"
+              data-index="{{idx}}" data-score="{{s}}" bindtap="setScore">★</text>
+      </view>
+    </view>
+
+    <!-- 快捷标签 -->
+    <view class="tag-wrap">
+      <view class="rv-tag {{item.selectedTags.indexOf(t) >= 0 ? 'active' : ''}}"
+            wx:for="{{availableTags}}" wx:for-item="t" wx:key="*this"
+            data-index="{{idx}}" data-tag="{{t}}" bindtap="toggleTag">{{t}}</view>
+    </view>
+
+    <!-- 文字评价 -->
+    <textarea class="rv-textarea" placeholder="说说你的使用感受（100字以内）"
+              maxlength="100" value="{{item.content}}"
+              data-index="{{idx}}" bindinput="onContentInput"></textarea>
+
+    <!-- 晒图 -->
+    <view class="img-row">
+      <image mode="aspectFill" wx:for="{{item.images}}" wx:for-item="im" wx:for-index="ii" wx:key="*this"
+             class="rv-img" src="{{im}}" binderror="onImgError" data-src="{{im}}"
+             data-index="{{idx}}" data-imgidx="{{ii}}" bindtap="removeImage"></image>
+      <view class="img-add" wx:if="{{item.images.length < 6}}" data-index="{{idx}}" bindtap="addImage">+晒图</view>
+    </view>
+  </view>
+
+  <!-- 店铺服务评价 -->
+  <view class="card">
+    <view class="section-title">店铺服务评价</view>
+    <view class="shop-score-row">
+      <text class="star-label">新鲜度</text>
+      <view class="stars">
+        <text wx:for="{{[1,2,3,4,5]}}" wx:for-item="s" wx:key="*this"
+              class="star {{shopScores.fresh >= s ? 'on' : ''}}"
+              data-dim="fresh" data-score="{{s}}" bindtap="setShopScore">★</text>
+      </view>
+    </view>
+    <view class="shop-score-row">
+      <text class="star-label">配送速度</text>
+      <view class="stars">
+        <text wx:for="{{[1,2,3,4,5]}}" wx:for-item="s" wx:key="*this"
+              class="star {{shopScores.speed >= s ? 'on' : ''}}"
+              data-dim="speed" data-score="{{s}}" bindtap="setShopScore">★</text>
+      </view>
+    </view>
+    <view class="shop-score-row">
+      <text class="star-label">包装</text>
+      <view class="stars">
+        <text wx:for="{{[1,2,3,4,5]}}" wx:for-item="s" wx:key="*this"
+              class="star {{shopScores.package >= s ? 'on' : ''}}"
+              data-dim="package" data-score="{{s}}" bindtap="setShopScore">★</text>
+      </view>
+    </view>
+    <textarea class="rv-textarea" placeholder="对店铺的整体评价（100字以内）"
+              maxlength="100" value="{{shopContent}}" bindinput="onShopContentInput"></textarea>
+  </view>
+
+  <view class="bottom-bar">
+    <view class="btn-primary submit-btn {{submitting ? 'disabled' : ''}}" bindtap="submit">
+      {{submitting ? '提交中...' : '提交评价（赠20积分）'}}
+    </view>
+  </view>
+</view>

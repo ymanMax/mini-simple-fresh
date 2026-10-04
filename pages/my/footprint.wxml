@@ -1,0 +1,30 @@
+<view class="page-bg footprint-page">
+  <view class="clear-bar" wx:if="{{groups.length > 0}}">
+    <text class="clear-link" bindtap="clearAll">清空全部</text>
+  </view>
+
+  <block wx:if="{{!loading}}">
+    <view class="fp-group" wx:for="{{groups}}" wx:key="label">
+      <view class="fp-label">{{item.label}}</view>
+      <scroll-view scroll-x class="fp-scroll">
+        <view class="fp-card" wx:for="{{item.items}}" wx:for-item="g" wx:key="id"
+              bindtap="goDetail" data-id="{{g.id}}">
+          <image mode="aspectFill" class="fp-img" src="{{g.pic}}" binderror="onImgError" data-src="{{g.pic}}"></image>
+          <view class="fp-name ellipsis">{{g.name}}</view>
+          <view class="price-red">¥{{g.priceYuan}}</view>
+          <view class="fp-del" catchtap="removeOne" data-id="{{g.id}}">删除</view>
+        </view>
+      </scroll-view>
+    </view>
+
+    <view class="empty-box" wx:if="{{groups.length === 0}}">
+      <image class="empty-img" src="/static/images/default.png" binderror="onImgError" data-src="/static/images/default.png"></image>
+      <view class="empty-text">暂无浏览记录</view>
+      <view class="btn-primary go-btn" bindtap="goShop">去逛逛 →</view>
+    </view>
+  </block>
+
+  <view wx:if="{{loading}}">
+    <view wx:for="{{[1,2,3]}}" wx:key="this" class="skeleton fp-skel"></view>
+  </view>
+</view>

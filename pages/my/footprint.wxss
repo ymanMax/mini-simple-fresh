@@ -1,0 +1,20 @@
+.footprint-page { padding-bottom: 60rpx; }
+.clear-bar { display: flex; justify-content: flex-end; padding: 16rpx 24rpx; }
+.clear-link { color: #e4393c; font-size: 26rpx; }
+
+.fp-group { margin-bottom: 16rpx; }
+.fp-label { font-weight: 600; font-size: 26rpx; padding: 8rpx 24rpx; color: #555; }
+.fp-scroll { white-space: nowrap; padding: 0 16rpx; }
+.fp-card {
+  display: inline-block; width: 160rpx; margin-right: 14rpx;
+  background: #fff; border-radius: 12rpx; padding: 12rpx; text-align: center; position: relative;
+}
+.fp-img { width: 100%; height: 150rpx; border-radius: 10rpx; }
+.fp-name { font-size: 22rpx; margin-top: 6rpx; }
+.fp-del {
+  position: absolute; top: 4rpx; right: 4rpx; width: 36rpx; height: 36rpx;
+  line-height: 36rpx; text-align: center; border-radius: 50%;
+  background: rgba(0,0,0,.4); color: #fff; font-size: 20rpx;
+}
+.go-btn { width: 240rpx; margin-top: 10rpx; }
+.fp-skel { height: 120rpx; margin: 16rpx 24rpx; border-radius: 16rpx; }

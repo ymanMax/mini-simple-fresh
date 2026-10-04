@@ -1,0 +1,77 @@
+<view class="page-bg company-page">
+  <!-- 店铺头部 -->
+  <view class="shop-header">
+    <image class="shop-logo" src="/https/images/me-icon/01.png" binderror="onImgError" data-src="/https/images/me-icon/01.png"></image>
+    <view class="shop-name">鲜生到家 · 官方旗舰店</view>
+    <view class="shop-rating">综合评分 4.9 / 5.0</view>
+    <view class="shop-tags">
+      <text class="tag-pill">顺丰包邮</text>
+      <text class="tag-pill">坏果包赔</text>
+      <text class="tag-pill">2小时达</text>
+      <text class="tag-pill">7天无理由</text>
+    </view>
+  </view>
+
+  <view class="top-tabs">
+    <view class="tab {{section === 'about' ? 'active' : ''}}" data-section="about" bindtap="switchSection">关于我们</view>
+    <view class="tab {{section === 'review' ? 'active' : ''}}" data-section="review" bindtap="switchSection">店铺评价</view>
+    <view class="tab {{section === 'delivery' ? 'active' : ''}}" data-section="delivery" bindtap="switchSection">配送说明</view>
+  </view>
+
+  <!-- 关于我们 / 公司简介 -->
+  <block wx:if="{{section === 'about'}}">
+    <view class="card">
+      <view class="section-title">公司简介</view>
+      <view class="para">鲜生到家成立于2015年，专注国内外生鲜直供8年，是集产地直采、冷链仓储、即时配送于一体的生鲜电商平台。我们以"挑剔的味蕾、一丝不苟的心"严选每一份新鲜水果、蔬菜、肉类、水产与乳品。</view>
+      <view class="para">全程冷链配送，坏果包赔，安心指纹溯源，让每个家庭吃得新鲜、健康、放心。</view>
+    </view>
+    <view class="card">
+      <view class="section-title">品牌承诺</view>
+      <view class="para">· 产地直发，当日采摘</view>
+      <view class="para">· 顺丰冷链，2小时达</view>
+      <view class="para">· 坏果包赔，售后无忧</view>
+      <view class="para">· 会员专属92折，满59免配送费</view>
+    </view>
+  </block>
+
+  <!-- 店铺评价 -->
+  <block wx:if="{{section === 'review'}}">
+    <view class="card" wx:if="{{reviews.length > 0}}">
+      <view class="section-title">用户评价（{{reviews.length}}）</view>
+      <view class="shop-review" wx:for="{{reviews}}" wx:key="id">
+        <view class="review-head">
+          <image class="avatar" src="{{item.avatar}}" binderror="onImgError" data-src="{{item.avatar}}"></image>
+          <view class="review-user">{{item.userName}}</view>
+          <view class="stars">{{item.score}}星</view>
+        </view>
+        <view class="review-content">{{item.content}}</view>
+        <view class="review-time">{{item.timeText}}</view>
+      </view>
+    </view>
+    <view class="empty-box" wx:if="{{reviews.length === 0}}">
+      <view class="empty-text">暂无评价</view>
+    </view>
+  </block>
+
+  <!-- 配送说明 -->
+  <block wx:if="{{section === 'delivery'}}">
+    <view class="card">
+      <view class="section-title">配送说明</view>
+      <view class="para">· 基础配送费 6元，满59元免基础配送费</view>
+      <view class="para">· 尽快送达：预计45分钟内送达</view>
+      <view class="para">· 预约配送：可选择当日或次日时段</view>
+      <view class="para">· 全程冷链，生鲜商品保持新鲜</view>
+      <view class="para">· 偏远地区配送时效略有延长，以实际骑手通知为准</view>
+    </view>
+    <view class="card">
+      <view class="section-title">售后政策</view>
+      <view class="para">· 坏果包赔，拍照联系客服即可赔付</view>
+      <view class="para">· 7天无理由退换（生鲜类除外）</view>
+      <view class="para">· 客服热线：400-888-8888（9:00-21:00）</view>
+    </view>
+  </block>
+
+  <view wx:if="{{loading && section === 'review'}}">
+    <view wx:for="{{[1,2,3]}}" wx:key="this" class="skeleton review-skel"></view>
+  </view>
+</view>

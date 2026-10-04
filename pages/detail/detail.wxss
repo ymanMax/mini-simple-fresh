@@ -1,139 +1,86 @@
-page {
-	padding: 0;
-	margin: 0;
-}
-image {
-	display: block;
-}
-swiper {
-	height: 400rpx;
-}
-.img {
-	height: 400rpx;
-	width: 100%;
-}
-view {
-	color: #4b494a;
-	padding: 0 5px;
-}
-.subtitle {
-	font-size: 15px;
-}
-.price_info {
-	position: relative;
-}
-.price {
-	font-size: 16px;
-	color: #e13d7e;
-}
-.vip_price {
-	color: #b3b3b3;
-	padding-left: 5px;
-	font-size: 12px;
-	text-decoration: line-through;
-}
-.sales_volume {
-	position: absolute;
-	right: 5px;
-	color: #b3b3b3;
-	font-size: 11px;
-}
-.produce_info  text{
-	font-size: 12px;
-	padding-right: 20px;
-}
-.vip_card {
-	margin: 40px 10px;
-	height: 60px;
-	background-color: #ffe9b9;
-	border-radius: 10px;
-	position: relative;
-}
-.vip_card image {
-	width: 40px;
-	height: 18px;
-	position: absolute;
-	top: 20px;
-	left: 10px;
-	right: 10px;
-}
-.back_cash_text {
-	position: absolute;
-	top: 10px;
-	left: 50px;
-}
-.vip_card .back_cash_text view {
-	color: #8c6c3f;
-	font-size: 14px;
-}
-.vip_card .back_cash_text text {
-	color: #d44a72;
-}
-.go-open {
-	position: absolute;
-	top: 20px;
-	right: 10px;
-	font-size: 12px;
-}
-.securityTitle {
-	margin-top: 40px;
-	font-size: 18px;
-	font-weight: bold;
-}
-.securityText {
-	font-size: 11px;
-	color: #ccc;
-}
-.detection image {
-	padding-left: 25px;
-	padding-top: 8px;
-	height: 27px;
-	width: 27px;
-}
-.securityTagName {
-	font-size: 11px;
-	margin-top: 10px;
-}
-.details {
-	margin-top: 12px;
-}
-.details image {
-	width: 97%;
-	padding:0 5px;
-}
-.details view{
-	font-size: 12px;
-	height: 36px;
-	color: #8d8d8d;
-	line-height: 36px;
-	border-top: 1px solid #eee;
-}
-.details view:first-child {
-	border: none;
-}
-.details_title {
-	font-size: 18px;
-	font-weight: bold;
-	margin-top: 40px;
-}
+.detail-page { padding-bottom: 140rpx; }
 
-.shopping {
-	width: 100%;
-	display: flex;
-	position: fixed;
-	bottom: 0px;
-	right: 0;
+.banner { width: 100%; height: 560rpx; }
+.banner image { width: 100%; height: 100%; }
+
+.info-card { margin-top: 16rpx; }
+.price-row { display: flex; align-items: baseline; gap: 16rpx; }
+.price-num.big { font-size: 48rpx; }
+.member-price { color: #b8860b; font-size: 24rpx; background: #faf3e0; padding: 4rpx 12rpx; border-radius: 8rpx; }
+.title { font-size: 32rpx; font-weight: 600; margin-top: 12rpx; }
+.goods-sub { color: #999; font-size: 24rpx; margin-top: 6rpx; }
+.meta-row { display: flex; gap: 24rpx; margin-top: 14rpx; color: #888; font-size: 22rpx; }
+.tag-row { margin-top: 10rpx; }
+
+.spec-title { font-weight: 600; margin-bottom: 14rpx; }
+.spec-list { display: flex; flex-wrap: wrap; gap: 16rpx; }
+.spec-chip {
+  padding: 12rpx 24rpx; border-radius: 999rpx; background: #f2f3f5;
+  font-size: 26rpx; color: #555; border: 2rpx solid transparent;
 }
-.car {
-	width: 100rpx;
-	height: 100rpx;
+.spec-chip.active { background: #fdecec; color: #e4393c; border-color: #e4393c; }
+.spec-row { display: flex; align-items: center; justify-content: space-between; margin-top: 20rpx; }
+
+.tab-bar { display: flex; background: #fff; margin: 16rpx 24rpx; border-radius: 16rpx; padding: 8rpx; }
+.tab { flex: 1; text-align: center; padding: 16rpx 0; font-size: 28rpx; color: #555; border-radius: 12rpx; }
+.tab.active { background: #fdecec; color: #e4393c; font-weight: 600; }
+
+.desc-title { font-weight: 600; font-size: 30rpx; margin-bottom: 12rpx; }
+.desc-text { color: #555; font-size: 26rpx; line-height: 1.7; }
+.detail-img { width: 100%; border-radius: 12rpx; margin-top: 12rpx; }
+
+.alsolike-grid { display: flex; flex-wrap: wrap; gap: 16rpx; }
+.alsolike-item { width: 31%; text-align: center; }
+.alsolike-item image { width: 100%; height: 180rpx; border-radius: 12rpx; }
+.alsolike-item .ellipsis { font-size: 22rpx; margin-top: 6rpx; }
+
+.review-card { padding: 20rpx 24rpx; }
+.review-head { display: flex; align-items: center; gap: 12rpx; }
+.avatar { width: 56rpx; height: 56rpx; border-radius: 50%; }
+.review-user { font-size: 26rpx; font-weight: 500; }
+.stars { margin-left: auto; color: #ff9500; font-size: 24rpx; }
+.review-content { margin-top: 10rpx; font-size: 26rpx; color: #444; line-height: 1.6; }
+.review-imgs { display: flex; gap: 10rpx; margin-top: 10rpx; }
+.review-imgs image { width: 120rpx; height: 120rpx; border-radius: 8rpx; }
+.review-time { margin-top: 8rpx; color: #aaa; font-size: 20rpx; }
+
+/* 底部操作栏 */
+.action-bar { gap: 12rpx; padding: 12rpx 16rpx; }
+.action-icon { display: flex; flex-direction: column; align-items: center; font-size: 20rpx; color: #666; padding: 0 10rpx; }
+.action-icon text { font-size: 32rpx; }
+.fav-active { color: #e4393c; }
+.cart-btn { flex: 1; }
+.buy-btn { flex: 1.4; }
+
+/* 骨架屏 */
+.detail-banner { height: 560rpx; }
+.detail-info { height: 200rpx; margin: 16rpx 24rpx; }
+
+/* 评分汇总 */
+.rating-summary { display: flex; align-items: center; }
+.rating-left { text-align: center; margin-right: 24rpx; }
+.rating-score { font-size: 44rpx; font-weight: 700; color: #e4393c; }
+.rating-stars { color: #ff9500; font-size: 20rpx; }
+.rating-right { font-size: 26rpx; }
+.rating-sub { color: #999; font-size: 22rpx; margin-top: 4rpx; }
+
+/* SKU 半屏弹层 */
+.sku-mask {
+  position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,.5); z-index: 300;
+  display: flex; align-items: flex-end;
 }
-.shopping-car {
-	flex: 1;
-	font-size: 16px;
-	text-align: center;
-	line-height: 50px;
-	color: #fff;
-	background-color: #fb4d92;
-	margin-right: 6px;
+.sku-panel {
+  width: 100%; background: #fff; border-radius: 24rpx 24rpx 0 0;
+  padding: 24rpx; max-height: 80vh;
 }
+.sku-head { display: flex; align-items: center; position: relative; }
+.sku-pic { width: 140rpx; height: 140rpx; border-radius: 12rpx; }
+.sku-info { margin-left: 16rpx; }
+.sku-stock { color: #999; font-size: 22rpx; margin-top: 6rpx; }
+.sku-close { position: absolute; right: 0; top: 0; font-size: 36rpx; color: #999; padding: 8rpx; }
+.sku-spec-title { font-weight: 600; margin: 16rpx 0 10rpx; }
+.sku-row { display: flex; align-items: center; justify-content: space-between; margin: 16rpx 0; }
+.sku-btns { display: flex; gap: 16rpx; margin-top: 20rpx; }
+.sku-btns .cart-btn { flex: 1; }
+.sku-btns .buy-btn { flex: 1.4; }

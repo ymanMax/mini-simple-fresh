@@ -1,25 +1,81 @@
-<view class='large'>
-    <view class='search'>
-    <input placeholder='请输入商品名称' data-value='{{search}}' value='{{search}}'></input><text bindtap='goSearch'>搜索</text>
-    </view>
-    <view class='hot'>
-        <text class='module-title'>热门搜索</text>
-        <text wx:for="{{data}}" wx:key="this" class='module-msg' bindtap='hotSearch' data-id='{{item}}'>{{item}}</text>
-    </view>
-    <view class='hot re' hidden="'{{dis}}'">
-        <text class='module-title fl'>历史记录</text><view class='fr' bindtap='clear'>清除历史记录</view>
-        <text wx:for="{{history}}" wx:key="this" class='module-msg' bindtap='hotSearch' data-id='{{item}}'>{{item}}</text>
-    </view>
-    <view class='module-title like'>推荐商品</view>
-    <view class='product' wx:for="{{products}}" wx:key="this">
-        <image class='product-img' src='{{item.image}}'></image>
-        <image class='product-zhe' src='{{item.promote_tag}}'></image>
-        <view class='product-msg'>
-            <view class='msg-title'>{{item.name}}</view>
-            <view class='msg-intro'>{{item.subtitle}}</view>
-                <text class='price'></text>
-                <image src='{{item.cart_image}}' class='icon' bindtap='addCar'></image>
-        </view>
-    </view>
+<!-- 顶部搜索框 -->
+<view class="top-bar">
+  <view class="search-box">
+    <image class="search-icon" src="/https/images/icons/search.png" binderror="onImgError" data-src="/https/images/icons/search.png"></image>
+    <input class="search-input" placeholder="搜索商品，如：车厘子" value="{{keyword}}"
+           confirm-type="search" bindinput="onInput" bindconfirm="onSearchConfirm" focus="{{!searching}}" />
+    <text wx:if="{{keyword}}" class="clear-kw" bindtap="cancelSearch">✕</text>
+  </view>
+  <text class="cancel" bindtap="cancelSearch" wx:if="{{searching}}">取消</text>
 </view>
 
+<!-- 联想结果 -->
+<view class="suggest-list" wx:if="{{suggest.length > 0 && !searching}}">
+  <view class="suggest-item" wx:for="{{suggest}}" wx:key="id" data-id="{{item.id}}" bindtap="goDetail">
+    <image mode="aspectFill" class="suggest-img" src="{{item.pic}}" binderror="onImgError" data-src="{{item.pic}}"></image>
+    <view class="suggest-info">
+      <view class="ellipsis">{{item.name}}</view>
+      <view class="price-red">¥{{item.priceYuan}} / {{item.unit}}</view>
+    </view>
+  </view>
+</view>
+
+<!-- 未搜索：历史 + 热门 -->
+<view class="page-content" wx:if="{{!searching && suggest.length === 0}}">
+  <!-- 历史搜索 -->
+  <view class="card-section" wx:if="{{history.length > 0}}">
+    <view class="section-head">
+      <text>历史搜索</text>
+      <image class="head-icon" src="/https/images/icons/menu_settings.png" binderror="onImgError" data-src="/https/images/icons/menu_settings.png" bindtap="clearHistory"></image>
+    </view>
+    <view class="tag-wrap">
+      <view class="hist-tag" wx:for="{{history}}" wx:key="*this" data-word="{{item}}" bindtap="tapHistory">
+        {{item}}
+        <text class="hist-del" data-word="{{item}}" catchtap="removeHistory">✕</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 热门搜索 -->
+  <view class="card-section">
+    <view class="section-head"><text>热门搜索</text></view>
+    <view class="tag-wrap">
+      <view class="hot-tag" wx:for="{{hotWords}}" wx:key="*this" data-word="{{item}}" bindtap="tapHot">{{item}}</view>
+    </view>
+  </view>
+</view>
+
+<!-- 搜索结果 -->
+<view class="page-content" wx:if="{{searching}}">
+  <!-- 排序栏 -->
+  <view class="sort-bar">
+    <text class="sort-item {{sort === 'default' ? 'active' : ''}}" data-sort="default" bindtap="setSort">综合</text>
+    <text class="sort-item {{sort === 'sales' ? 'active' : ''}}" data-sort="sales" bindtap="setSort">销量</text>
+    <text class="sort-item {{sort === 'priceAsc' ? 'active' : ''}}" data-sort="priceAsc" bindtap="setSort">价格 ↑</text>
+    <text class="sort-item {{sort === 'priceDesc' ? 'active' : ''}}" data-sort="priceDesc" bindtap="setSort">价格 ↓</text>
+  </view>
+
+  <!-- 结果列表 -->
+  <view class="goods-card" wx:for="{{results}}" wx:key="id" bindtap="goDetail" data-id="{{item.id}}">
+    <image mode="aspectFill" class="goods-img" src="{{item.pic}}" binderror="onImgError" data-src="{{item.pic}}"></image>
+    <view class="info">
+      <view class="goods-name ellipsis-2">{{item.name}}</view>
+      <view class="goods-sub ellipsis">{{item.subtitle}}</view>
+      <view class="goods-bottom">
+        <view class="price-box">
+          <text class="price-num">{{item.priceYuan}}</text>
+          <text class="price-old">¥{{item.originalYuan}}</text>
+        </view>
+        <text class="sales">已售{{item.salesText}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 空态 -->
+  <view class="empty-box" wx:if="{{results.length === 0}}">
+    <image class="empty-img" src="/static/images/default.png" binderror="onImgError" data-src="/static/images/default.png"></image>
+    <view class="empty-text">未找到相关商品，换个关键词试试</view>
+  </view>
+
+  <view class="list-footer" wx:if="{{!hasMore && results.length > 0}}">—— 没有更多了 ——</view>
+</view>

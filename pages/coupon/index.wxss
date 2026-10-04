@@ -1,0 +1,48 @@
+.coupon-page { padding-bottom: 60rpx; }
+
+.top-tabs { display: flex; background: #fff; position: sticky; top: 0; z-index: 10; }
+.top-tabs .tab { flex: 1; text-align: center; padding: 20rpx 0; font-size: 28rpx; color: #555; }
+.top-tabs .tab.active { color: #e4393c; font-weight: 600; border-bottom: 4rpx solid #e4393c; }
+
+.mine-sub-tabs { display: flex; padding: 16rpx 24rpx; gap: 24rpx; }
+.sub-tab { font-size: 26rpx; color: #666; padding: 6rpx 12rpx; }
+.sub-tab.active { color: #e4393c; font-weight: 600; border-bottom: 2rpx solid #e4393c; }
+
+.coupon-card {
+  display: flex; align-items: stretch; background: #fff;
+  border-radius: 16rpx; margin: 16rpx 24rpx; overflow: hidden;
+}
+.coupon-left {
+  width: 180rpx; background: #e4393c; color: #fff;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  padding: 24rpx 12rpx;
+}
+.coupon-left.used { background: #bbb; }
+.coupon-amount { font-size: 40rpx; font-weight: bold; }
+.coupon-cond { font-size: 20rpx; margin-top: 6rpx; }
+.coupon-right { flex: 1; padding: 20rpx; }
+.coupon-name { font-weight: 600; font-size: 28rpx; }
+.coupon-scope { color: #999; font-size: 22rpx; margin-top: 6rpx; }
+.coupon-remain { color: #999; font-size: 20rpx; margin-top: 4rpx; }
+.coupon-source { color: #bbb; font-size: 20rpx; margin-top: 4rpx; }
+.claim-btn {
+  align-self: center; margin-right: 20rpx; padding: 10rpx 24rpx;
+  background: #e4393c; color: #fff; border-radius: 999rpx; font-size: 24rpx;
+}
+.claim-btn.outline { background: #fff; color: #e4393c; border: 2rpx solid #e4393c; }
+.coupon-state { align-self: center; margin-right: 24rpx; color: #999; font-size: 24rpx; }
+
+/* 拼团 */
+.group-card { display: flex; background: #fff; border-radius: 16rpx; margin: 16rpx 24rpx; padding: 20rpx; }
+.group-img { width: 140rpx; height: 140rpx; border-radius: 12rpx; }
+.group-info { flex: 1; margin-left: 16rpx; }
+.group-price-row { display: flex; align-items: baseline; gap: 10rpx; margin-top: 6rpx; }
+.group-meta { color: #999; font-size: 22rpx; margin-top: 6rpx; }
+.group-members { display: flex; gap: 6rpx; margin-top: 8rpx; }
+.member-avatar { width: 40rpx; height: 40rpx; border-radius: 50%; }
+.join-btn {
+  align-self: center; padding: 12rpx 28rpx; background: #e4393c;
+  color: #fff; border-radius: 999rpx; font-size: 26rpx;
+}
+
+.coupon-skel { height: 140rpx; margin: 16rpx 24rpx; border-radius: 16rpx; }

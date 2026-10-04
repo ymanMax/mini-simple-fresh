@@ -1,0 +1,27 @@
+<view class="page-bg collect-page">
+  <block wx:if="{{!loading}}">
+    <view class="grid" wx:if="{{list.length > 0}}">
+      <view class="grid-card" wx:for="{{list}}" wx:key="id" bindtap="goDetail" data-id="{{item.id}}">
+        <image mode="aspectFill" class="grid-img" src="{{item.pic}}" binderror="onImgError" data-src="{{item.pic}}"></image>
+        <view class="grid-name ellipsis-2">{{item.name}}</view>
+        <view class="grid-bottom">
+          <text class="price-red">¥{{item.priceYuan}}</text>
+          <view class="grid-actions">
+            <view class="mini-btn" catchtap="addToCart" data-id="{{item.id}}">加购</view>
+            <view class="mini-btn danger" catchtap="removeFav" data-id="{{item.id}}">删除</view>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <view class="empty-box" wx:if="{{list.length === 0}}">
+      <image class="empty-img" src="/static/images/default.png" binderror="onImgError" data-src="/static/images/default.png"></image>
+      <view class="empty-text">还没有收藏的商品</view>
+      <view class="btn-primary go-btn" bindtap="goShop">去逛逛 →</view>
+    </view>
+  </block>
+
+  <view wx:if="{{loading}}">
+    <view wx:for="{{[1,2,3,4]}}" wx:key="this" class="skeleton grid-skel"></view>
+  </view>
+</view>

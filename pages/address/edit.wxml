@@ -1,0 +1,52 @@
+<view class="page-bg addr-edit">
+  <view class="card form-card">
+    <view class="form-row">
+      <text class="form-label">收货人</text>
+      <input placeholder="请输入姓名" value="{{form.name}}" data-field="name" bindinput="onFieldInput" />
+    </view>
+    <view class="form-row">
+      <text class="form-label">手机号</text>
+      <input type="number" placeholder="请输入手机号" value="{{form.phone}}" maxlength="11" data-field="phone" bindinput="onFieldInput" />
+    </view>
+
+    <view class="form-row">
+      <text class="form-label">省份</text>
+      <view class="picker-row">
+        <view class="chip {{form.province === p ? 'active' : ''}}" wx:for="{{provinces}}" wx:key="*this"
+              data-value="{{p}}" bindtap="pickProvince">{{p}}</view>
+      </view>
+    </view>
+
+    <view class="form-row">
+      <text class="form-label">城市</text>
+      <text>{{form.city}}</text>
+    </view>
+
+    <view class="form-row">
+      <text class="form-label">区/县</text>
+      <input placeholder="如：朝阳区" value="{{form.district}}" data-field="district" bindinput="onFieldInput" />
+    </view>
+
+    <view class="form-row">
+      <text class="form-label">详细地址</text>
+      <input placeholder="街道、门牌号等" value="{{form.detail}}" data-field="detail" bindinput="onFieldInput" />
+    </view>
+
+    <view class="form-row">
+      <text class="form-label">标签</text>
+      <view class="picker-row">
+        <view class="chip {{form.tag === t ? 'active' : ''}}" wx:for="{{tags}}" wx:key="*this"
+              data-tag="{{t}}" bindtap="pickTag">{{t}}</view>
+      </view>
+    </view>
+
+    <view class="form-row" bindtap="toggleDefault">
+      <text class="form-label">设为默认</text>
+      <view class="radio {{form.isDefault ? 'checked' : ''}}">{{form.isDefault ? '✓' : ''}}</view>
+    </view>
+  </view>
+
+  <view class="bottom-bar">
+    <view class="btn-primary save-btn" bindtap="save">保存地址</view>
+  </view>
+</view>

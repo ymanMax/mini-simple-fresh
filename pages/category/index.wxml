@@ -1,0 +1,145 @@
+<view class="cat-page">
+  <!-- 左侧分类导航 -->
+  <view class="side-nav">
+    <block wx:if="{{!loading}}">
+      <view class="nav-item {{currentCatId === item.id ? 'active' : ''}}"
+            wx:for="{{categories}}" wx:key="id"
+            data-id="{{item.id}}" bindtap="onTapCategory">
+        <text>{{item.name}}</text>
+        <view class="nav-count">{{item.count}}</view>
+      </view>
+    </block>
+    <block wx:else>
+      <view class="skeleton nav-skel" wx:for="{{[1,2,3,4,5,6,7,8]}}" wx:key="this"></view>
+    </block>
+  </view>
+
+  <!-- 右侧内容 -->
+  <view class="right-content">
+    <!-- 顶部搜索框 -->
+    <view class="search-bar">
+      <view class="search-box">
+        <image class="search-icon" src="/https/images/icons/search.png" binderror="onImgError" data-src="/https/images/icons/search.png"></image>
+        <input class="search-input" placeholder="搜索当前分类商品" value="{{keyword}}"
+               bindinput="onInputKeyword" confirm-type="search" />
+        <text wx:if="{{keyword}}" class="clear-kw" bindtap="clearKeyword">✕</text>
+      </view>
+      <text class="cancel-btn" bindtap="cancelSearch">取消</text>
+    </view>
+
+    <!-- 吸顶排序栏 -->
+    <view class="sort-bar">
+      <view class="sort-item {{sort === 'default' ? 'active' : ''}}" data-sort="default" bindtap="setSort">综合</view>
+      <view class="sort-item {{sort === 'priceAsc' || sort === 'priceDesc' ? 'active' : ''}}" data-sort="priceAsc" bindtap="setSort">
+        价格
+        <text class="sort-arrow">{{sort === 'priceAsc' ? '↑' : (sort === 'priceDesc' ? '↓' : '')}}</text>
+      </view>
+      <view class="sort-item {{sort === 'sales' ? 'active' : ''}}" data-sort="sales" bindtap="setSort">销量</view>
+      <view class="filter-btn {{filterShow || appliedFilter ? 'active' : ''}}" bindtap="openFilter">筛选</view>
+    </view>
+
+    <!-- 骨架屏 -->
+    <block wx:if="{{loading}}">
+      <view class="skeleton rec-skel"></view>
+      <view wx:for="{{[1,2,3,4]}}" wx:key="this" class="goods-card">
+        <view class="skeleton goods-img"></view>
+        <view class="skeleton info-skeleton"></view>
+      </view>
+    </block>
+
+    <block wx:else>
+      <!-- 推荐商品（无搜索/筛选时展示） -->
+      <view class="rec-section" wx:if="{{recommend.length > 0 && !keyword && !appliedFilter}}">
+        <view class="rec-title">为你推荐</view>
+        <scroll-view scroll-x class="rec-scroll">
+          <view class="rec-item" wx:for="{{recommend}}" wx:key="id" data-id="{{item.id}}" bindtap="goDetail">
+            <image mode="aspectFill" src="{{item.pic}}" binderror="onImgError" data-src="{{item.pic}}"></image>
+            <text class="rec-name ellipsis">{{item.name}}</text>
+            <text class="price-red">¥{{item.priceYuan}}</text>
+          </view>
+        </scroll-view>
+      </view>
+
+      <!-- 结果数 -->
+      <view class="result-tip" wx:if="{{keyword || appliedFilter}}">共 {{resultCount}} 件商品</view>
+
+      <!-- 商品列表 -->
+      <view class="goods-card" wx:for="{{products}}" wx:key="id" bindtap="goDetail" data-id="{{item.id}}">
+        <image mode="aspectFill" class="goods-img" src="{{item.pic}}" binderror="onImgError" data-src="{{item.pic}}"></image>
+        <view class="info">
+          <view class="goods-name ellipsis-2">{{item.name}}</view>
+          <view class="goods-sub ellipsis">{{item.subtitle}}</view>
+          <view class="tag-row">
+            <text class="tag-pill" wx:for="{{item.tags}}" wx:for-item="tag" wx:key="*this">{{tag}}</text>
+          </view>
+          <view class="goods-bottom">
+            <view class="price-box">
+              <text class="price-num">{{item.priceYuan}}</text>
+              <text class="price-old">¥{{item.originalYuan}}</text>
+            </view>
+            <view class="add-btn" catchtap="addToCart" data-id="{{item.id}}">+</view>
+          </view>
+        </view>
+      </view>
+
+      <!-- 空态：搜索/筛选无结果 -->
+      <view class="empty-box" wx:if="{{products.length === 0 && !loading}}">
+        <image class="empty-img" src="/static/images/default.png" binderror="onImgError" data-src="/static/images/default.png"></image>
+        <view class="empty-text">{{(keyword || appliedFilter) ? '未找到相关商品' : '该分类暂无商品'}}</view>
+      </view>
+
+      <view class="list-footer" wx:if="{{!hasMore && products.length > 0}}">—— 没有更多了 ——</view>
+    </block>
+  </view>
+
+  <!-- 筛选抽屉 -->
+  <view class="filter-mask" wx:if="{{filterShow}}" bindtap="closeFilter">
+    <view class="filter-panel" catchtap="">
+      <view class="filter-title">自定义筛选</view>
+
+      <!-- 价格区间 -->
+      <view class="filter-block">
+        <view class="filter-label">价格区间（元）</view>
+        <view class="price-range">
+          <input class="price-input" type="digit" placeholder="最低价" value="{{priceMin}}" bindinput="onPriceMinInput" />
+          <text class="range-sep">—</text>
+          <input class="price-input" type="digit" placeholder="最高价" value="{{priceMax}}" bindinput="onPriceMaxInput" />
+        </view>
+      </view>
+
+      <!-- 仅看有货 -->
+      <view class="filter-block">
+        <view class="filter-label">仅看有货</view>
+        <view class="switch-row" bindtap="toggleInStock">
+          <view class="switch {{inStockOnly ? 'on' : ''}}"><view class="switch-dot"></view></view>
+        </view>
+      </view>
+
+      <!-- 优惠类型 -->
+      <view class="filter-block">
+        <view class="filter-label">优惠类型</view>
+        <view class="chip-wrap">
+          <view class="chip {{promoTypes.indexOf(item) >= 0 ? 'active' : ''}}"
+                wx:for="{{promoOptions}}" wx:key="*this"
+                data-tag="{{item}}" bindtap="togglePromo">{{item}}</view>
+        </view>
+      </view>
+
+      <!-- 商品标签 -->
+      <view class="filter-block">
+        <view class="filter-label">商品标签</view>
+        <view class="chip-wrap">
+          <view class="chip {{productTags.indexOf(item) >= 0 ? 'active' : ''}}"
+                wx:for="{{tagOptions}}" wx:key="*this"
+                data-tag="{{item}}" bindtap="toggleProductTag">{{item}}</view>
+        </view>
+      </view>
+
+      <!-- 底部按钮 -->
+      <view class="filter-btns">
+        <view class="filter-reset" bindtap="resetFilter">重置</view>
+        <view class="filter-confirm" bindtap="confirmFilter">确定</view>
+      </view>
+    </view>
+  </view>
+</view>

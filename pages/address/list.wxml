@@ -1,0 +1,31 @@
+<view class="page-bg addr-list">
+  <block wx:if="{{!loading}}">
+    <view class="card addr-item" wx:for="{{addresses}}" wx:key="id" data-id="{{item.id}}" bindtap="tapAddress">
+      <view class="addr-line1">
+        <text class="addr-name">{{item.name}}</text>
+        <text class="addr-phone">{{item.phone}}</text>
+        <text class="tag-pill" wx:if="{{item.isDefault}}">默认</text>
+        <text class="tag-pill tag-pill-gray" wx:else>{{item.tag || '家'}}</text>
+      </view>
+      <view class="addr-detail">{{item.province}}{{item.city}}{{item.district}}{{item.detail}}</view>
+      <view class="addr-actions">
+        <view class="act-btn" data-id="{{item.id}}" catchtap="setDefault" wx:if="{{!item.isDefault}}">设为默认</view>
+        <view class="act-btn" data-id="{{item.id}}" catchtap="edit">编辑</view>
+        <view class="act-btn danger" data-id="{{item.id}}" catchtap="remove">删除</view>
+      </view>
+    </view>
+
+    <view class="empty-box" wx:if="{{addresses.length === 0}}">
+      <image class="empty-img" src="/static/images/default.png" binderror="onImgError" data-src="/static/images/default.png"></image>
+      <view class="empty-text">暂无收货地址</view>
+    </view>
+
+    <view class="bottom-bar add-bar">
+      <view class="btn-primary" bindtap="addAddress">＋ 新增收货地址</view>
+    </view>
+  </block>
+
+  <block wx:else>
+    <view wx:for="{{[1,2,3]}}" wx:key="this" class="card addr-skel"></view>
+  </block>
+</view>

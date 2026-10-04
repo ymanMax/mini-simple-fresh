@@ -1,0 +1,45 @@
+<view class="page-bg points-page">
+  <!-- 积分总览 -->
+  <view class="points-header" wx:if="{{member}}">
+    <view class="points-num">{{member.points}}</view>
+    <view class="points-label">我的积分</view>
+    <view class="points-sub">成长值 {{member.growthValue}} · {{member.levelName}}</view>
+  </view>
+
+  <view class="top-tabs">
+    <view class="tab {{activeTab === 'record' ? 'active' : ''}}" data-tab="record" bindtap="switchTab">积分明细</view>
+    <view class="tab {{activeTab === 'exchange' ? 'active' : ''}}" data-tab="exchange" bindtap="switchTab">积分兑换</view>
+  </view>
+
+  <block wx:if="{{!loading}}">
+    <!-- 积分明细 -->
+    <block wx:if="{{activeTab === 'record'}}">
+      <view class="card record-item" wx:for="{{records}}" wx:key="id">
+        <view class="record-left">
+          <view class="record-desc">{{item.typeText}} · {{item.desc}}</view>
+          <view class="record-time">{{item.timeText}}</view>
+        </view>
+        <view class="record-points {{item.points > 0 ? 'plus' : 'minus'}}">{{item.sign}}{{item.points}}</view>
+      </view>
+      <view class="empty-box" wx:if="{{records.length === 0}}">
+        <image class="empty-img" src="/static/images/default.png" binderror="onImgError" data-src="/static/images/default.png"></image>
+        <view class="empty-text">暂无积分记录</view>
+      </view>
+    </block>
+
+    <!-- 积分兑换 -->
+    <block wx:if="{{activeTab === 'exchange'}}">
+      <view class="card gift-item" wx:for="{{gifts}}" wx:key="id">
+        <view class="gift-info">
+          <view class="gift-name">{{item.name}}</view>
+          <view class="gift-points">{{item.points}} 积分兑换</view>
+        </view>
+        <view class="btn-primary gift-btn" data-id="{{item.id}}" bindtap="exchange">兑换</view>
+      </view>
+    </block>
+  </block>
+
+  <view wx:if="{{loading}}">
+    <view wx:for="{{[1,2,3]}}" wx:key="this" class="skeleton record-skel"></view>
+  </view>
+</view>

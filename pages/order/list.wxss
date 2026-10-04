@@ -1,0 +1,40 @@
+.status-tabs {
+  position: sticky; top: 0; background: #fff; z-index: 10;
+  padding: 10rpx 0; border-bottom: 2rpx solid #f2f3f5;
+}
+.status-tabs scroll-view { white-space: nowrap; }
+.tab {
+  display: inline-block; padding: 14rpx 28rpx; font-size: 26rpx; color: #555;
+}
+.tab.active { color: #e4393c; font-weight: 600; border-bottom: 4rpx solid #e4393c; }
+
+.order-card { padding: 20rpx 24rpx; }
+.order-head { display: flex; justify-content: space-between; align-items: center; }
+.order-no { font-size: 24rpx; color: #999; }
+.status-badge { font-size: 24rpx; padding: 4rpx 16rpx; border-radius: 8rpx; background: #f2f3f5; color: #666; }
+.status-badge.status-1 { color: #e4393c; background: #fdecec; }
+.status-badge.status-2 { color: #ff9500; background: #fff4e0; }
+.status-badge.status-3 { color: #1677ff; background: #e8f1ff; }
+.status-badge.status-5 { color: #52a352; background: #ecf7ec; }
+
+.order-body { display: flex; align-items: center; margin-top: 16rpx; }
+.order-thumb { width: 100rpx; height: 100rpx; border-radius: 12rpx; }
+.order-items-info { flex: 1; margin-left: 16rpx; }
+.item-count { font-size: 26rpx; }
+.order-time { color: #999; font-size: 22rpx; margin-top: 6rpx; }
+.order-pay { text-align: right; }
+.pay-label { color: #999; font-size: 22rpx; }
+
+.order-skel { height: 140rpx; }
+.go-shop-btn { width: 240rpx; margin-top: 10rpx; }
+.list-footer { text-align: center; color: #999; padding: 30rpx; font-size: 24rpx; }
+
+/* 多商品缩略图 */
+.thumb-row { display: flex; gap: 6rpx; }
+.order-thumb { width: 80rpx; height: 80rpx; border-radius: 10rpx; }
+
+/* 订单操作按钮 */
+.order-actions { display: flex; justify-content: flex-end; gap: 12rpx; margin-top: 14rpx; border-top: 2rpx solid #f5f6f7; padding-top: 14rpx; }
+.act-btn { padding: 8rpx 24rpx; border-radius: 999rpx; font-size: 24rpx; }
+.act-btn.ghost { border: 2rpx solid #ddd; color: #555; }
+.act-btn.primary { background: #e4393c; color: #fff; }

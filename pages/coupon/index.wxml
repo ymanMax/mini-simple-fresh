@@ -1,0 +1,78 @@
+<view class="page-bg coupon-page">
+  <!-- 顶部 Tab -->
+  <view class="top-tabs">
+    <view class="tab {{activeTab === index ? 'active' : ''}}" wx:for="{{tabs}}" wx:key="*this"
+          data-index="{{index}}" bindtap="switchTab">{{item}}</view>
+  </view>
+
+  <block wx:if="{{!loading}}">
+    <!-- 领券中心 -->
+    <block wx:if="{{activeTab === 0}}">
+      <view class="coupon-card center" wx:for="{{center}}" wx:key="id">
+        <view class="coupon-left">
+          <view class="coupon-amount">{{item.amountText}}</view>
+          <view class="coupon-cond">{{item.condText}}</view>
+        </view>
+        <view class="coupon-right">
+          <view class="coupon-name">{{item.name}}</view>
+          <view class="coupon-scope">{{item.scope}} · {{item.expireDays}}天有效</view>
+          <view class="coupon-remain">剩余 {{item.remain}} 张</view>
+        </view>
+        <view class="claim-btn" data-id="{{item.id}}" bindtap="claim">立即领取</view>
+      </view>
+      <view class="empty-box" wx:if="{{center.length === 0}}">
+        <view class="empty-text">暂无优惠券可领</view>
+      </view>
+    </block>
+
+    <!-- 我的优惠券 -->
+    <block wx:if="{{activeTab === 1}}">
+      <view class="mine-sub-tabs">
+        <view class="sub-tab {{mineSubTab === 1 ? 'active' : ''}}" data-index="1" bindtap="switchMineSub">未使用</view>
+        <view class="sub-tab {{mineSubTab === 2 ? 'active' : ''}}" data-index="2" bindtap="switchMineSub">已使用</view>
+        <view class="sub-tab {{mineSubTab === 3 ? 'active' : ''}}" data-index="3" bindtap="switchMineSub">已过期</view>
+      </view>
+      <view class="coupon-card mine" wx:for="{{filteredMine}}" wx:key="id">
+        <view class="coupon-left {{item.status !== 1 ? 'used' : ''}}">
+          <view class="coupon-amount">{{item.amountText}}</view>
+          <view class="coupon-cond">{{item.condText}}</view>
+        </view>
+        <view class="coupon-right">
+          <view class="coupon-name">{{item.name}}</view>
+          <view class="coupon-scope">{{item.scope}} · {{item.expireTime}}</view>
+          <view class="coupon-source">来源：{{item.source}}</view>
+        </view>
+        <view class="claim-btn outline" wx:if="{{item.status === 1}}" bindtap="goUse">去使用</view>
+        <view class="coupon-state" wx:else>{{item.status === 2 ? '已使用' : '已过期'}}</view>
+      </view>
+      <view class="empty-box" wx:if="{{filteredMine.length === 0}}">
+        <image class="empty-img" src="/static/images/default.png" binderror="onImgError" data-src="/static/images/default.png"></image>
+        <view class="empty-text">暂无相关优惠券</view>
+      </view>
+    </block>
+
+    <!-- 拼团特惠 -->
+    <block wx:if="{{activeTab === 2}}">
+      <view class="group-card" wx:for="{{groups}}" wx:key="id">
+        <image mode="aspectFill" class="group-img" src="{{item.pic}}" binderror="onImgError" data-src="{{item.pic}}"></image>
+        <view class="group-info">
+          <view class="ellipsis">{{item.name}}</view>
+          <view class="group-price-row">
+            <text class="price-red">拼团 ¥{{item.groupPriceYuan}}</text>
+            <text class="price-old">¥{{item.originalPriceYuan}}</text>
+          </view>
+          <view class="group-meta">{{item.requiredCount}}人成团 · {{item.endHours}}小时内成团</view>
+          <view class="group-members">
+            <image wx:for="{{item.members}}" wx:for-item="mem" wx:key="name" class="member-avatar" src="{{mem.avatar}}" binderror="onImgError" data-src="{{mem.avatar}}"></image>
+          </view>
+        </view>
+        <view class="join-btn" data-id="{{item.id}}" bindtap="joinGroup">去拼团</view>
+      </view>
+    </block>
+  </block>
+
+  <!-- 骨架屏 -->
+  <view wx:if="{{loading}}">
+    <view wx:for="{{[1,2,3]}}" wx:key="this" class="skeleton coupon-skel"></view>
+  </view>
+</view>

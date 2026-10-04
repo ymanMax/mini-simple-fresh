@@ -1,0 +1,19 @@
+.message-page { padding-bottom: 60rpx; }
+.top-tabs { display: flex; background: #fff; position: sticky; top: 0; z-index: 10; align-items: center; padding: 0 24rpx; }
+.top-tabs .tab { flex: 1; text-align: center; padding: 20rpx 0; font-size: 28rpx; color: #555; }
+.top-tabs .tab.active { color: #e4393c; font-weight: 600; border-bottom: 4rpx solid #e4393c; }
+.read-all { color: #e4393c; font-size: 24rpx; padding-left: 16rpx; }
+
+.msg-item { display: flex; padding: 20rpx 24rpx; position: relative; }
+.msg-icon { width: 64rpx; height: 64rpx; display: flex; align-items: center; justify-content: center; }
+.msg-icon image { width: 48rpx; height: 48rpx; }
+.msg-info { flex: 1; margin-left: 12rpx; }
+.msg-head { display: flex; align-items: center; justify-content: space-between; }
+.msg-title { font-weight: 600; font-size: 28rpx; }
+.msg-content { color: #666; font-size: 24rpx; margin-top: 6rpx; }
+.msg-meta { display: flex; justify-content: space-between; margin-top: 8rpx; }
+.msg-type { color: #999; font-size: 20rpx; }
+.msg-time { color: #bbb; font-size: 20rpx; }
+
+.msg-skel { height: 110rpx; }
+.list-footer { text-align: center; color: #999; padding: 30rpx; font-size: 24rpx; }

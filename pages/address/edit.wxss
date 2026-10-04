@@ -1,0 +1,21 @@
+.addr-edit { padding-bottom: 140rpx; }
+.form-card { padding: 8rpx 24rpx; }
+.form-row {
+  display: flex; align-items: center; padding: 22rpx 0;
+  border-bottom: 2rpx solid #f5f6f7;
+}
+.form-row:last-child { border-bottom: none; }
+.form-label { width: 140rpx; font-size: 28rpx; color: #555; }
+.form-row input { flex: 1; font-size: 28rpx; }
+.picker-row { flex: 1; display: flex; flex-wrap: wrap; gap: 12rpx; }
+.chip {
+  padding: 8rpx 20rpx; background: #f2f3f5; border-radius: 999rpx;
+  font-size: 24rpx; color: #555;
+}
+.chip.active { background: #fdecec; color: #e4393c; }
+.radio {
+  width: 36rpx; height: 36rpx; border-radius: 50%; border: 2rpx solid #ccc;
+  display: flex; align-items: center; justify-content: center; color: #fff; font-size: 22rpx;
+}
+.radio.checked { background: #e4393c; border-color: #e4393c; }
+.save-btn { width: 100%; padding: 20rpx 0; }

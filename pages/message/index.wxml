@@ -1,0 +1,40 @@
+<view class="page-bg message-page">
+  <!-- 类型 Tab -->
+  <view class="top-tabs">
+    <view class="tab {{activeTab === item.key ? 'active' : ''}}"
+          wx:for="{{tabs}}" wx:key="key"
+          data-key="{{item.key}}" bindtap="switchTab">{{item.name}}</view>
+    <view class="read-all" bindtap="readAll">全部已读</view>
+  </view>
+
+  <block wx:if="{{!loading}}">
+    <view class="card msg-item {{item.isRead ? '' : 'unread'}}" wx:for="{{messages}}" wx:key="id"
+          data-id="{{item.id}}" bindtap="tapMessage">
+      <view class="msg-icon">
+        <image mode="aspectFit" src="/https/images/icons/message_active.png" binderror="onImgError" data-src="/https/images/icons/message_active.png"></image>
+      </view>
+      <view class="msg-info">
+        <view class="msg-head">
+          <text class="msg-title">{{item.title}}</text>
+          <view class="red-dot" wx:if="{{!item.isRead}}"></view>
+        </view>
+        <view class="msg-content ellipsis-2">{{item.content}}</view>
+        <view class="msg-meta">
+          <text class="msg-type">{{item.type === 1 ? '系统' : (item.type === 2 ? '订单' : (item.type === 3 ? '促销' : '互动'))}}</text>
+          <text class="msg-time">{{item.relTime}}</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="empty-box" wx:if="{{messages.length === 0}}">
+      <image class="empty-img" src="/static/images/default.png" binderror="onImgError" data-src="/static/images/default.png"></image>
+      <view class="empty-text">暂无消息</view>
+    </view>
+
+    <view class="list-footer" wx:if="{{!hasMore && messages.length > 0}}">—— 没有更多了 ——</view>
+  </block>
+
+  <view wx:if="{{loading}}">
+    <view wx:for="{{[1,2,3]}}" wx:key="this" class="skeleton msg-skel"></view>
+  </view>
+</view>

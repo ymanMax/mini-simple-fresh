@@ -1,0 +1,26 @@
+.points-page { padding-bottom: 60rpx; }
+.points-header {
+  background: linear-gradient(135deg, #b8860b, #e4393c);
+  padding: 40rpx 32rpx; color: #fff; text-align: center;
+}
+.points-num { font-size: 56rpx; font-weight: 700; }
+.points-label { font-size: 24rpx; opacity: .9; }
+.points-sub { font-size: 20rpx; opacity: .8; margin-top: 6rpx; }
+
+.top-tabs { display: flex; background: #fff; position: sticky; top: 0; z-index: 10; }
+.top-tabs .tab { flex: 1; text-align: center; padding: 20rpx 0; font-size: 28rpx; color: #555; }
+.top-tabs .tab.active { color: #e4393c; font-weight: 600; border-bottom: 4rpx solid #e4393c; }
+
+.record-item { display: flex; align-items: center; justify-content: space-between; }
+.record-desc { font-size: 26rpx; }
+.record-time { color: #999; font-size: 20rpx; margin-top: 6rpx; }
+.record-points { font-size: 30rpx; font-weight: 600; }
+.record-points.plus { color: #52a352; }
+.record-points.minus { color: #e4393c; }
+
+.gift-item { display: flex; align-items: center; justify-content: space-between; }
+.gift-name { font-size: 28rpx; font-weight: 500; }
+.gift-points { color: #b8860b; font-size: 24rpx; margin-top: 6rpx; }
+.gift-btn { width: 140rpx; padding: 12rpx 0; font-size: 26rpx; }
+
+.record-skel { height: 100rpx; }

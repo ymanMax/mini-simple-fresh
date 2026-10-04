@@ -1,0 +1,11 @@
+.addr-list { padding-bottom: 140rpx; }
+.addr-item { position: relative; padding: 20rpx 24rpx; }
+.addr-line1 { display: flex; align-items: center; gap: 16rpx; }
+.addr-name { font-weight: 600; font-size: 30rpx; }
+.addr-phone { color: #666; font-size: 26rpx; }
+.addr-detail { color: #555; font-size: 26rpx; margin-top: 8rpx; }
+.addr-actions { display: flex; gap: 20rpx; justify-content: flex-end; margin-top: 14rpx; }
+.act-btn { font-size: 24rpx; color: #555; padding: 6rpx 18rpx; border: 2rpx solid #ddd; border-radius: 999rpx; }
+.act-btn.danger { color: #e4393c; border-color: #e4393c; }
+.add-bar { justify-content: center; }
+.addr-skel { height: 120rpx; }
