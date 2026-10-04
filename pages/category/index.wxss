@@ -1,0 +1,112 @@
+/* 商品分类页样式：分类导航 + 分类内搜索 + 吸顶排序 + 自定义筛选抽屉 */
+.category-page { height: 100vh; display: flex; flex-direction: column; }
+
+/* 1. 顶部搜索框 */
+.search-bar {
+  margin: 16rpx 24rpx; height: 72rpx; background: #fff; border-radius: 999rpx;
+  display: flex; align-items: center; padding: 0 16rpx 0 24rpx; box-shadow: 0 2rpx 8rpx rgba(0,0,0,0.03);
+}
+.search-icon { width: 32rpx; height: 32rpx; margin-right: 12rpx; }
+.search-input { flex: 1; font-size: 26rpx; }
+.search-clear { width: 40rpx; height: 40rpx; text-align: center; line-height: 40rpx; color: #999; font-size: 30rpx; }
+.search-cancel { color: #e4393c; font-size: 26rpx; padding: 0 8rpx; white-space: nowrap; }
+
+.main { flex: 1; display: flex; overflow: hidden; }
+.side-nav { width: 180rpx; background: #fff; overflow-y: auto; }
+.nav-item {
+  padding: 24rpx 12rpx; text-align: center; font-size: 26rpx; color: #555;
+  border-bottom: 1rpx solid #f5f5f5; position: relative;
+}
+.nav-item.active { color: #e4393c; font-weight: 700; background: #f5f6f7; border-left: 6rpx solid #e4393c; }
+.nav-count { font-size: 18rpx; color: #999; margin-top: 4rpx; }
+
+.content-area { flex: 1; overflow-y: auto; padding: 0 12rpx 40rpx; }
+
+/* 2. 吸顶排序栏 */
+.sort-bar {
+  display: flex; align-items: center; background: #fff; padding: 8rpx 12rpx;
+  position: sticky; top: 0; z-index: 10; box-shadow: 0 2rpx 6rpx rgba(0,0,0,0.04);
+  border-radius: 12rpx; margin: 4rpx 0 8rpx;
+}
+.sort-item { flex: 1; text-align: center; font-size: 26rpx; color: #666; padding: 10rpx 0; border-radius: 999rpx; }
+.sort-item.active { color: #e4393c; font-weight: 700; background: #fff1f0; }
+.sort-arrow { font-size: 20rpx; margin-left: 4rpx; }
+.filter-btn {
+  padding: 10rpx 24rpx; font-size: 26rpx; color: #666; border: 1rpx solid #ddd;
+  border-radius: 999rpx; position: relative; white-space: nowrap;
+}
+.filter-btn.active { color: #e4393c; border-color: #e4393c; background: #fff1f0; font-weight: 600; }
+.filter-dot {
+  position: absolute; top: -8rpx; right: -8rpx; background: #e4393c; color: #fff;
+  font-size: 16rpx; min-width: 28rpx; height: 28rpx; line-height: 28rpx; border-radius: 999rpx; text-align: center; padding: 0 4rpx;
+}
+
+/* 推荐商品 */
+.recommend-card { background: #fff; border-radius: 16rpx; margin: 12rpx; padding: 16rpx; }
+.reco-item { width: 140rpx; text-align: center; }
+.reco-img { width: 140rpx; height: 140rpx; border-radius: 12rpx; }
+.reco-name { font-size: 22rpx; margin-top: 6rpx; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+/* 商品卡片 */
+.goods-card { display: flex; background: #fff; border-radius: 16rpx; margin: 12rpx; padding: 16rpx; box-shadow: 0 2rpx 8rpx rgba(0,0,0,0.03); }
+.goods-img { width: 160rpx; height: 160rpx; border-radius: 12rpx; flex-shrink: 0; background: #f2f3f5; }
+.goods-info { flex: 1; margin-left: 16rpx; display: flex; flex-direction: column; justify-content: space-between; }
+.goods-name { font-size: 28rpx; font-weight: 600; line-height: 1.4; }
+.goods-sub { font-size: 22rpx; color: #999; margin-top: 4rpx; }
+.tag-row { margin: 6rpx 0; display: flex; flex-wrap: wrap; gap: 6rpx; }
+.add-btn {
+  width: 52rpx; height: 52rpx; border-radius: 50%; background: #e4393c; color: #fff;
+  display: flex; align-items: center; justify-content: center; font-size: 36rpx; font-weight: bold; flex-shrink: 0;
+}
+.nomore { text-align: center; color: #999; font-size: 24rpx; padding: 24rpx; }
+.load-more { text-align: center; padding: 20rpx; }
+.load-more text { color: #e4393c; font-size: 26rpx; padding: 10rpx 28rpx; border: 1rpx solid #e4393c; border-radius: 999rpx; }
+.section-title-sm { font-size: 28rpx; font-weight: 700; margin-bottom: 8rpx; }
+
+/* 3. 自定义筛选抽屉 */
+.filter-mask { position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 200; display: flex; align-items: flex-end; }
+.filter-panel { width: 100%; background: #fff; border-radius: 24rpx 24rpx 0 0; padding: 24rpx; max-height: 75vh; overflow-y: auto; }
+.panel-title { display: flex; justify-content: space-between; align-items: center; font-size: 32rpx; font-weight: 800; margin-bottom: 16rpx; }
+.panel-close { font-size: 44rpx; color: #999; padding: 0 12rpx; }
+
+.filter-group { padding: 16rpx 0; border-bottom: 1rpx solid #f5f5f5; }
+.filter-label { font-size: 28rpx; font-weight: 600; margin-bottom: 12rpx; color: #333; }
+
+/* 价格区间（元，内部转分；支持单边） */
+.price-row { display: flex; align-items: center; gap: 12rpx; }
+.price-input {
+  flex: 1; background: #f7f8fa; border-radius: 12rpx; padding: 14rpx 16rpx; font-size: 26rpx; text-align: center;
+}
+.price-sep { color: #999; font-size: 26rpx; }
+
+/* 仅看有货开关 */
+.switch { width: 80rpx; height: 44rpx; border-radius: 999rpx; background: #ddd; position: relative; transition: background .2s; }
+.switch.on { background: #e4393c; }
+.switch::after { content: ''; position: absolute; width: 36rpx; height: 36rpx; border-radius: 50%; background: #fff; top: 4rpx; left: 4rpx; transition: left .2s; }
+.switch.on::after { left: 40rpx; }
+
+/* 优惠类型 / 商品标签 多选胶囊（浅色底+深色字，选中主题红） */
+.capsule-row { display: flex; flex-wrap: wrap; gap: 12rpx; }
+.capsule {
+  padding: 10rpx 24rpx; background: #f2f3f5; border-radius: 999rpx; font-size: 24rpx; color: #555;
+  border: 1rpx solid transparent;
+}
+.capsule.selected { background: #fff1f0; color: #e4393c; border: 1rpx solid #e4393c; font-weight: 600; }
+
+/* 底部：重置 + 确定（应用筛选并展示结果数） */
+.panel-actions { display: flex; gap: 16rpx; padding: 24rpx 0 12rpx; }
+.panel-reset {
+  flex: 1; height: 80rpx; line-height: 80rpx; text-align: center; border-radius: 999rpx;
+  background: #f2f3f5; color: #666; font-size: 28rpx;
+}
+.panel-confirm {
+  flex: 2; height: 80rpx; line-height: 80rpx; text-align: center; border-radius: 999rpx;
+  background: #e4393c; color: #fff; font-size: 28rpx; font-weight: 700;
+}
+
+/* 空态 */
+.empty { padding: 120rpx 40rpx; text-align: center; color: #999; }
+.empty-img { width: 200rpx; height: 200rpx; margin: 0 auto 24rpx; border-radius: 16rpx; }
+.empty-title { font-size: 30rpx; color: #666; margin-bottom: 8rpx; }
+.empty-sub { font-size: 24rpx; margin-bottom: 32rpx; }
+.go-shop-btn { width: 240rpx; margin: 0 auto; }

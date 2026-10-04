@@ -1,232 +1,48 @@
-::-webkit-scrollbar {
-    width: 0;
-    height: 0;
-    color: transparent;
+/* 会员中心样式 */
+.vip-page { padding-bottom: 40rpx; }
+.vip-header {
+  background: linear-gradient(135deg, #e4393c, #ff6b6b); color: #fff;
+  padding: 40rpx 32rpx; display: flex; align-items: center; border-radius: 0 0 24rpx 24rpx;
 }
-.header {
-    width: 100%;
-    background-color: #FFB23C;
-    height: 170px;
-    padding: 50px 18px 0px 18px;
-    box-sizing: border-box;
-}
-.content {
-    height: 120px;
-    background: rgba(255,255,255,.5);
-    border-top-right-radius: 10px;
-    border-top-left-radius: 10px;
-    display: flex;
-    padding-left: 20px;
-    padding-top: 20px;
-    box-sizing: border-box;
+.vip-avatar { width: 88rpx; height: 88rpx; border-radius: 50%; border: 3rpx solid #fff; background: #fff; }
+.vip-name { font-size: 32rpx; font-weight: 800; margin-left: 16rpx; }
+.vip-level { font-size: 22rpx; opacity: .9; margin-left: 16rpx; margin-top: 4rpx; }
+.open-vip-btn { background: #fff; color: #e4393c; padding: 12rpx 28rpx; border-radius: 999rpx; font-size: 24rpx; font-weight: 700; }
 
-}
-.userimg {
-    width: 50px;
-    height: 50px;
-    margin-right: 15px;
-}
-.userimg>open-data {
-    width: 100%;
-    height: 100%;
-    border-radius: 50%;
-    display: flex;
-    overflow: hidden;
-}
-.username {
-    width: 50px;
-    height: 30px;
-    line-height: 30px;
-    margin-top: 10px;
-    margin-right: 6px;
-}
-.open-vip {
-    padding-top: 10px;
-}
-.open-vip button {
-    background-color: #FBB12F;
-    color: #fff;
-    font-size: 13px;
-    width: 72px;
-    height: 30px;
-    line-height: 30px;
-    padding-left: 3px;
-    padding-right: 3px;
-}
-.arrow {
-    float: right;
-    width: 0;
-    height: 0;
-    border-top: 45px solid #3D383C;
-    border-right: 45px solid #3D383C;
-    border-bottom: 45px solid transparent;
-    border-left: 45px solid transparent;
-    position: relative;
-    top: -120px;
-    right: 0;
-    border-top-right-radius: 10px;
-}
-.free {
-    color: #FBE1A6;
-    float: right;
-    position: relative;
-    top: -110px;
-    right: -85px;
-    font-size: 13px;
-}
-.free .free-exp {
-    display: block;
-    width: 36px;
-    height: 36px;
-}
-.discount {
-    display: flex;
-    width: 205px;
-    height: 30px;
-    line-height: 30px;
-    position: relative;
-    background-color: #fff;
-    top: -60px;
-    right: -50px;
-    font-size: 16px;
-    padding: 8px 18px;
-    border-radius: 5px;
-    box-shadow: 2px 2px 5px #888888
-}
-.discount text {
-    color: #FD478B;
-}
-.little-tag {
-    /* overflow: hidden; */
-    width: 100%;
-    position: relative;
-    top: -30px;
-    left: 0;
-    right: 0;
-}
-.icons {
-    display: flex;
-    width: 100%;
-    height: 80px;
-    padding: 0px 8px;
-    box-sizing: border-box;
-}
-.item {
-    flex: 1;
-    text-align: center;
-    font-size: 13px;
-    color: #999;
-}
-.item image {
-    width: 40px;
-    height: 40px;
-    display: inline-block;
+.benefits { display: flex; flex-wrap: wrap; }
+.benefit { width: 33.33%; text-align: center; padding: 16rpx 0; }
+.benefit-icon { width: 64rpx; height: 64rpx; margin: 0 auto; }
+.benefit-name { font-size: 22rpx; margin-top: 6rpx; color: #555; }
 
-}
-.redbags{
-     width:100%;
-     /* border:1px solid red; */
-     box-sizing: border-box;
-     overflow: hidden;
-     padding: 10px;
-}
-.redbags image {
-    width: 48%;
-    height: 80px;
-    float: left;
-}
-#b001{
-   padding-right: 12px;
-}
-.vip-title {
-    font-size: 18px;
-    font-weight: 600;
-    padding-left: 10px;
-    color: #444243;
-    padding-bottom: 10px;
-}
-.up-title {
-    padding: 0px 0px 20px 0px;
-}
-.down-title {
+.redbags { display: flex; gap: 16rpx; }
+.redbag { flex: 1; text-align: center; background: #fff1f0; border-radius: 12rpx; padding: 16rpx; }
+.redbag-icon { width: 56rpx; height: 56rpx; margin: 0 auto; }
+.redbag-name { font-size: 22rpx; color: #666; margin: 6rpx 0; }
+.redbag-btn { background: #e4393c; color: #fff; padding: 6rpx 18rpx; border-radius: 999rpx; font-size: 20rpx; display: inline-block; }
+.redbag-btn.got { background: #ccc; }
 
-}
-.vip-product {
-    width: 100%;
-}
-.products .pro-item{
-    display: flex;
-    margin: 10px 15px;
-    border-bottom: 1px solid #efefef;
-}
-.products .img-info {
-    width: 105px;
-    height: 105px;
-    margin-right: 20px;
-}
-.img-info image {
-    width: 100%;
-    height: 100%;
-    display: block;
-}
-.pro-info {
-    font-size: 16px;
-    flex: 1;
-}
-.item-subtxt {
-    font-size: 14px;
-    color: #999;
-    margin-bottom: 25px;
-}
-.item-info {
-    position: relative;
-    overflow: hidden;
-}
-.price {
-    float: left;
-}
-.item-info .origin-pri {
-    font-size: 12px;
-    color: #F54B8A;
-    display: block;
-}
-.item-info .vip-pri {
-    font-size: 14px;
-    color: #F3BF1B;
-    display: block;
-}
-.item-ari {
-    float: right;
-    padding: 3px;
-    color: #F54B8A;
-    border: 1px solid #F54B8A;
-    font-size: 14px;
-    width: 60px;
-}
-.footer {
-    position: fixed;
-    bottom: 0;
-    right: 0;
-    left: 0;
-    display: flex;
-    width: 100%;
-    font-size: 14px;
-    background-color: #FED468;
-    height: 50px;
-    line-height: 50px;
-    text-align: center;
-    color: #fff;
-    padding-left: 10px;
-    box-sizing: border-box;
-}
-.footer button {
-    margin-top: 10px;
-    font-size: 14px;
-    color: #FED468;
-    width: 85px;
-    height: 30px;
-    line-height: 30px;
-}
+.vip-product { display: flex; padding: 14rpx 0; border-bottom: 1rpx solid #f5f5f5; }
+.vip-product:last-child { border-bottom: none; }
+.vip-product-img { width: 110rpx; height: 110rpx; border-radius: 12rpx; margin-right: 16rpx; background: #f2f3f5; }
+.vip-product-name { font-size: 28rpx; font-weight: 600; }
+.mini-add { width: auto; padding: 6rpx 18rpx; border-radius: 999rpx; background: #e4393c; color: #fff; font-size: 22rpx; }
 
+.vip-footer { text-align: center; padding: 30rpx; }
+.open-vip-btn-sm { width: 240rpx; margin: 12rpx auto 0; }
+.section-title-sm { font-size: 30rpx; font-weight: 700; margin-bottom: 12rpx; }
 
+/* 成长值进度条（纯CSS，需求8.1） */
+.growth-card { padding: 20rpx 24rpx; }
+.growth-bar { width: 100%; height: 16rpx; background: #f2f3f5; border-radius: 999rpx; margin: 14rpx 0 8rpx; overflow: hidden; }
+.growth-fill { height: 100%; background: linear-gradient(90deg, #e4393c, #ff7875); border-radius: 999rpx; transition: width .5s; }
+.growth-tip { font-size: 20rpx; }
 
+/* 生日礼包横幅 */
+.birthday-banner { background: linear-gradient(135deg, #fff1f0, #ffe0dd); border-left: 6rpx solid #e4393c; padding: 20rpx 24rpx; }
+.birthday-title { font-size: 28rpx; font-weight: 700; color: #e4393c; }
+
+/* 成长体系表 */
+.level-row { display: flex; justify-content: space-between; align-items: center; padding: 14rpx 0; border-bottom: 1rpx solid #f5f5f5; font-size: 24rpx; }
+.level-row:last-child { border-bottom: none; }
+.level-row.current { color: #e4393c; font-weight: 700; }
+.level-name { width: 160rpx; font-size: 26rpx; font-weight: 600; }

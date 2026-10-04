@@ -1,0 +1,16 @@
+/* 收藏列表样式 */
+.collect-page { padding-bottom: 40rpx; }
+.grid { display: flex; flex-wrap: wrap; padding: 12rpx; gap: 12rpx; }
+.grid-item {
+  width: calc(50% - 18rpx); background: #fff; border-radius: 16rpx; padding: 12rpx;
+  position: relative; overflow: hidden; transition: transform .25s;
+}
+.grid-item.swiped { transform: translateX(-120rpx); }
+.item-delete {
+  position: absolute; right: 0; top: 0; bottom: 0; width: 120rpx; background: #e4393c;
+  color: #fff; display: flex; align-items: center; justify-content: center; font-size: 26rpx;
+}
+.grid-img { width: 100%; height: 180rpx; border-radius: 12rpx; background: #f2f3f5; }
+.grid-name { font-size: 24rpx; font-weight: 600; margin: 8rpx 0; line-height: 1.3; height: 66rpx; overflow: hidden; }
+.cancel-btn { font-size: 20rpx; color: #e4393c; border: 1rpx solid #e4393c; border-radius: 999rpx; padding: 2rpx 12rpx; }
+.go-shop-btn { width: 240rpx; margin: 0 auto; }

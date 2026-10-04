@@ -1,66 +1,40 @@
-// pages/my/my.js
+// pages/my/my.js —— 个人信息/设置页（备用入口）：展示用户信息与快捷功能
+var mixin = require('../../utils/mixin.js')
+var api = mixin.api
+
 Page({
-
-  /**
-   * 页面的初始数据
-   */
   data: {
-  
+    loading: true,
+    userInfo: null,
+    member: null,
+    menu: [
+      { name: '我的订单', url: '/pages/order/list?status=0', icon: '/images/icons/card_bag.png' },
+      { name: '收货地址', url: '/pages/address/list', icon: '/images/icons/community.png' },
+      { name: '我的优惠券', url: '/pages/coupon/index', icon: '/images/icons/tag.png' },
+      { name: '我的积分', url: '/pages/member/points', icon: '/images/icons/money_bag.png' },
+      { name: '每日签到', url: '/pages/member/checkin', icon: '/images/icons/scan_code.png' },
+      { name: '消息中心', url: '/pages/messages/index', icon: '/images/icons/message_active.png' },
+      { name: '收藏记录', url: '/pages/my/collect', icon: '/images/icons/like.png' },
+      { name: '浏览足迹', url: '/pages/my/footprint', icon: '/images/icons/see.png' },
+      { name: '促销活动', url: '/pages/promotion/index', icon: '/images/icons/game.png' },
+      { name: '关于我们', url: '/pages/company/company', icon: '/images/icons/mp.png' }
+    ]
   },
 
-  /**
-   * 生命周期函数--监听页面加载
-   */
-  onLoad: function (options) {
-  
-  },
-
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady: function () {
-  
-  },
-
-  /**
-   * 生命周期函数--监听页面显示
-   */
   onShow: function () {
-  
+    var that = this
+    var app = getApp()
+    api.getMember().then(function (m) {
+      that.setData({ loading: false, member: m, userInfo: app.globalData.userInfo || { nickName: m.nickName, avatarUrl: m.avatar } })
+    })
   },
 
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide: function () {
-  
+  tapMenu: function (e) {
+    wx.navigateTo({ url: e.currentTarget.dataset.url })
   },
 
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload: function () {
-  
-  },
+  goVip: function () { wx.switchTab({ url: '/pages/vip/vip' }) },
+  goHome: function () { wx.switchTab({ url: '/pages/index/index' }) },
 
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh: function () {
-  
-  },
-
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom: function () {
-  
-  },
-
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage: function () {
-  
-  }
+  onImgError: mixin.onImgError
 })

@@ -1,22 +1,39 @@
-
 {
-  "pages":[
+  "pages": [
     "pages/index/index",
     "pages/shop/shop",
-    "pages/logs/logs",
     "pages/vip/vip",
     "pages/me/me",
+    "pages/category/index",
+    "pages/search/search",
     "pages/detail/detail",
-    "pages/search/search"
+    "pages/buy/buy",
+    "pages/order/list",
+    "pages/order/detail",
+    "pages/order/review",
+    "pages/address/list",
+    "pages/address/edit",
+    "pages/coupon/index",
+    "pages/member/points",
+    "pages/member/checkin",
+    "pages/messages/index",
+    "pages/my/collect",
+    "pages/my/footprint",
+    "pages/promotion/index",
+    "pages/shop-info/index",
+    "pages/company/company",
+    "pages/logs/logs",
+    "pages/my/my"
   ],
-  "window":{
-    "backgroundTextStyle":"light",
+  "window": {
+    "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#fff",
     "navigationBarTitleText": "每日优鲜",
-    "navigationBarTextStyle":"black"
+    "navigationBarTextStyle": "black",
+    "backgroundColor": "#f5f6f7"
   },
   "tabBar": {
-    "color": "#999",
+    "color": "#838383",
     "selectedColor": "red",
     "list": [
       {

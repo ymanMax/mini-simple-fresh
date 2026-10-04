@@ -1,0 +1,62 @@
+<!-- 订单评价：逐商品星级+标签+文字+晒图；店铺三维度星级；提交赠20积分 -->
+<view class="page-wrap">
+  <view wx:if="{{loading}}" class="skeleton">
+    <view class="sk-block" style="height:200rpx"></view>
+    <view class="sk-block" style="height:200rpx"></view>
+  </view>
+
+  <block wx:else>
+    <!-- 逐商品评价 -->
+    <view class="card" wx:for="{{items}}" wx:key="goodsId">
+      <view class="row">
+        <image class="review-goods-img" src="{{item.pic}}" mode="aspectFill" binderror="onImgError" data-key="items[{{index}}].pic"></image>
+        <view class="flex-1">
+          <view class="order-name">{{item.name}}</view>
+          <view class="muted small">{{item.specText}}</view>
+        </view>
+      </view>
+      <!-- 星级 -->
+      <view class="score-row">
+        <text class="score-label">商品评分</text>
+        <view class="stars">
+          <text wx:for="{{[1,2,3,4,5]}}" wx:for-item="star" wx:key="*this"
+                class="star {{item.score>=star?'on':''}}"
+                bindtap="setScore" data-idx="{{index}}" data-score="{{star}}">★</text>
+        </view>
+      </view>
+      <!-- 快捷标签 -->
+      <view class="tag-row">
+        <text wx:for="{{item.tagList}}" wx:for-item="t" wx:key="name"
+              class="tag {{t.selected?'tag-selected':''}}"
+              bindtap="toggleTag" data-idx="{{index}}" data-tag="{{t.name}}">{{t.name}}</text>
+      </view>
+      <!-- 文字 -->
+      <input class="review-input" placeholder="说说你的使用体验（100字以内）" value="{{item.content}}" bindinput="onContentInput" data-idx="{{index}}" maxlength="100" />
+      <!-- 晒图 -->
+      <view class="upload-row">
+        <view class="upload-box" bindtap="chooseImages" data-idx="{{index}}">+ 晒图</view>
+        <image wx:for="{{item.images}}" wx:for-item="img" wx:for-index="ii" wx:key="*this" class="upload-img" src="{{img}}" mode="aspectFill" binderror="onImgError" data-key="items[{{index}}].images[{{ii}}]"></image>
+      </view>
+    </view>
+
+    <!-- 店铺服务评价 -->
+    <view class="card">
+      <view class="section-title-sm">店铺服务评价</view>
+      <view class="score-row"><text class="score-label">新鲜度</text>
+        <view class="stars"><text wx:for="{{[1,2,3,4,5]}}" wx:for-item="star" wx:key="*this" class="star {{shopScores.fresh>=star?'on':''}}" bindtap="setShopScore" data-dim="fresh" data-score="{{star}}">★</text></view>
+      </view>
+      <view class="score-row"><text class="score-label">配送速度</text>
+        <view class="stars"><text wx:for="{{[1,2,3,4,5]}}" wx:for-item="star" wx:key="*this" class="star {{shopScores.speed>=star?'on':''}}" bindtap="setShopScore" data-dim="speed" data-score="{{star}}">★</text></view>
+      </view>
+      <view class="score-row"><text class="score-label">包装完好</text>
+        <view class="stars"><text wx:for="{{[1,2,3,4,5]}}" wx:for-item="star" wx:key="*this" class="star {{shopScores.package>=star?'on':''}}" bindtap="setShopScore" data-dim="package" data-score="{{star}}">★</text></view>
+      </view>
+      <input class="review-input" placeholder="对店铺的整体评价（100字以内）" value="{{shopContent}}" bindinput="onShopContentInput" maxlength="100" />
+    </view>
+
+    <!-- 提交 -->
+    <view class="submit-wrap">
+      <view class="btn-primary submit-btn {{submitting?'btn-disabled':''}}" bindtap="submit">{{submitting?'提交中...':'提交评价（+20积分）'}}</view>
+    </view>
+  </block>
+</view>

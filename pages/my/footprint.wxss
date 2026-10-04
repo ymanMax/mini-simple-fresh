@@ -1,0 +1,11 @@
+/* 浏览足迹样式 */
+.footprint-page { padding-bottom: 40rpx; }
+.clear-bar { text-align: right; padding: 12rpx 24rpx; }
+.clear-link { color: #e4393c; font-size: 24rpx; }
+.day-group { margin-bottom: 16rpx; }
+.day-label { font-size: 26rpx; font-weight: 700; color: #666; padding: 12rpx 24rpx; }
+.fp-card { width: 180rpx; background: #fff; border-radius: 12rpx; padding: 10rpx; margin-right: 12rpx; flex-shrink: 0; }
+.fp-img { width: 100%; height: 140rpx; border-radius: 8rpx; background: #f2f3f5; }
+.fp-name { font-size: 22rpx; margin-top: 6rpx; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.fp-del { font-size: 18rpx; color: #e4393c; border: 1rpx solid #e4393c; border-radius: 999rpx; padding: 0 10rpx; }
+.go-shop-btn { width: 240rpx; margin: 0 auto; }

@@ -1,0 +1,88 @@
+<!-- 店铺信息：主页 / 评价 / 配送说明 / 拼团 -->
+<view class="page-wrap">
+  <view wx:if="{{loading}}" class="skeleton"><view class="sk-block" style="height:300rpx"></view></view>
+
+  <!-- 店铺主页 -->
+  <block wx:if="{{section=='shop'}}">
+    <view class="shop-header">
+      <image class="shop-logo" src="/images/icons/mini_program.png" binderror="onImgError" data-key="shopLogo"></image>
+      <view class="shop-name">{{shop.name}}</view>
+      <view class="shop-stats">
+        <view class="stat"><view class="stat-num">{{shop.score}}</view><view class="stat-label">综合评分</view></view>
+        <view class="stat"><view class="stat-num">{{shop.sales}}</view><view class="stat-label">累计销量</view></view>
+        <view class="stat"><view class="stat-num">{{shop.fans}}</view><view class="stat-label">粉丝</view></view>
+      </view>
+      <view class="shop-location">📍 {{shop.location}}</view>
+    </view>
+    <view class="card">
+      <view class="section-title-sm">店铺服务</view>
+      <view class="info-row"><text class="info-label">配送</text><text>2小时达 · 满59免基础配送费 · 冷链直达</text></view>
+      <view class="info-row"><text class="info-label">保障</text><text>坏果包赔 · 安心检测 · 7天售后 · 假一赔十</text></view>
+      <view class="info-row"><text class="info-label">客服</text><text>7×24小时在线，平均响应3分钟</text></view>
+    </view>
+    <view class="card">
+      <view class="section-title-sm">限时秒杀</view>
+      <view wx:if="{{seckill}}" class="seckill-item" wx:for="{{seckill.seckillGoods}}" wx:key="goodsId">
+        <image class="seckill-img" src="{{item.pic}}" mode="aspectFill" binderror="onImgError" data-key="seckill.seckillGoods[{{index}}].pic"></image>
+        <view class="flex-1">
+          <view class="goods-name">{{item.name}}</view>
+          <view class="muted small">{{seckill.title}} · 每日{{seckill.startTime}}-{{seckill.endTime}} · 已抢{{item.soldPercent}}%</view>
+        </view>
+        <view class="price-sm">¥{{item.seckillPrice/100}}</view>
+      </view>
+    </view>
+    <view class="card">
+      <view class="section-title-sm">阶梯满减</view>
+      <view class="info-row" wx:for="{{fullReduce.fullReduceRules}}" wx:key="threshold"><text class="info-label">满{{item.threshold/100}}元</text><text>减{{item.reduce/100}}元</text></view>
+    </view>
+  </block>
+
+  <!-- 店铺评价 -->
+  <block wx:elif="{{section=='review'}}">
+    <view class="card" wx:for="{{reviews}}" wx:key="id">
+      <view class="row">
+        <image class="review-avatar" src="{{item.avatar}}" binderror="onImgError" data-key="reviews[{{index}}].avatar"></image>
+        <view class="flex-1">
+          <view class="row-between"><text class="review-name">{{item.userName}}</text><text class="review-score">★★★★★</text></view>
+          <view class="review-content">{{item.content}}</view>
+          <view class="muted small">{{item.createTime}}</view>
+        </view>
+      </view>
+    </view>
+  </block>
+
+  <!-- 配送说明 -->
+  <block wx:elif="{{section=='delivery'}}">
+    <view class="card">
+      <view class="section-title-sm">配送说明</view>
+      <view class="info-row"><text class="info-label">配送时效</text><text>2小时达，订单提交后最快45分钟送达</text></view>
+      <view class="info-row"><text class="info-label">配送费</text><text>满59元免基础配送费；未满收6元；银卡会员满39元免配送费</text></view>
+      <view class="info-row"><text class="info-label">配送范围</text><text>北京市五环内全程配送，外环可预约配送</text></view>
+      <view class="info-row"><text class="info-label">冷链</text><text>生鲜商品全程冷链，冷藏0-4℃，冷冻-18℃</text></view>
+      <view class="info-row"><text class="info-label">售后</text><text>坏果包赔，收到货2小时内拍照可全额赔付</text></view>
+      <view class="info-row"><text class="info-label">节假日</text><text>正常配送，高峰时段可能延迟30分钟</text></view>
+    </view>
+  </block>
+
+  <!-- 我的拼团 -->
+  <block wx:else>
+    <view class="card" wx:if="{{groupBuy.length==0 && !loading}}" class="empty">
+      <view class="empty-title">暂无拼团活动</view>
+    </view>
+    <view class="card group-card" wx:for="{{groupBuy}}" wx:key="id">
+      <image class="group-img" src="{{item.pic}}" mode="aspectFill" binderror="onImgError" data-key="groupBuy[{{index}}].pic"></image>
+      <view class="flex-1">
+        <view class="goods-name">{{item.name}}</view>
+        <view class="muted small">{{item.rules}} · 截团 {{item.endTime}}</view>
+        <view class="group-members">
+          <image class="member-avatar" wx:for="{{item.members}}" wx:for-item="m" wx:key="name" src="{{m.avatar}}" binderror="onImgError" data-key="groupBuy[{{index}}].members[{{$index}}].avatar"></image>
+          <text class="muted small">{{item.joinedCount}}/{{item.requiredCount}}人成团</text>
+        </view>
+        <view class="row-between">
+          <view class="price-sm">拼团 ¥{{item.groupPrice/100}}<text class="price-origin">¥{{item.originalPrice/100}}</text></view>
+          <view class="coupon-action" bindtap="joinGroup" data-id="{{item.id}}">立即参团</view>
+        </view>
+      </view>
+    </view>
+  </block>
+</view>

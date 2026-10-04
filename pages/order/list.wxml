@@ -1,0 +1,47 @@
+<!-- 订单列表：状态Tab + 订单卡 + 分页 -->
+<view class="page-wrap">
+  <!-- 状态Tab -->
+  <view class="tabs">
+    <view class="tab {{activeTab==item.key?'active':''}}" wx:for="{{tabs}}" wx:key="key" bindtap="switchTab" data-key="{{item.key}}">{{item.name}}</view>
+  </view>
+
+  <!-- 骨架屏 -->
+  <view wx:if="{{loading}}" class="skeleton">
+    <view class="sk-block" style="height:160rpx"></view>
+    <view class="sk-block" style="height:160rpx"></view>
+    <view class="sk-block" style="height:160rpx"></view>
+  </view>
+
+  <!-- 空态 -->
+  <view wx:elif="{{orders.length==0}}" class="empty">
+    <image class="empty-img" src="/images/shop.png" binderror="onImgError" data-key="emptyImg"></image>
+    <view class="empty-title">暂无相关订单</view>
+    <view class="empty-sub">去挑选新鲜好物吧~</view>
+    <view class="btn-primary go-shop-btn" bindtap="goShopping">去逛逛</view>
+  </view>
+
+  <!-- 订单卡片 -->
+  <view wx:else>
+    <view class="order-card" wx:for="{{orders}}" wx:key="id" bindtap="goDetail" data-id="{{item.id}}">
+      <view class="row-between order-head">
+        <view class="muted small">订单号：{{item.orderNo}}</view>
+        <view class="status-badge status-{{item.status}}">{{item.statusName}}</view>
+      </view>
+      <view class="order-items">
+        <view class="order-item" wx:for="{{item.items}}" wx:for-item="it" wx:for-index="ii" wx:key="goodsId">
+          <image class="order-img" src="{{it.pic}}" mode="aspectFill" binderror="onImgError" data-key="orders[{{index}}].items[{{ii}}].pic"></image>
+          <view class="flex-1">
+            <view class="order-name">{{it.name}}</view>
+            <view class="muted small">{{it.specText}} ×{{it.count}}</view>
+          </view>
+          <view class="price-sm">¥{{it.price/100}}</view>
+        </view>
+      </view>
+      <view class="row-between order-foot">
+        <view class="muted small">{{item.createTime}}</view>
+        <view class="order-total">实付 <text class="price">¥{{item.payAmount/100}}</text></view>
+      </view>
+    </view>
+    <view class="nomore" wx:if="{{noMore}}"><text>没有更多了~</text></view>
+  </view>
+</view>

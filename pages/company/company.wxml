@@ -1,0 +1,34 @@
+<!-- 关于我们：公司简介 -->
+<view class="page-wrap company-page">
+  <view class="company-header">
+    <image class="company-logo" src="/images/icons/mini_program.png" binderror="onImgError" data-key="logo"></image>
+    <view class="company-name">每日优鲜</view>
+    <view class="company-slogan">新鲜直达，品质生活</view>
+  </view>
+
+  <view class="card">
+    <view class="section-title-sm">公司简介</view>
+    <view class="company-text">
+      每日优鲜成立于2014年，是一家专注生鲜电商的互联网企业，致力于为城市家庭提供优质、新鲜、便捷的生鲜食品配送服务。
+      公司在全国多个城市建立了前置仓冷链物流体系，实现"2小时达"配送承诺，让新鲜食材最快45分钟送达餐桌。
+    </view>
+  </view>
+
+  <view class="card">
+    <view class="section-title-sm">我们的使命</view>
+    <view class="company-text">用科技赋能生鲜，让每个人吃上新鲜健康的食物。坏果包赔、安心检测、7天售后，是我们对每一位用户的承诺。</view>
+  </view>
+
+  <view class="card">
+    <view class="section-title-sm">联系方式</view>
+    <view class="info-row"><text class="info-label">客服热线</text><text>400-800-1234（9:00-21:00）</text></view>
+    <view class="info-row"><text class="info-label">总部</text><text>北京市朝阳区望京SOHO</text></view>
+    <view class="info-row"><text class="info-label">邮箱</text><text>service@fresh-life.demo</text></view>
+  </view>
+
+  <view class="card">
+    <view class="section-title-sm">版本信息</view>
+    <view class="info-row"><text class="info-label">APP版本</text><text>V1.0（演示环境）</text></view>
+    <view class="info-row"><text class="info-label">技术栈</text><text>微信小程序原生开发</text></view>
+  </view>
+</view>

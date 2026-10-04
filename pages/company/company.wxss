@@ -1,0 +1,12 @@
+/* 公司简介样式 */
+.company-header {
+  background: linear-gradient(135deg, #e4393c, #ff6b6b); color: #fff;
+  padding: 48rpx 32rpx; text-align: center; border-radius: 0 0 24rpx 24rpx;
+}
+.company-logo { width: 96rpx; height: 96rpx; border-radius: 24rpx; background: #fff; margin: 0 auto; display: block; }
+.company-name { font-size: 36rpx; font-weight: 800; margin-top: 12rpx; }
+.company-slogan { font-size: 24rpx; opacity: .9; margin-top: 6rpx; }
+.company-text { font-size: 26rpx; color: #555; line-height: 1.8; }
+.info-row { display: flex; padding: 10rpx 0; font-size: 26rpx; }
+.info-label { width: 140rpx; color: #999; }
+.section-title-sm { font-size: 30rpx; font-weight: 700; margin-bottom: 12rpx; }

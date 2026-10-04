@@ -1,0 +1,31 @@
+/* 店铺信息页样式 */
+.shop-header {
+  background: linear-gradient(135deg, #e4393c, #ff6b6b); color: #fff;
+  padding: 40rpx 32rpx; text-align: center; border-radius: 0 0 24rpx 24rpx;
+}
+.shop-logo { width: 96rpx; height: 96rpx; border-radius: 24rpx; background: #fff; margin: 0 auto; display: block; }
+.shop-name { font-size: 34rpx; font-weight: 800; margin-top: 12rpx; }
+.shop-stats { display: flex; justify-content: center; gap: 48rpx; margin-top: 16rpx; }
+.stat-num { font-size: 28rpx; font-weight: 800; }
+.stat-label { font-size: 20rpx; opacity: .9; }
+.shop-location { font-size: 22rpx; opacity: .85; margin-top: 8rpx; }
+
+.info-row { display: flex; padding: 10rpx 0; font-size: 26rpx; }
+.info-label { width: 140rpx; color: #999; }
+
+.seckill-item { display: flex; align-items: center; padding: 12rpx 0; }
+.seckill-img { width: 80rpx; height: 80rpx; border-radius: 12rpx; margin-right: 12rpx; background: #f2f3f5; }
+
+.group-card { display: flex; padding: 20rpx; }
+.group-img { width: 120rpx; height: 120rpx; border-radius: 12rpx; margin-right: 16rpx; background: #f2f3f5; }
+.group-members { display: flex; align-items: center; margin: 8rpx 0; gap: 6rpx; }
+.member-avatar { width: 36rpx; height: 36rpx; border-radius: 50%; background: #f2f3f5; }
+
+.review-avatar { width: 64rpx; height: 64rpx; border-radius: 50%; margin-right: 16rpx; background: #f2f3f5; }
+.review-name { font-size: 26rpx; font-weight: 600; }
+.review-score { color: #ffa500; font-size: 22rpx; }
+.review-content { font-size: 26rpx; color: #444; line-height: 1.5; }
+
+.coupon-action { background: #e4393c; color: #fff; padding: 10rpx 24rpx; border-radius: 999rpx; font-size: 22rpx; }
+.section-title-sm { font-size: 30rpx; font-weight: 700; margin-bottom: 12rpx; }
+.goods-name { font-size: 28rpx; font-weight: 600; }

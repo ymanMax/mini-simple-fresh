@@ -1,64 +1,90 @@
-<view class="header">
-    <view class="content">
-        <view class="userimg">
-            <open-data class="user-img" type="userAvatarUrl"></open-data>
-        </view>
-        <view class="username">
-            <open-data type='userNickName'></open-data>
-        </view>
-        <view class="open-vip">
-            <button>立即开通</button>
-        </view>
-    </view>
-    <view class="arrow"></view>
-    <view class="free">
-        <text class="free-exp">免费体验></text>
-    </view>
-    <view class="discount">预计一年为您节省
-        <text>1121.30</text>元</view>
-</view>
-<view class="little-tag">
-    <view class="icons">
-        <view class="item" wx:for='{{list}}' wx:key="this" data-id="a{{item.id}}">
-            <image src="{{item.descSelectIcon}}" bindtouchstart='tonewPage'></image>
-            <view>{{item.primaryName}}</view>
+<!-- 会员中心：用户卡 + 权益 + 红包领取 + 会员商品 + 开通 -->
+<view class="page-wrap vip-page">
+  <view wx:if="{{loading}}" class="skeleton"><view class="sk-block" style="height:300rpx"></view></view>
 
+  <block wx:else>
+    <!-- 用户卡（需求8.1：渐变卡、等级徽章、有效期、成长值进度条纯CSS） -->
+    <view class="vip-header">
+      <image class="vip-avatar" src="{{member.avatar}}" binderror="onImgError" data-key="member.avatar"></image>
+      <view class="flex-1">
+        <view class="vip-name">{{member.nickName}}</view>
+        <view class="vip-level">{{member.levelName}} · 有效期至 {{member.validDate}}</view>
+      </view>
+      <view class="open-vip-btn" bindtap="openVip">立即开通</view>
+    </view>
+
+    <!-- 成长值进度条（纯CSS实现） -->
+    <view class="card growth-card">
+      <view class="row-between">
+        <view class="section-title-sm" style="margin:0">成长值 {{member.growthValue}}</view>
+        <view class="muted small">距下一等级还需 {{remain}} 成长值</view>
+      </view>
+      <view class="growth-bar">
+        <view class="growth-fill" style="width:{{progress}}%"></view>
+      </view>
+      <view class="muted small growth-tip">购物1元=1成长值 · 签到+5 · 评价+20</view>
+    </view>
+
+    <!-- 生日福利横幅（需求8.1） -->
+    <view class="card birthday-banner" bindtap="goCoupons">
+      <view class="flex-1">
+        <view class="birthday-title">🎂 生日月专属礼包已到账</view>
+        <view class="muted small">生日8.8折券 + 双倍积分卡，点击查看我的优惠券 ›</view>
+      </view>
+    </view>
+
+    <!-- 五级成长体系表 -->
+    <view class="card">
+      <view class="section-title-sm">成长体系</view>
+      <view class="level-row {{member.level==item.level?'current':''}}" wx:for="{{levels}}" wx:key="level">
+        <view class="level-name">{{item.name}}</view>
+        <view class="muted small">成长值 {{item.growth}}</view>
+        <view class="muted small">{{item.discount}} · {{item.freeShip}}</view>
+      </view>
+    </view>
+
+    <!-- 权益 -->
+    <view class="card">
+      <view class="section-title-sm">会员权益</view>
+      <view class="benefits">
+        <view class="benefit" wx:for="{{benefits}}" wx:key="id">
+          <image class="benefit-icon" src="{{item.descSelectIcon}}" binderror="onImgError" data-key="benefits[{{index}}].descSelectIcon"></image>
+          <view class="benefit-name">{{item.primaryName}}</view>
         </view>
+      </view>
     </view>
-    <view class="redbags">
-        <block wx:for="{{redbag}}" wx:key="this">
-            <image id="b{{item.id}}"src="{{item.src}}" bindtouchstart='totips'></image>
-        </block>
+
+    <!-- 红包 -->
+    <view class="card">
+      <view class="section-title-sm">专属红包</view>
+      <view class="redbags">
+        <view class="redbag {{item.got?'got':''}}" wx:for="{{redbags}}" wx:key="id">
+          <image class="redbag-icon" src="{{item.src}}" binderror="onImgError" data-key="redbags[{{index}}].src"></image>
+          <view class="redbag-name">{{item.name}}</view>
+          <view class="redbag-btn {{item.got?'got':''}}" bindtap="claimRedbag" data-id="{{item.id}}">{{item.got?'已领取':'领取'}}</view>
+        </view>
+      </view>
     </view>
-</view>
-<view class="vip-title">
-    <view class="up-title">会员商品&会员专享价</view>
-    <view class="down-title">以下商品已抢光</view>
-</view>
-<view class="vip-product">
-    <view class="products">
-        <block wx:for="{{products}}" wx:key="this">
-            <view class="pro-item">
-                <view class="img-info">
-                    <image src="{{item.img}}" bindtouchstart='toDetailpage'></image>
-                </view>
-                <view class="pro-info">
-                    <view class="item-txt">{{item.text}}</view>
-                    <view class="item-subtxt">{{item.subtext}}</view>
-                    <view class="item-info">
-                        <view class="price">
-                            <text class="origin-pri">￥{{item.originPrice}}</text>
-                            <text class="vip-pri">￥{{item.vipPrice}}</text>
-                        </view>
-                        <text class="item-ari" bindtap='showword'>{{item.arrive}}</text>
-                    </view>
-                </view>
-            </view>
-        </block>
+
+    <!-- 会员商品 -->
+    <view class="card">
+      <view class="section-title-sm">会员专享价商品</view>
+      <view class="vip-product" wx:for="{{products}}" wx:key="id" bindtap="goDetail" data-id="{{item.id}}">
+        <image class="vip-product-img" src="{{item.img}}" mode="aspectFill" binderror="onImgError" data-key="products[{{index}}].img"></image>
+        <view class="flex-1">
+          <view class="vip-product-name">{{item.text}}</view>
+          <view class="muted small">{{item.subtext}} · {{item.arrive}}</view>
+          <view class="row-between">
+            <view class="price-sm">¥{{item.vipPrice/100}}<text class="price-origin">¥{{item.originPrice/100}}</text></view>
+            <view class="mini-add" catchtap="addCart" data-id="{{item.id}}">加购</view>
+          </view>
+        </view>
+      </view>
     </view>
-</view>
-<view class="nomore">没有更多商品啦~</view>
-<view class="footer">
-    <text>开通优享会员预计一年为您节省1121元</text>
-    <button>立即开通</button>
+
+    <view class="vip-footer">
+      <text>开通优享会员预计一年为您节省1121元</text>
+      <view class="btn-primary open-vip-btn-sm" bindtap="openVip">立即开通</view>
+    </view>
+  </block>
 </view>

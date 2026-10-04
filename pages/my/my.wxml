@@ -1,2 +1,28 @@
-<!--pages/my/my.wxml-->
-<text>pages/my/my.wxml</text>
+<!-- 个人信息/设置页 -->
+<view class="page-wrap my-page">
+  <view wx:if="{{loading}}" class="skeleton"><view class="sk-block" style="height:200rpx"></view></view>
+  <block wx:else>
+    <view class="my-header">
+      <image class="my-avatar" src="{{userInfo.avatarUrl || '/images/icons/person_active.png'}}" binderror="onImgError" data-key="userInfo.avatarUrl"></image>
+      <view class="my-name">{{userInfo.nickName || '鲜生活家'}}</view>
+      <view class="my-level">{{member.levelName}} · {{member.points}}积分</view>
+    </view>
+
+    <view class="card">
+      <view class="section-title-sm">快捷功能</view>
+      <view class="my-menu-item" wx:for="{{menu}}" wx:key="name" bindtap="tapMenu" data-url="{{item.url}}">
+        <image class="menu-icon" src="{{item.icon}}" binderror="onImgError" data-key="menu[{{index}}].icon"></image>
+        <view class="flex-1 menu-name">{{item.name}}</view>
+        <view class="menu-arrow">›</view>
+      </view>
+    </view>
+
+    <view class="card">
+      <view class="section-title-sm">页面导航</view>
+      <view class="nav-btns">
+        <view class="btn-plain nav-btn" bindtap="goHome">返回首页</view>
+        <view class="btn-plain nav-btn" bindtap="goVip">会员中心</view>
+      </view>
+    </view>
+  </block>
+</view>

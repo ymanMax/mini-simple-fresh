@@ -1,0 +1,26 @@
+/* 订单列表样式 */
+.tabs {
+  display: flex; background: #fff; padding: 0 8rpx; position: sticky; top: 0; z-index: 10;
+  box-shadow: 0 2rpx 6rpx rgba(0,0,0,0.04);
+}
+.tab { flex: 1; text-align: center; padding: 20rpx 0; font-size: 26rpx; color: #666; border-bottom: 4rpx solid transparent; }
+.tab.active { color: #e4393c; border-bottom-color: #e4393c; font-weight: 700; }
+
+.order-card { background: #fff; border-radius: 16rpx; margin: 16rpx 24rpx; padding: 20rpx; }
+.order-head { padding-bottom: 12rpx; border-bottom: 1rpx solid #f0f0f0; }
+.status-badge { font-size: 22rpx; padding: 4rpx 14rpx; border-radius: 999rpx; }
+.status-1 { background: #fff7e6; color: #fa8c16; }
+.status-2 { background: #e6f7ff; color: #1890ff; }
+.status-3 { background: #f6ffed; color: #52c41a; }
+.status-4 { background: #fff1f0; color: #e4393c; }
+.status-5 { background: #f2f3f5; color: #999; }
+.status-6 { background: #f2f3f5; color: #999; }
+
+.order-items { padding: 12rpx 0; }
+.order-item { display: flex; align-items: center; padding: 8rpx 0; }
+.order-img { width: 80rpx; height: 80rpx; border-radius: 8rpx; margin-right: 12rpx; background: #f2f3f5; }
+.order-name { font-size: 26rpx; }
+.order-foot { padding-top: 12rpx; border-top: 1rpx solid #f0f0f0; }
+.order-total { font-size: 26rpx; }
+.nomore { text-align: center; color: #999; font-size: 24rpx; padding: 24rpx; }
+.go-shop-btn { width: 240rpx; margin: 0 auto; }

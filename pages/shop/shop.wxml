@@ -1,26 +1,94 @@
-<view class="list">
-	<scroll-view class="header">
-		<image src="/images/shop.png"></image>
-		<view class="text">您还没有添加任何商品哦~</view>
-	</scroll-view>
-	<scroll-view class="item-list">
-		<view class="title">推荐商品</view>
-		<view class="content">
-			<view class="item" wx:for="{{list}}" wx:key="this">
-				<view class="item-img">
-					<image src="https://localhost:3001/{{item.icon}}"></image>
-				</view>
-				<view class="item-title">{{item.title}}</view>
-				<view class="item-price">￥{{item.price}}</view>
-				<view class="gowucar">
-					<image  src="/images/gouwu.png" bindtap="addShopCar"></image>
-				</view>
-			</view>
-			<view class="nomore">
-				<text>没有更多了~</text>
-			</view>
-			
-		</view>
-	</scroll-view>
-</view>
+<!-- 购物车：列表、数量调整、左滑删除、失效区、结算栏、空态、猜你喜欢 -->
+<view class="page-wrap shop-page">
+  <!-- 骨架屏 -->
+  <view wx:if="{{loading}}" class="skeleton">
+    <view class="sk-block" style="height:140rpx"></view>
+    <view class="sk-block" style="height:140rpx"></view>
+    <view class="sk-block" style="height:140rpx"></view>
+  </view>
 
+  <block wx:else>
+    <!-- 空态 -->
+    <view wx:if="{{items.length == 0 && invalidItems.length == 0}}" class="empty">
+      <image class="empty-img" src="/images/shop.png" binderror="onImgError" data-key="emptyImg"></image>
+      <view class="empty-title">购物车还是空的</view>
+      <view class="empty-sub">快去挑选新鲜好物吧~</view>
+      <view class="btn-primary go-shop-btn" bindtap="goShopping">去逛逛</view>
+    </view>
+
+    <!-- 配送提示 -->
+    <view wx:if="{{items.length > 0}}" class="ship-tip">
+      <text wx:if="{{diffToFree > 0}}">还差 ¥{{diffToFree/100}} 免配送费（满¥{{freeShipThreshold/100}}免基础配送费）</text>
+      <text wx:else class="active-red">已满足免配送费条件，本单免运费</text>
+    </view>
+
+    <!-- 有效商品列表（左滑删除） -->
+    <view wx:for="{{items}}" wx:key="id" class="cart-item-wrap">
+      <view class="item-delete" bindtap="removeItem" data-id="{{item.id}}">删除</view>
+      <view class="cart-item {{swipedId==item.id?'swiped':''}}"
+            bindtouchstart="onTouchStart" bindtouchend="onTouchEnd" data-id="{{item.id}}" bindtap="closeSwipe">
+        <view class="checkbox {{item.checked?'checked':''}}" bindtap="toggleItem" data-id="{{item.id}}"></view>
+        <image class="cart-img" src="{{item.pic}}" mode="aspectFill" bindtap="goDetail" data-id="{{item.goodsId}}" binderror="onImgError" data-key="items[{{index}}].pic"></image>
+        <view class="cart-info">
+          <view class="cart-name">{{item.name}}</view>
+          <view class="cart-spec muted">{{item.specText}} · {{item.stock}}件库存</view>
+          <view class="row-between" style="margin-top:12rpx">
+            <view class="price-sm">¥{{item.price/100}}</view>
+            <view class="stepper">
+              <view class="stepper-btn" bindtap="changeCount" data-id="{{item.id}}" data-delta="-1">-</view>
+              <view class="stepper-num">{{item.count}}</view>
+              <view class="stepper-btn" bindtap="changeCount" data-id="{{item.id}}" data-delta="1">+</view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 失效商品区 -->
+    <view wx:if="{{invalidItems.length > 0}}" class="card invalid-card">
+      <view class="row-between">
+        <view class="section-title-sm">失效商品（{{invalidItems.length}}）</view>
+        <view class="clear-link" bindtap="clearInvalid">清空</view>
+      </view>
+      <view wx:for="{{invalidItems}}" wx:key="id" class="invalid-item">
+        <image class="cart-img invalid-img" src="{{item.pic}}" mode="aspectFill" binderror="onImgError" data-key="invalidItems[{{index}}].pic"></image>
+        <view class="flex-1">
+          <view class="cart-name invalid-name">{{item.name}}</view>
+          <view class="muted small">{{item.specText}} · 已售罄</view>
+        </view>
+        <view class="remove-btn" bindtap="removeItem" data-id="{{item.id}}">删除</view>
+      </view>
+    </view>
+
+    <!-- 猜你喜欢 -->
+    <view wx:if="{{items.length > 0}}" class="card">
+      <view class="section-title-sm">猜你喜欢</view>
+      <scroll-view scroll-x class="h-scroll" style="padding:0">
+        <view class="h-scroll-item reco-item" wx:for="{{recommend}}" wx:key="id" bindtap="goDetail" data-id="{{item.id}}">
+          <image class="reco-img" src="{{item.pic}}" mode="aspectFill" binderror="onImgError" data-key="recommend[{{index}}].pic"></image>
+          <view class="reco-name">{{item.name}}</view>
+          <view class="row-between">
+            <view class="price-sm">¥{{item.price/100}}</view>
+            <view class="mini-add" catchtap="addCart" data-id="{{item.id}}">+</view>
+          </view>
+        </view>
+      </scroll-view>
+    </view>
+  </block>
+
+  <!-- 优惠明细条（需求9.2：已选商品可享的最高满减阶梯） -->
+  <view wx:if="{{items.length > 0 && totalCount > 0}}" class="promo-strip">
+    <view class="promo-text">🎉 {{fullReduceText}}</view>
+  </view>
+
+  <!-- 底部结算栏 -->
+  <view wx:if="{{items.length > 0}}" class="checkout-bar">
+    <view class="checkbox {{allChecked?'checked':''}}" bindtap="toggleAll"></view>
+    <view class="flex-1 total-box">
+      <view class="total-text">合计：<text class="price">¥{{totalAmount/100}}</text><text wx:if="{{fullReduce>0}}" class="muted small">（满减后预估 ¥{{(totalAmount-fullReduce)/100}}）</text></view>
+      <view class="muted small" wx:if="{{freight > 0}}">另需配送费 ¥{{freight/100}}</view>
+      <view class="muted small" wx:else>免配送费</view>
+    </view>
+    <view class="checkout-btn {{totalCount==0?'btn-disabled':''}}" bindtap="checkout">去结算({{totalCount}})</view>
+  </view>
+</view>

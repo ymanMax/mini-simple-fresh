@@ -1,0 +1,14 @@
+/* 消息中心样式（V2增强：相对时间、全部已读、分页、推送） */
+.top-tabs { display: flex; align-items: center; background: #fff; position: sticky; top: 0; z-index: 10; box-shadow: 0 2rpx 6rpx rgba(0,0,0,0.04); padding-right: 16rpx; }
+.top-tab { flex: 1; text-align: center; padding: 18rpx 0; font-size: 26rpx; color: #666; border-bottom: 4rpx solid transparent; }
+.top-tab.active { color: #e4393c; font-weight: 700; border-bottom-color: #e4393c; }
+.mark-all { font-size: 24rpx; color: #e4393c; padding: 0 12rpx; white-space: nowrap; }
+
+.msg-card { display: flex; align-items: center; background: #fff; border-radius: 16rpx; margin: 16rpx 24rpx; padding: 20rpx; position: relative; }
+.msg-card.unread { border-left: 6rpx solid #e4393c; }
+.msg-icon { width: 64rpx; height: 64rpx; border-radius: 50%; margin-right: 16rpx; background: #f2f3f5; }
+.msg-title { font-size: 28rpx; font-weight: 700; flex: 1; }
+.msg-dot { width: 14rpx; height: 14rpx; border-radius: 50%; background: #e4393c; margin-left: 12rpx; }
+.msg-content { font-size: 26rpx; color: #555; line-height: 1.5; margin: 8rpx 0; }
+.msg-time { font-size: 20rpx; }
+.nomore { text-align: center; color: #999; font-size: 24rpx; padding: 24rpx; }

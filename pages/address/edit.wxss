@@ -1,0 +1,19 @@
+/* 地址编辑样式 */
+.edit-page { padding-bottom: 40rpx; }
+.form-card { padding: 8rpx 24rpx; }
+.form-row { display: flex; align-items: center; padding: 18rpx 0; border-bottom: 1rpx solid #f5f5f5; }
+.form-row.column { flex-direction: column; align-items: flex-start; }
+.form-row:last-child { border-bottom: none; }
+.form-label { width: 120rpx; font-size: 28rpx; color: #333; }
+.form-input { flex: 1; font-size: 28rpx; }
+.form-textarea { width: 100%; background: #f7f8fa; border-radius: 12rpx; padding: 16rpx; font-size: 26rpx; margin-top: 10rpx; min-height: 120rpx; }
+.district-row { display: flex; flex-wrap: wrap; gap: 10rpx; flex: 1; }
+.district { padding: 8rpx 18rpx; background: #f2f3f5; border-radius: 8rpx; font-size: 24rpx; }
+.district.active { background: #fff1f0; color: #e4393c; border: 1rpx solid #e4393c; }
+.tag-selected { background: #fff1f0 !important; color: #e4393c !important; border: 1rpx solid #e4393c; }
+.switch { width: 80rpx; height: 44rpx; border-radius: 999rpx; background: #ddd; position: relative; }
+.switch.on { background: #e4393c; }
+.switch::after { content: ''; position: absolute; width: 36rpx; height: 36rpx; border-radius: 50%; background: #fff; top: 4rpx; left: 4rpx; transition: all .2s; }
+.switch.on::after { left: 40rpx; }
+.save-wrap { padding: 24rpx; }
+.save-btn { height: 80rpx; line-height: 80rpx; font-size: 30rpx; }

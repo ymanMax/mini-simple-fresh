@@ -1,25 +1,95 @@
-<view class='large'>
-    <view class='search'>
-    <input placeholder='请输入商品名称' data-value='{{search}}' value='{{search}}'></input><text bindtap='goSearch'>搜索</text>
+<!-- 搜索页：搜索框 + 历史/热门 + 实时联想 + 结果列表 + 排序 + 分页 -->
+<view class="search-page">
+  <!-- 搜索框 -->
+  <view class="top-bar">
+    <view class="search-box">
+      <image class="search-icon" src="/images/icons/search.png" binderror="onImgError" data-key="searchIcon"></image>
+      <input class="search-input" placeholder="请输入商品名称" value="{{keyword}}" bindinput="onInput" confirm-type="search" bindconfirm="doSearch" />
+      <view class="search-clear" wx:if="{{keyword}}" bindtap="clearSearch">×</view>
     </view>
-    <view class='hot'>
-        <text class='module-title'>热门搜索</text>
-        <text wx:for="{{data}}" wx:key="this" class='module-msg' bindtap='hotSearch' data-id='{{item}}'>{{item}}</text>
-    </view>
-    <view class='hot re' hidden="'{{dis}}'">
-        <text class='module-title fl'>历史记录</text><view class='fr' bindtap='clear'>清除历史记录</view>
-        <text wx:for="{{history}}" wx:key="this" class='module-msg' bindtap='hotSearch' data-id='{{item}}'>{{item}}</text>
-    </view>
-    <view class='module-title like'>推荐商品</view>
-    <view class='product' wx:for="{{products}}" wx:key="this">
-        <image class='product-img' src='{{item.image}}'></image>
-        <image class='product-zhe' src='{{item.promote_tag}}'></image>
-        <view class='product-msg'>
-            <view class='msg-title'>{{item.name}}</view>
-            <view class='msg-intro'>{{item.subtitle}}</view>
-                <text class='price'></text>
-                <image src='{{item.cart_image}}' class='icon' bindtap='addCar'></image>
-        </view>
-    </view>
-</view>
+    <view class="search-btn" bindtap="doSearch">搜索</view>
+  </view>
 
+  <!-- 未搜索：历史 + 热门 -->
+  <block wx:if="{{!searched}}">
+    <view class="card" wx:if="{{history.length > 0}}">
+      <view class="row-between section-title-sm">
+        <view>历史搜索</view>
+        <view class="muted small" bindtap="clearHistory">清空历史记录</view>
+      </view>
+      <view class="tag-row">
+        <view class="history-tag" wx:for="{{history}}" wx:key="*this" bindtap="tapHot" data-id="{{item}}">
+          {{item}}
+          <text class="history-del" bindtap="removeHistory" data-kw="{{item}}">×</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="card">
+      <view class="section-title-sm">热门搜索</view>
+      <view class="tag-row">
+        <view class="hot-tag" wx:for="{{hotWords}}" wx:key="*this" bindtap="tapHot" data-id="{{item}}">{{item}}</view>
+      </view>
+    </view>
+
+    <!-- 实时联想 -->
+    <view class="card" wx:if="{{suggestions.length > 0}}">
+      <view class="section-title-sm">搜索联想</view>
+      <view class="suggest-item" wx:for="{{suggestions}}" wx:key="id" bindtap="tapSuggestion" data-kw="{{item.name}}">
+        <image class="suggest-img" src="{{item.pic}}" mode="aspectFill" binderror="onImgError" data-key="suggestions[{{index}}].pic"></image>
+        <view class="flex-1">
+          <view class="goods-name">{{item.name}}</view>
+          <view class="muted small">{{item.subtitle}}</view>
+        </view>
+        <view class="price-sm">¥{{item.price/100}}</view>
+      </view>
+    </view>
+
+    <!-- 推荐商品（无输入时展示） -->
+    <view class="card" wx:if="{{keyword == ''}}">
+      <view class="section-title-sm">推荐商品</view>
+      <view class="goods-card" wx:for="{{recommend}}" wx:key="id" bindtap="goDetail" data-id="{{item.id}}" style="margin:0 0 12rpx">
+        <image class="goods-img" src="{{item.pic}}" mode="aspectFill" binderror="onImgError" data-key="recommend[{{index}}].pic"></image>
+        <view class="goods-info">
+          <view class="goods-name">{{item.name}}</view>
+          <view class="goods-sub">{{item.subtitle}}</view>
+          <view class="price-sm">¥{{item.price/100}}</view>
+        </view>
+      </view>
+    </view>
+  </block>
+
+  <!-- 搜索结果 -->
+  <block wx:else>
+    <!-- 排序栏 -->
+    <view class="sort-bar">
+      <view class="sort-item {{sort=='default'?'active':''}}" bindtap="changeSort" data-sort="default">综合</view>
+      <view class="sort-item {{sort=='sales'?'active':''}}" bindtap="changeSort" data-sort="sales">销量</view>
+      <view class="sort-item {{sort=='priceAsc'?'active':''}}" bindtap="changeSort" data-sort="priceAsc">价格 ↑</view>
+      <view class="sort-item {{sort=='priceDesc'?'active':''}}" bindtap="changeSort" data-sort="priceDesc">价格 ↓</view>
+    </view>
+
+    <!-- 空态 -->
+    <view wx:if="{{results.length==0 && !loading}}" class="empty">
+      <image class="empty-img" src="/images/default.png" binderror="onImgError" data-key="emptyImg"></image>
+      <view class="empty-title">没有找到相关商品</view>
+      <view class="empty-sub">换个关键词试试吧</view>
+    </view>
+
+    <!-- 结果列表 -->
+    <view class="goods-card" wx:for="{{results}}" wx:key="id" bindtap="goDetail" data-id="{{item.id}}">
+      <image class="goods-img" src="{{item.pic}}" mode="aspectFill" binderror="onImgError" data-key="results[{{index}}].pic"></image>
+      <view class="goods-info">
+        <view class="goods-name">{{item.name}}</view>
+        <view class="goods-sub">{{item.subtitle}} · 已售{{item.numberSells}}份</view>
+        <view class="tag-row"><text class="tag" wx:for="{{item.tags}}" wx:for-item="t" wx:key="*this">{{t}}</text></view>
+        <view class="row-between">
+          <view class="price-sm">¥{{item.price/100}}<text class="price-origin">¥{{item.originalPrice/100}}</text></view>
+          <view class="add-btn" catchtap="addCart" data-id="{{item.id}}">+</view>
+        </view>
+      </view>
+    </view>
+
+    <view class="nomore" wx:if="{{noMore}}"><text>没有更多了~</text></view>
+  </block>
+</view>
