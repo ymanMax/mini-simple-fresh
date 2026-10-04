@@ -1,151 +1,159 @@
-// pages/search/search.js
+// pages/search/search.js —— 搜索：历史 + 热门 + 实时联想 + 结果排序分页
+var api = require('../../utils/api.js')
+var toast = require('../../utils/toast.js')
+var badge = require('../../utils/badge.js')
+var imgBehavior = require('../../utils/imgBehavior.js')
+
 Page({
-
-  /**
-   * 页面的初始数据
-   */
+  behaviors: [imgBehavior],
   data: {
-      data: {},
-      products: {},
-      search: '',
-      history: [],
-      historyArr: [],
-      dis: false
-      
+    keyword: '',
+    hotWords: [],
+    history: [],
+    suggest: [],
+    searching: false,
+    results: [],
+    total: 0,
+    page: 1,
+    pageSize: 10,
+    hasMore: true,
+    sort: 'default', // default / price_asc / price_desc / sells
+    loading: false
   },
-  //点击热门搜索，添加到搜索框
-  hotSearch(e) {
-    //   console.log(e)
-      this.setData({
-          search: e.target.dataset.id
-      })
-  },
-    //点击搜索，保存搜索结果到本地
-    goSearch() {
-       
-        console.log(this.data.history)
-        var arr = this.data.historyArr
-        arr.push(this.data.search)
-        
-       this.setData({
-           historyArr: arr
-       });
-        
-        wx.setStorage({
-            key: 'history',
-            data: this.data.historyArr,
-            success: function(res) {
-                // console.log(res)
-            },
-        })
-    },
-    clear() {
-        wx.removeStorage({
-            key: 'history',
-        })
-        wx.setStorage({
-            key: 'history',
-            data: [],
-            success: function(res) {
-               this.setData({
-                history: [],
-                dis: false
-               })
-               console.log(this.data.dis)
-            }.bind(this)
-        })
-        this.onLoad();
-       
-    },  
-    addCar() {
 
-    },
-  /**
-   * 生命周期函数--监听页面加载
-   */
   onLoad: function () {
-      wx.request({
-          url: 'https://localhost:3001/data/searchMsg.json',
-          success: function(res) {
-              if (res.errMsg == "request:ok") {
-                //   console.log(res.data.like_result.product_list)
-                  this.setData({
-                      data: res.data.data,
-                      products: res.data.like_result.product_list,
-                  })
-              }
-            //   console.log(this.data.products)
-             
-          }.bind(this)
-      });
-   
-        var his = wx.getStorageSync('history');
-        // console.log(his)
-        this.setData({
-            history: his
-        })
-        // wx.getStorage({
-        //     key: 'history',
-        //     success: function(res) {
-        //         // this.data.history = res
-        //         var s = res.data
-        //         this.setData({
-        //             history: s
-        //         })
-        //         console.log(this.data.history)
-        //     },
-        // })
-    
-       
-     
+    this.loadHot()
+    this.loadHistory()
   },
 
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady: function () {
-      console.log(this.products)
+  loadHot: function () {
+    var that = this
+    api.get('/api/hotwords').then(function (data) {
+      that.setData({ hotWords: data.list })
+    })
   },
 
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow: function () {
-  
+  loadHistory: function () {
+    this.setData({ history: wx.getStorageSync('search_history') || [] })
   },
 
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide: function () {
-  
+  onInput: function (e) {
+    var kw = e.detail.value.trim()
+    this.setData({ keyword: kw })
+    if (!kw) {
+      this.setData({ suggest: [], searching: false, results: [] })
+      return
+    }
+    // 实时联想（前缀+包含）
+    var that = this
+    clearTimeout(this._t)
+    this._t = setTimeout(function () {
+      api.get('/api/goods/list', { keyword: kw, page: 1, pageSize: 6, sort: 'sells' }).then(function (data) {
+        that.setData({ suggest: data.list })
+      })
+    }, 250)
   },
 
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload: function () {
-  
+  doSearch: function (kw) {
+    var keyword = (kw !== undefined ? kw : this.data.keyword).trim()
+    if (!keyword) {
+      wx.showToast({ title: '请输入搜索关键词', icon: 'none' })
+      return
+    }
+    // 保存历史
+    var history = this.data.history.filter(function (h) { return h !== keyword })
+    history.unshift(keyword)
+    history = history.slice(0, 10)
+    wx.setStorageSync('search_history', history)
+    this.setData({ history: history, searching: true, keyword: keyword, suggest: [], sort: 'default' })
+    this.loadResults(true)
   },
 
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh: function () {
-  
+  tapHot: function (e) {
+    this.doSearch(e.currentTarget.dataset.word)
   },
 
-  /**
-   * 页面上拉触底事件的处理函数
-   */
+  tapSuggest: function (e) {
+    this.doSearch(e.currentTarget.dataset.word || e.currentTarget.dataset.name)
+  },
+
+  loadResults: function (reset) {
+    var that = this
+    this.setData({ loading: true })
+    api.get('/api/goods/list', {
+      keyword: this.data.keyword,
+      page: reset ? 1 : this.data.page,
+      pageSize: this.data.pageSize,
+      sort: this.data.sort
+    }).then(function (data) {
+      var results = reset ? data.list : that.data.results.concat(data.list)
+      that.setData({
+        results: results,
+        total: data.total,
+        page: reset ? 1 : that.data.page,
+        hasMore: data.hasMore,
+        loading: false
+      })
+    }).catch(function () { that.setData({ loading: false }) })
+  },
+
   onReachBottom: function () {
-  
+    if (this.data.searching && this.data.hasMore && !this.data.loading) {
+      this.setData({ page: this.data.page + 1 })
+      this.loadResults(false)
+    }
   },
 
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage: function () {
-  
+  onPullDownRefresh: function () {
+    var that = this
+    this.loadResults(true)
+    setTimeout(function () { wx.stopPullDownRefresh() }, 600)
+  },
+
+  setSort: function (e) {
+    var sort = e.currentTarget.dataset.sort
+    this.setData({ sort: sort, page: 1, results: [] })
+    this.loadResults(true)
+  },
+
+  clearKeyword: function () {
+    this.setData({ keyword: '', searching: false, results: [], suggest: [] })
+    this.loadHistory()
+  },
+
+  removeHistory: function (e) {
+    var word = e.currentTarget.dataset.word
+    var history = this.data.history.filter(function (h) { return h !== word })
+    wx.setStorageSync('search_history', history)
+    this.setData({ history: history })
+  },
+
+  clearHistory: function () {
+    var that = this
+    wx.showModal({
+      title: '提示', content: '确定清空搜索历史吗？',
+      success: function (res) {
+        if (res.confirm) {
+          wx.setStorageSync('search_history', [])
+          that.setData({ history: [] })
+        }
+      }
+    })
+  },
+
+  goDetail: function (e) {
+    wx.navigateTo({ url: '/pages/detail/detail?id=' + e.currentTarget.dataset.id })
+  },
+
+  addCart: function (e) {
+    var id = e.currentTarget.dataset.id
+    api.post('/api/cart/add', { goodsId: id, specLabel: '标准装', count: 1 }).then(function () {
+      toast.success('加入购物车成功')
+      badge.refreshCartBadge()
+    })
+  },
+
+  backHome: function () {
+    wx.navigateBack({ fail: function () { wx.switchTab({ url: '/pages/index/index' }) } })
   }
 })

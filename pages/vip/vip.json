@@ -1,6 +1,4 @@
 {
-    "backgroundTextStyle": "light",
-    "navigationBarBackgroundColor": "#fff",
-    "navigationBarTitleText": "会员+",
-    "navigationBarTextStyle": "black"
+  "navigationBarTitleText": "会员+",
+  "backgroundColor": "#f5f6f7"
 }

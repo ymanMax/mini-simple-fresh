@@ -1,0 +1,30 @@
+.addr-list-page { padding-bottom: 180rpx; }
+
+.addr-item { position: relative; }
+.pickable { }
+.ai-head { display: flex; align-items: center; gap: 16rpx; }
+.ai-name { font-size: 32rpx; font-weight: bold; }
+.ai-phone { font-size: 28rpx; color: #555; }
+.ai-detail { font-size: 26rpx; color: #555; margin: 10rpx 0 16rpx; line-height: 1.5; }
+.ai-actions { display: flex; gap: 16rpx; border-top: 1rpx solid #f2f2f2; padding-top: 14rpx; }
+.ai-btn {
+  font-size: 24rpx;
+  padding: 8rpx 24rpx;
+  border: 2rpx solid #ddd;
+  border-radius: 999rpx;
+  color: #555;
+}
+.ai-btn.danger { color: #e93b3d; border-color: #e93b3d; }
+
+.add-bar {
+  position: fixed;
+  left: 24rpx; right: 24rpx; bottom: 32rpx;
+}
+.add-btn {
+  background: #e93b3d;
+  color: #fff;
+  text-align: center;
+  padding: 24rpx 0;
+  border-radius: 999rpx;
+  font-size: 30rpx;
+}

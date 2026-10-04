@@ -1,0 +1,32 @@
+.group-page { padding-bottom: 40rpx; }
+.tabs { display: flex; background: #fff; border-bottom: 1rpx solid #f2f2f2; position: sticky; top: 0; z-index: 20; }
+.tab { flex: 1; text-align: center; padding: 20rpx 0; font-size: 27rpx; color: #555; position: relative; }
+.tab.on { color: #e93b3d; font-weight: bold; }
+.tab.on::after {
+  content: ''; position: absolute; bottom: 0; left: 50%;
+  transform: translateX(-50%);
+  width: 48rpx; height: 6rpx; background: #e93b3d; border-radius: 3rpx;
+}
+.group-card { display: flex; gap: 16rpx; }
+.group-card > image { width: 160rpx; height: 160rpx; border-radius: 12rpx; background: #f0f0f0; flex-shrink: 0; }
+.g-info { flex: 1; }
+.g-name { font-size: 28rpx; font-weight: 600; line-height: 1.4; }
+.g-rules { font-size: 22rpx; color: #838383; margin-top: 4rpx; }
+.g-price-row { display: flex; align-items: baseline; gap: 12rpx; margin-top: 6rpx; }
+.g-price-row .price { font-size: 34rpx; }
+.g-progress { margin-top: 10rpx; }
+.gp-bar { height: 12rpx; background: #f0f0f0; border-radius: 999rpx; overflow: hidden; }
+.gp-fill { height: 100%; background: linear-gradient(90deg, #e93b3d, #ff8a80); border-radius: 999rpx; }
+.gp-text { font-size: 20rpx; color: #838383; }
+.g-members { display: flex; align-items: center; margin-top: 10rpx; gap: 8rpx; }
+.g-members image { width: 48rpx; height: 48rpx; border-radius: 50%; }
+.g-join-btn {
+  margin-left: auto;
+  background: #e93b3d; color: #fff;
+  font-size: 24rpx; padding: 8rpx 28rpx; border-radius: 999rpx;
+}
+.g-done { margin-left: auto; color: #43a047; font-size: 24rpx; }
+.g-status { margin-top: 10rpx; font-size: 24rpx; }
+.g-status.doing { color: #ff9500; }
+.g-status.done { color: #43a047; }
+.flex1 { flex: 1; }

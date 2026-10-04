@@ -1,0 +1,62 @@
+.checkin-page { padding-bottom: 40rpx; }
+
+.checkin-hero {
+  background: linear-gradient(135deg, #e93b3d, #ff8a80);
+  margin: 24rpx;
+  border-radius: 20rpx;
+  padding: 40rpx 32rpx;
+  color: #fff;
+}
+.ch-row { display: flex; }
+.ch-block { flex: 1; text-align: center; }
+.ch-num { font-size: 52rpx; font-weight: bold; }
+.ch-label { font-size: 22rpx; opacity: 0.9; margin-top: 4rpx; }
+.ch-btn {
+  margin-top: 28rpx;
+  background: #fff;
+  color: #e93b3d;
+  text-align: center;
+  padding: 20rpx;
+  border-radius: 999rpx;
+  font-size: 30rpx;
+  font-weight: bold;
+}
+.ch-btn.done { background: rgba(255,255,255,.35); color: #fff; }
+
+.block-title { font-size: 30rpx; font-weight: bold; margin-bottom: 12rpx; }
+.reward-strip { display: flex; }
+.reward-item {
+  flex: 1;
+  text-align: center;
+  background: #f7f8fa;
+  border-radius: 12rpx;
+  margin: 0 6rpx;
+  padding: 14rpx 0;
+}
+.reward-item.cur { background: #fdecec; outline: 2rpx solid #e93b3d; }
+.reward-day { font-size: 20rpx; color: #838383; }
+.reward-pts { font-size: 26rpx; color: #e93b3d; font-weight: bold; margin-top: 4rpx; }
+.reward-note { font-size: 22rpx; color: #b0b0b0; margin-top: 12rpx; text-align: center; }
+
+.week-headers { display: flex; }
+.wh-cell { flex: 1; text-align: center; font-size: 24rpx; color: #838383; padding: 10rpx 0; }
+.cal-grid { display: flex; flex-wrap: wrap; }
+.cal-cell {
+  width: calc(100% / 7);
+  height: 80rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 26rpx;
+  border-radius: 12rpx;
+  margin: 4rpx 0;
+}
+.cal-cell.blank { visibility: hidden; }
+.cal-cell.signed { background: #e93b3d; color: #fff; font-weight: bold; }
+.cal-cell.today { outline: 3rpx solid #e93b3d; background: #fdecec; color: #e93b3d; font-weight: bold; }
+.cal-cell.future { color: #ddd; }
+
+.tip-card { font-size: 24rpx; color: #555; }
+.tip-title { font-size: 28rpx; font-weight: bold; margin-bottom: 10rpx; }
+.tip-line { padding: 4rpx 0; color: #838383; }
+.flex-between { display: flex; align-items: center; justify-content: space-between; }

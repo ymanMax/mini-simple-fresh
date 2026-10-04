@@ -1,37 +1,88 @@
-<view>
-    <view class='user'>
-        <open-data class="pic"type="userAvatarUrl" ></open-data>
-        <view class='userinfo'>
-            <open-data type="userNickName" class="username"></open-data>
-            <view class='ber'>普通会员</view>
+<view class="me-page">
+  <!-- 用户头部 -->
+  <view class="user-header">
+    <view class="uh-top">
+      <image class="uh-avatar" src="{{user.avatar}}" mode="aspectFill"></image>
+      <view class="uh-info">
+        <view class="uh-name">{{user.nickName}}</view>
+        <view class="uh-level">{{member.levelName}} · 有效期至 {{member.validDate}}</view>
+        <!-- 成长值进度条 -->
+        <view class="growth-mini">
+          <view class="gm-bar"><view class="gm-fill" style="width: {{growthProgress}}%;"></view></view>
+          <view class="gm-text" wx:if="{{nextLevelName}}">成长值 {{member.growthValue}}，距{{nextLevelName}}还需 {{toNext}}</view>
+          <view class="gm-text" wx:else>成长值 {{member.growthValue}} · 已达最高等级</view>
         </view>
+      </view>
+      <button class="login-btn" open-type="getUserInfo" bindgetuserinfo="onLogin" wx:if="{{isGuest}}">登录</button>
     </view>
-
-
-<!-- 会员专享 -->
-    <view class='member'>
-        <view class='m-title'>会员权益</view>
-        <view class='m-go'>开通会员<arrdow></arrdow></view>
-        <view class='m-text'>成为优享会员,预计1年将为你 <text>节省{{num}}元</text></view>
-        <view class='icon'>
-           <view wx:for="{{member}}" wx:key="this" class='i'>
-                <image src='https://localhost:3001/images/me-icon/{{item.img}}'></image>
-                <view class='text'>{{item.text}}</view>
-           </view>
-        </view>
+    <view class="uh-stats">
+      <view class="stat" bindtap="goCoupon">
+        <view class="stat-num">{{couponCount}}</view>
+        <view class="stat-label">优惠券</view>
+      </view>
+      <view class="stat" bindtap="goCoupon">
+        <view class="stat-num">{{member.points}}</view>
+        <view class="stat-label">积分</view>
+      </view>
+      <view class="stat" bindtap="goMessages">
+        <view class="stat-num">{{messageCount}}</view>
+        <view class="stat-label">消息</view>
+      </view>
+      <view class="stat" bindtap="goAllOrders">
+        <view class="stat-num">{{orderCounts.all}}</view>
+        <view class="stat-label">全部订单</view>
+      </view>
     </view>
+  </view>
 
-
-    <!-- 我的 -->
-    <view class='ul'>
-        <navigator open-type='navigate' url='{{item.url}}' wx:for="{{list}}" wx:key="this" class='li'>
-            <view class='content'>
-                <text class='title'>{{item.title}}</text>
-                <arrdow class="list-arrdow"></arrdow>
-            <block wx:if="{{item.color}}">
-                <text class='value'style="color: {{item.color}}">{{item.value}}</text>
-            </block>
-            </view>
-        </navigator>
+  <!-- 订单快捷入口 -->
+  <view class="card order-quick">
+    <view class="oq-head flex-between">
+      <text class="block-title">我的订单</text>
+      <view class="all-orders" bindtap="goAllOrders">全部订单 ›</view>
     </view>
+    <view class="oq-grid">
+      <view class="oq-item" data-status="1" bindtap="orderEntry">
+        <view class="oq-icon">💰</view>
+        <view class="oq-label">待付款</view>
+        <view class="badge-dot" wx:if="{{orderCounts['1'] > 0}}">{{orderCounts['1']}}</view>
+      </view>
+      <view class="oq-item" data-status="2" bindtap="orderEntry">
+        <view class="oq-icon">📦</view>
+        <view class="oq-label">待发货</view>
+        <view class="badge-dot" wx:if="{{orderCounts['2'] > 0}}">{{orderCounts['2']}}</view>
+      </view>
+      <view class="oq-item" data-status="3" bindtap="orderEntry">
+        <view class="oq-icon">🛵</view>
+        <view class="oq-label">配送中</view>
+        <view class="badge-dot" wx:if="{{orderCounts['3'] > 0}}">{{orderCounts['3']}}</view>
+      </view>
+      <view class="oq-item" data-status="4" bindtap="orderEntry">
+        <view class="oq-icon">📬</view>
+        <view class="oq-label">待收货</view>
+        <view class="badge-dot" wx:if="{{orderCounts['4'] > 0}}">{{orderCounts['4']}}</view>
+      </view>
+      <view class="oq-item" data-status="5" bindtap="orderEntry">
+        <view class="oq-icon">⭐</view>
+        <view class="oq-label">待评价</view>
+        <view class="badge-dot" wx:if="{{orderCounts.review > 0}}">{{orderCounts.review}}</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 功能菜单分组 -->
+  <block wx:for="{{menuGroups}}" wx:key="title" wx:for-item="group">
+    <view class="card menu-group">
+      <view class="group-title">{{group.title}}</view>
+      <view class="menu-item" wx:for="{{group.items}}" wx:key="name" wx:for-item="item" data-item="{{item}}" bindtap="onMenu">
+        <view class="mi-icon">{{item.icon}}</view>
+        <view class="mi-name">{{item.name}}</view>
+        <view class="mi-red" wx:if="{{item.redDot && checkinDot}}"></view>
+        <view class="mi-red" wx:if="{{item.msgDot && messageCount > 0}}">{{messageCount > 99 ? '99+' : messageCount}}</view>
+        <view class="mi-arrow">›</view>
+      </view>
+    </view>
+  </block>
+
+  <view style="height: 40rpx;"></view>
 </view>

@@ -1,0 +1,28 @@
+<view class="addr-list-page">
+  <view class="card addr-item {{mode === 'select' ? 'pickable' : ''}}"
+    wx:for="{{list}}" wx:key="id"
+    bindtap="pickAddress" data-id="{{item.id}}">
+    <view class="ai-head">
+      <text class="ai-name">{{item.name}}</text>
+      <text class="ai-phone">{{item.phone}}</text>
+      <text class="tag" wx:if="{{item.isDefault}}">默认</text>
+      <text class="tag tag-gray">{{item.tag}}</text>
+    </view>
+    <view class="ai-detail">{{item.province}}{{item.city}}{{item.district}}{{item.detail}}</view>
+    <view class="ai-actions">
+      <view class="ai-btn" data-id="{{item.id}}" catchtap="setDefault" wx:if="{{!item.isDefault}}">设为默认</view>
+      <view class="ai-btn" data-id="{{item.id}}" catchtap="edit">编辑</view>
+      <view class="ai-btn danger" data-id="{{item.id}}" catchtap="remove">删除</view>
+    </view>
+  </view>
+
+  <view class="empty-page" wx:if="{{!list.length && !loading}}">
+    <image src="/images/empty-order.jpg"></image>
+    <view class="empty-title">还没有收货地址</view>
+    <view class="empty-desc">添加地址后才能下单哦</view>
+  </view>
+
+  <view class="add-bar">
+    <view class="add-btn" bindtap="add">＋ 新增收货地址</view>
+  </view>
+</view>

@@ -1,26 +1,118 @@
-<view class="list">
-	<scroll-view class="header">
-		<image src="/images/shop.png"></image>
-		<view class="text">您还没有添加任何商品哦~</view>
-	</scroll-view>
-	<scroll-view class="item-list">
-		<view class="title">推荐商品</view>
-		<view class="content">
-			<view class="item" wx:for="{{list}}" wx:key="this">
-				<view class="item-img">
-					<image src="https://localhost:3001/{{item.icon}}"></image>
-				</view>
-				<view class="item-title">{{item.title}}</view>
-				<view class="item-price">￥{{item.price}}</view>
-				<view class="gowucar">
-					<image  src="/images/gouwu.png" bindtap="addShopCar"></image>
-				</view>
-			</view>
-			<view class="nomore">
-				<text>没有更多了~</text>
-			</view>
-			
-		</view>
-	</scroll-view>
-</view>
+<view class="shop-page">
+  <!-- 骨架屏 -->
+  <view class="skeleton" wx:if="{{loading && !isEmpty}}">
+    <view class="sk-row"><view class="sk-block sk-img"></view><view class="flex1"><view class="sk-line w80"></view><view class="sk-line w60"></view></view></view>
+    <view class="sk-row"><view class="sk-block sk-img"></view><view class="flex1"><view class="sk-line w80"></view><view class="sk-line w60"></view></view></view>
+  </view>
 
+  <!-- 空态 -->
+  <block wx:if="{{isEmpty && !loading}}">
+    <view class="empty-page">
+      <image src="/images/empty-cart.jpg"></image>
+      <view class="empty-title">购物车还是空的</view>
+      <view class="empty-desc">去挑选新鲜好物吧~</view>
+      <view class="empty-btn" bindtap="goShop">去逛逛</view>
+    </view>
+  </block>
+
+  <block wx:if="{{!isEmpty && !loading}}">
+    <!-- 配送 + 满减提示 -->
+    <view class="free-ship-tip">{{freeShipTip}}<text wx:if="{{promoTip}}"> · {{promoTip}}</text></view>
+
+    <!-- 购物车商品（左滑删除） -->
+    <view class="cart-section">
+      <view class="swipe-row" wx:for="{{validItems}}" wx:key="id">
+        <view class="delete-btn" data-id="{{item.id}}" bindtap="removeItem">删除</view>
+        <view
+          class="row-content {{swipedId === item.id ? 'swiped' : ''}}"
+          data-id="{{item.id}}"
+          bindtouchstart="touchStart"
+          bindtouchend="touchEnd"
+          bindtap="closeSwipe">
+          <view class="checkbox {{item.checked ? 'checked' : ''}}" catchtap="toggleItem" data-id="{{item.id}}"></view>
+          <image class="row-pic" src="{{item.pic}}" mode="aspectFill" binderror="imgError" data-list="validItems" data-index="{{index}}" data-field="pic" catchtap="goDetail" data-gid="{{item.goodsId}}"></image>
+          <view class="row-info">
+            <view class="row-name">{{item.name}}</view>
+            <view class="row-spec">规格：{{item.specText}}</view>
+            <view class="row-bottom">
+              <view class="price">￥{{item.subtotalYuan}}</view>
+              <view class="stepper">
+                <view class="st-btn active" data-id="{{item.id}}" data-delta="-1" catchtap="changeCount">−</view>
+                <view class="st-num">{{item.count}}</view>
+                <view class="st-btn active" data-id="{{item.id}}" data-delta="1" catchtap="changeCount">＋</view>
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 失效商品 -->
+    <view class="invalid-section" wx:if="{{invalidItems.length}}">
+      <view class="invalid-head flex-between">
+        <text>失效商品（{{invalidItems.length}}）</text>
+        <text class="clear-invalid" bindtap="clearInvalid">清空</text>
+      </view>
+      <view class="swipe-row invalid" wx:for="{{invalidItems}}" wx:key="id">
+        <view class="delete-btn" data-id="{{item.id}}" bindtap="removeItem">删除</view>
+        <view class="row-content disabled" data-id="{{item.id}}" bindtouchstart="touchStart" bindtouchend="touchEnd">
+          <view class="checkbox disabled-box"></view>
+          <image class="row-pic" src="{{item.pic}}" mode="aspectFill" binderror="imgError" data-list="invalidItems" data-index="{{index}}" data-field="pic"></image>
+          <view class="row-info">
+            <view class="row-name off">{{item.name}}</view>
+            <view class="row-spec">规格：{{item.specText}}</view>
+            <view class="row-bottom">
+              <view class="price off">￥{{item.subtotalYuan}}</view>
+              <view class="off-text">已失效</view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 猜你喜欢 -->
+    <view class="recommend-section">
+      <view class="rec-title">猜你喜欢</view>
+      <scroll-view scroll-x show-scrollbar="{{false}}" class="rec-scroll">
+        <view class="rec-item" wx:for="{{recommend}}" wx:key="id">
+          <image src="{{item.pic}}" mode="aspectFill" binderror="imgError" data-list="recommend" data-index="{{index}}" data-field="pic" data-id="{{item.id}}" bindtap="goDetail" data-gid="{{item.id}}"></image>
+          <view class="rec-name">{{item.name}}</view>
+          <view class="rec-bottom">
+            <view class="price">￥{{item.minPriceYuan}}</view>
+            <view class="rec-add" catchtap="addRec" data-id="{{item.id}}">＋</view>
+          </view>
+        </view>
+      </scroll-view>
+    </view>
+
+    <view style="height: 140rpx;"></view>
+
+    <!-- 底部结算栏 -->
+    <view class="settle-bar">
+      <view class="all-check" bindtap="toggleAll">
+        <view class="checkbox {{allChecked ? 'checked' : ''}}"></view>
+        <text>全选</text>
+      </view>
+      <view class="total">
+        <view class="total-label">合计</view>
+        <view class="price price-big">￥{{totalPriceYuan}}</view>
+      </view>
+      <view class="settle-btn {{totalCount > 0 ? '' : 'disabled'}}" bindtap="checkout">去结算({{totalCount}})</view>
+    </view>
+  </block>
+
+  <!-- 空态时的推荐也展示 -->
+  <view class="recommend-section" wx:if="{{isEmpty && !loading}}">
+    <view class="rec-title">猜你喜欢</view>
+    <scroll-view scroll-x show-scrollbar="{{false}}" class="rec-scroll">
+      <view class="rec-item" wx:for="{{recommend}}" wx:key="id">
+        <image src="{{item.pic}}" mode="aspectFill" binderror="imgError" data-list="recommend" data-index="{{index}}" data-field="pic" data-id="{{item.id}}" bindtap="goDetail" data-gid="{{item.id}}"></image>
+        <view class="rec-name">{{item.name}}</view>
+        <view class="rec-bottom">
+          <view class="price">￥{{item.minPriceYuan}}</view>
+          <view class="rec-add" catchtap="addRec" data-id="{{item.id}}">＋</view>
+        </view>
+      </view>
+    </scroll-view>
+  </view>
+</view>

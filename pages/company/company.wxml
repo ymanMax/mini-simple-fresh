@@ -1,0 +1,42 @@
+<view class="company-page" wx:if="{{info}}">
+  <!-- 品牌卡 + 店铺评分 -->
+  <view class="brand-card">
+    <view class="brand-logo">鲜</view>
+    <view class="brand-name">{{info.shopName}}</view>
+    <view class="brand-slogan">新鲜好物，最快45分钟送达</view>
+    <view class="shop-rating">
+      <view class="stars">
+        <text wx:for="{{[1,2,3,4,5]}}" wx:for-item="star" wx:key="*this" class="{{star <= info.rating ? 'star-on' : 'star-off'}}">★</text>
+      </view>
+      <view class="rating-text">{{info.rating}} 分 · {{info.totalReviews}} 条评价 · 累计 {{info.sales}} 件</view>
+    </view>
+  </view>
+
+  <view class="card">
+    <view class="block-title">关于鲜生活</view>
+    <view class="p-text">鲜生活是一家专注生鲜零售的线上商城，主营水果、蔬菜、肉禽蛋、海鲜水产、乳品、零食、饮品与日用百货。我们坚持产地直采、冷链配送，让每一位用户都能以实惠的价格买到新鲜好食材。</view>
+  </view>
+
+  <view class="card">
+    <view class="block-title">配送说明</view>
+    <view class="p-text">· {{info.delivery.free}}，{{info.delivery.fee}}</view>
+    <view class="p-text">· {{info.delivery.eta}}，支持预约时段</view>
+    <view class="p-text">· {{info.delivery.cod}}</view>
+  </view>
+
+  <view class="card">
+    <view class="block-title">我们的承诺</view>
+    <view class="promise" wx:for="{{info.promises}}" wx:key="*this">✅ {{item}}</view>
+  </view>
+
+  <view class="card">
+    <view class="block-title">联系客服</view>
+    <view class="p-text">客服热线：400-888-0000（9:00-21:00）</view>
+    <view class="p-text">演示版本：本小程序所有交易均为模拟，不产生真实消费。</view>
+  </view>
+</view>
+
+<view class="skeleton" wx:if="{{loading}}">
+  <view class="sk-block" style="height:240rpx;"></view>
+  <view class="sk-row"><view class="sk-line w80"></view></view>
+</view>

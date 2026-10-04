@@ -1,0 +1,80 @@
+.order-page { padding-bottom: 40rpx; }
+
+.tabs {
+  display: flex;
+  background: #fff;
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  border-bottom: 1rpx solid #f2f2f2;
+}
+.tab {
+  flex: 1;
+  text-align: center;
+  padding: 20rpx 0;
+  font-size: 26rpx;
+  color: #555;
+  position: relative;
+}
+.tab.on { color: #e93b3d; font-weight: bold; }
+.tab.on::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 50%;
+  transform: translateX(-50%);
+  width: 48rpx; height: 6rpx;
+  background: #e93b3d;
+  border-radius: 3rpx;
+}
+.tab-badge {
+  display: inline-block;
+  min-width: 28rpx;
+  height: 28rpx;
+  line-height: 28rpx;
+  background: #e93b3d;
+  color: #fff;
+  font-size: 18rpx;
+  border-radius: 999rpx;
+  margin-left: 6rpx;
+  padding: 0 6rpx;
+}
+
+.order-card {
+  background: #fff;
+  margin: 16rpx 24rpx;
+  border-radius: 16rpx;
+  padding: 20rpx;
+}
+.oc-head { display: flex; justify-content: space-between; align-items: center; padding-bottom: 12rpx; border-bottom: 1rpx solid #f2f2f2; }
+.oc-no { font-size: 24rpx; color: #838383; }
+.oc-status { font-size: 26rpx; font-weight: bold; }
+.s1 { color: #ff9500; }
+.s2 { color: #03a9f4; }
+.s3 { color: #7e57c2; }
+.s4 { color: #e93b3d; }
+.s5 { color: #43a047; }
+.s6 { color: #b0b0b0; }
+.s7 { color: #7e57c2; }
+
+.oc-items { padding: 12rpx 0; }
+.oc-thumb-row { display: flex; align-items: center; }
+.oc-thumb { width: 80rpx; height: 80rpx; border-radius: 10rpx; background: #f0f0f0; margin-right: 12rpx; }
+.oc-count { font-size: 24rpx; color: #838383; }
+.oc-first-name { font-size: 26rpx; color: #555; margin-top: 8rpx; line-height: 1.4; }
+
+.oc-foot { display: flex; justify-content: space-between; align-items: baseline; padding: 8rpx 0; }
+.oc-amount { font-size: 24rpx; color: #555; }
+.oc-time { font-size: 22rpx; color: #b0b0b0; }
+
+.oc-actions { display: flex; justify-content: flex-end; gap: 12rpx; padding-top: 12rpx; border-top: 1rpx solid #f2f2f2; }
+.oc-btn {
+  font-size: 24rpx;
+  padding: 8rpx 24rpx;
+  border-radius: 999rpx;
+  border: 2rpx solid #ddd;
+  color: #555;
+}
+.oc-btn.primary { background: #e93b3d; color: #fff; border-color: #e93b3d; }
+.oc-btn.plain { color: #e93b3d; border-color: #e93b3d; }
+.oc-btn.neutral { color: #838383; border-color: #ddd; }
+.flex1 { flex: 1; }

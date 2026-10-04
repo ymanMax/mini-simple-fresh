@@ -1,112 +1,94 @@
-// pages/vip/vip.js
+// pages/vip/vip.js —— 会员中心（Tab）：会员等级成长 / 权益 / 红包 / 生日福利 / 专享商品（需求8）
+var api = require('../../utils/api.js')
+var toast = require('../../utils/toast.js')
+var badge = require('../../utils/badge.js')
+
 Page({
+  data: {
+    member: null,
+    privileges: [],
+    redPackets: [],
+    products: [],
+    yearlySaving: 0,
+    levels: [],
+    currentLevel: null,
+    nextLevel: null,
+    growthProgress: 0,
+    toNext: 0,
+    birthdayGift: true,
+    loading: true
+  },
 
-    /**
-     * 页面的初始数据
-    */
-    data: {
-        list: [],
-        redbag: [],
-        products: []
-        
-    },
-    showword: function() {
-        wx.showModal({
-            title: '订阅成功',
-            content: '该商品到货之后，会通过微信消息第一时间告诉您',
-            showCancel: false
-        })
-    },
-    /**
-     * 生命周期函数--监听页面加载
-    */
-    toDetailpage: function() {
-        wx.navigateTo({
-            url: '/pages/detail/detail',
-            success: function(res) {},
-            fail: function(res) {},
-            complete: function(res) {},
-        })
-    },
-    totips: function(){
-        wx.showModal({
-            title: '温馨提示',
-            content: '该红包仅限会员领取，快去开通会员吧',
-            showCancel: true,
-            cancelText: '取消',
-            cancelColor: '#999',
-            confirmText: '立即开卡',
-            confirmColor: '#FF6CB3',
-            success: function(res) {},
-            fail: function(res) {},
-            complete: function(res) {},
-        })
-    },
-    onLoad: function (options) {
-        // var height = wx.getSystemInfoSync().windowHeight - 80 - 50;
-        wx.request({
-            url: 'https://localhost:3001/data/vip.json',
-            success: function (res) {
-              // console.log(res)
+  onShow: function () {
+    this.load()
+  },
 
-                this.setData({
-                    list : res.data.data[0].data,
-                    redbag: res.data.data[1].data,
-                    products: res.data.data[2].data
-                })
-                console.log(this.data.list)
-                console.log(this.data.products)
-                console.log(this.data.redbag.length)
-            }.bind(this)
-        })
-    },
+  load: function () {
+    var that = this
+    api.get('/api/vip/home').then(function (data) {
+      that.setData({
+        member: data.member,
+        privileges: data.privileges,
+        redPackets: data.redPackets,
+        products: data.products,
+        yearlySaving: data.yearlySaving,
+        levels: data.levels,
+        currentLevel: data.currentLevel,
+        nextLevel: data.nextLevel,
+        growthProgress: data.growthProgress,
+        toNext: data.toNext,
+        birthdayGift: data.birthdayGift,
+        loading: false
+      })
+    }).catch(function () { that.setData({ loading: false }) })
+  },
 
-    /**
-     * 生命周期函数--监听页面初次渲染完成
-    */
-    onReady: function () {
+  // 开通会员（mock）
+  openVip: function () {
+    wx.showModal({
+      title: '开通会员',
+      content: '开通金卡会员仅需 8 元/月，享专属折扣、每月赠券、优先配送等权益（演示环境）',
+      confirmText: '立即开通',
+      confirmColor: '#e93b3d',
+      success: function (res) {
+        if (res.confirm) toast.success('已开通会员（演示）')
+      }
+    })
+  },
 
-    },
+  // 领取红包 → 领券中心
+  goCoupon: function () {
+    wx.navigateTo({ url: '/pages/coupon/index?tab=center' })
+  },
 
-    /**
-     * 生命周期函数--监听页面显示
-    */
-    onShow: function () {
+  goMyCoupons: function () {
+    wx.navigateTo({ url: '/pages/coupon/index?tab=1' })
+  },
 
-    },
+  goCheckin: function () {
+    wx.navigateTo({ url: '/pages/member/checkin' })
+  },
 
-    /**
-     * 生命周期函数--监听页面隐藏
-    */
-    onHide: function () {
+  // 会员商品
+  goDetail: function (e) {
+    wx.navigateTo({ url: '/pages/detail/detail?id=' + e.currentTarget.dataset.id })
+  },
 
-    },
+  addCart: function (e) {
+    var id = e.currentTarget.dataset.id
+    api.post('/api/cart/add', { goodsId: id, specLabel: '标准装', count: 1 }).then(function () {
+      toast.success('加入购物车成功')
+      badge.refreshCartBadge()
+    })
+  },
 
-    /**
-     * 生命周期函数--监听页面卸载
-    */
-    onUnload: function () {
-
-    },
-
-    /**
-     * 页面相关事件处理函数--监听用户下拉动作
-    */
-    onPullDownRefresh: function () {
-
-    },
-
-    /**
-     * 页面上拉触底事件的处理函数
-    */
-    onReachBottom: function () {
-
-    },
-
-    /**
-     * 用户点击右上角分享
-    */
-    onShareAppMessage: function () {
-
-    }
+  // 到货提醒
+  arrivalReminder: function () {
+    wx.showModal({
+      title: '订阅成功',
+      content: '该商品到货之后，会通过微信消息第一时间通知您',
+      showCancel: false,
+      confirmColor: '#e93b3d'
+    })
+  }
 })

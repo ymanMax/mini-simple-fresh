@@ -1,0 +1,11 @@
+.foot-page { padding-bottom: 40rpx; }
+.clear-bar { text-align: right; padding: 16rpx 32rpx; }
+.clear-btn { display: inline-block; font-size: 24rpx; color: #e93b3d; padding: 8rpx 20rpx; border: 2rpx solid #e93b3d; border-radius: 999rpx; }
+.group-title { padding: 16rpx 32rpx 8rpx; font-size: 26rpx; color: #838383; font-weight: bold; }
+.fp-card { display: flex; align-items: center; gap: 16rpx; }
+.fp-card > image { width: 100rpx; height: 100rpx; border-radius: 12rpx; background: #f0f0f0; }
+.fp-info { flex: 1; }
+.fp-name { font-size: 27rpx; line-height: 1.4; }
+.fp-meta { font-size: 22rpx; color: #838383; margin-top: 4rpx; }
+.fp-del { font-size: 22rpx; color: #e93b3d; border: 2rpx solid #e93b3d; padding: 4rpx 18rpx; border-radius: 999rpx; }
+.flex1 { flex: 1; }

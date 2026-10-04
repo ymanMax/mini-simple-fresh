@@ -1,0 +1,124 @@
+<view class="od-page" wx:if="{{order}}">
+  <!-- 状态头部 -->
+  <view class="status-header s{{order.status}}">
+    <view class="sh-title">{{order.statusText}}</view>
+    <view class="sh-sub" wx:if="{{order.status === 1}}">订单已提交，请尽快完成支付</view>
+    <view class="sh-sub" wx:if="{{order.status === 2}}">商家正在备货，可点击"催发货"体验配送演示</view>
+    <view class="sh-sub" wx:if="{{order.status === 3}}">骑手正在配送，请保持电话畅通</view>
+    <view class="sh-sub" wx:if="{{order.status === 4}}">包裹即将送达，请准备签收</view>
+    <view class="sh-sub" wx:if="{{order.status === 5}}">订单已完成，感谢光临</view>
+    <view class="sh-sub" wx:if="{{order.status === 6}}">订单已取消</view>
+    <view class="sh-sub" wx:if="{{order.status === 7}}">退款成功，金额已原路退回</view>
+  </view>
+
+  <!-- 骑手卡片（配送中） -->
+  <view class="card rider-card" wx:if="{{order.status === 3 && order.rider}}">
+    <image class="rider-avatar" src="{{order.rider.avatar}}"></image>
+    <view class="rider-info">
+      <view class="rider-name">配送员：{{order.rider.name}}</view>
+      <view class="rider-phone">{{order.rider.phone}}</view>
+    </view>
+    <view class="rider-call" bindtap="callRider">联系骑手</view>
+  </view>
+
+  <!-- 配送跟踪 timeline -->
+  <view class="card" wx:if="{{order.timeline.length}}">
+    <view class="block-title">配送跟踪</view>
+    <view class="timeline">
+      <view class="tl-item {{index === 0 ? 'latest' : ''}}" wx:for="{{order.timeline}}" wx:key="time + index">
+        <view class="tl-dot {{index === 0 ? 'on' : ''}}"></view>
+        <view class="tl-line" wx:if="{{index < order.timeline.length - 1}}"></view>
+        <view class="tl-content">
+          <view class="tl-status">{{item.status}}</view>
+          <view class="tl-remark">{{item.remark}}</view>
+          <view class="tl-time">{{item.time}}</view>
+        </view>
+      </view>
+    </view>
+    <!-- 配送演示入口 -->
+    <view class="demo-advance" wx:if="{{order.status === 2 || order.status === 3 || order.status === 4}}" bindtap="urgeOrAdvance">
+      {{order.status === 2 ? '📦 催发货（3秒后自动推进配送）' : '🚚 模拟推进配送进度（3秒）'}}
+    </view>
+    <view class="demo-advance" wx:if="{{order.status === 2}}" bindtap="autoDelivery">⚡ 一键演示完整配送流程</view>
+  </view>
+
+  <!-- 收货地址 -->
+  <view class="card">
+    <view class="block-title">收货信息</view>
+    <view class="addr-name">{{order.addressSnapshot.name}} {{order.addressSnapshot.phone}}</view>
+    <view class="addr-detail">{{order.addressSnapshot.province}}{{order.addressSnapshot.city}}{{order.addressSnapshot.district}}{{order.addressSnapshot.detail}}</view>
+    <view class="row-line">
+      <text class="sub">配送时间</text>
+      <text>{{order.deliverySlot}}</text>
+    </view>
+    <view class="row-line" wx:if="{{order.rider && order.status !== 3}}">
+      <text class="sub">配送员</text>
+      <text>{{order.rider.name}} {{order.rider.phone}}</text>
+    </view>
+  </view>
+
+  <!-- 商品清单 -->
+  <view class="card">
+    <view class="block-title">商品清单（{{order.items.length}}）</view>
+    <view class="od-item" wx:for="{{order.items}}" wx:key="goodsId">
+      <image src="{{item.pic}}" mode="aspectFill"></image>
+      <view class="od-item-info">
+        <view class="od-item-name">{{item.name}}</view>
+        <view class="od-item-spec">{{item.specText}} × {{item.count}}</view>
+      </view>
+      <view class="od-item-price price">￥{{item.priceYuan}}</view>
+    </view>
+  </view>
+
+  <!-- 金额明细（含满减 + 优惠券）-->
+  <view class="card">
+    <view class="block-title">金额明细</view>
+    <view class="amount-row"><text>商品总价</text><text>￥{{order.totalAmountYuan}}</text></view>
+    <view class="amount-row" wx:if="{{order.fullReduceAmountYuan !== '0.00'}}">
+      <text>满减优惠（自动）</text><text class="price">-￥{{order.fullReduceAmountYuan}}</text>
+    </view>
+    <view class="amount-row"><text>优惠券（{{order.couponTitle || '无'}}）</text><text class="price">-￥{{order.discountAmountYuan}}</text></view>
+    <view class="amount-row"><text>配送费{{order.freight === 0 ? '（已免）' : ''}}</text><text>￥{{order.freightYuan}}</text></view>
+    <view class="amount-row total-row">
+      <text>实付金额</text>
+      <text class="price price-big">￥{{order.payAmountYuan}}</text>
+    </view>
+  </view>
+
+  <!-- 售后退款记录 -->
+  <view class="card" wx:if="{{order.refund}}">
+    <view class="block-title">售后退款</view>
+    <view class="amount-row"><text>退款原因</text><text>{{order.refund.reason}}</text></view>
+    <view class="amount-row"><text>退款金额</text><text class="price">￥{{order.payAmountYuan}}</text></view>
+    <view class="amount-row"><text>退款时间</text><text>{{order.refund.time}}</text></view>
+  </view>
+
+  <!-- 订单信息 -->
+  <view class="card">
+    <view class="block-title">订单信息</view>
+    <view class="amount-row"><text>订单号</text><text bindtap="copyOrderNo">{{order.orderNo}} 📋</text></view>
+    <view class="amount-row"><text>下单时间</text><text>{{order.createTimeText}}</text></view>
+    <view class="amount-row"><text>支付方式</text><text>{{order.payType === 1 ? '微信支付' : '货到付款'}}</text></view>
+    <view class="amount-row"><text>配送时段</text><text>{{order.deliverySlot}}</text></view>
+    <view class="amount-row" wx:if="{{order.remark}}"><text>订单备注</text><text>{{order.remark}}</text></view>
+  </view>
+
+  <view style="height: 180rpx;"></view>
+
+  <!-- 底部操作 -->
+  <view class="detail-bar">
+    <view class="db-btn plain" wx:if="{{order.status === 6}}" bindtap="rebuy">再来一单</view>
+    <view class="db-btn plain" wx:if="{{order.status === 1}}" bindtap="cancel">取消订单</view>
+    <view class="db-btn primary" wx:if="{{order.status === 1}}" bindtap="pay">去支付</view>
+    <view class="db-btn primary" wx:if="{{order.status === 4}}" bindtap="confirmReceive">确认收货</view>
+    <view class="db-btn primary" wx:if="{{order.status === 5 && !order.isReviewed}}" bindtap="goReview">去评价</view>
+    <view class="db-btn plain" wx:if="{{order.status === 5}}" bindtap="rebuy">再来一单</view>
+    <view class="db-btn plain" wx:if="{{order.status === 5}}" bindtap="refund">申请退款</view>
+  </view>
+</view>
+
+<view class="skeleton" wx:if="{{loading}}">
+  <view class="sk-block" style="height:240rpx;"></view>
+  <view class="sk-row"><view class="sk-line w80"></view></view>
+  <view class="sk-row"><view class="sk-line w80"></view></view>
+</view>

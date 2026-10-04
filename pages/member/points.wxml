@@ -1,0 +1,62 @@
+<view class="points-page">
+  <!-- 积分头部 -->
+  <view class="points-header">
+    <view class="ph-balance">
+      <view class="ph-num">{{balance}}</view>
+      <view class="ph-label">当前积分</view>
+    </view>
+    <view class="ph-checkin" bindtap="doCheckin">
+      <view wx:if="{{!checkedToday}}">
+        <view class="checkin-btn">每日签到</view>
+        <view class="checkin-sub">连签 {{streak}} 天</view>
+      </view>
+      <view wx:else>
+        <view class="checkin-btn done">今日已签到</view>
+        <view class="checkin-sub">连签 {{streak}} 天</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- Tabs -->
+  <view class="tabs">
+    <view class="tab {{tab === 'detail' ? 'on' : ''}}" data-tab="detail" bindtap="switchTab">积分明细</view>
+    <view class="tab {{tab === 'shop' ? 'on' : ''}}" data-tab="shop" bindtap="switchTab">积分兑换</view>
+  </view>
+
+  <!-- 明细 -->
+  <block wx:if="{{tab === 'detail'}}">
+    <view class="card record" wx:for="{{records}}" wx:key="id">
+      <view class="rec-info">
+        <view class="rec-desc">{{item.desc}}</view>
+        <view class="rec-meta">{{item.typeName}} · {{item.timeText}}</view>
+      </view>
+      <view class="rec-points {{item.isAdd ? 'add' : 'sub'}}">{{item.isAdd ? '+' : ''}}{{item.points}}</view>
+    </view>
+    <view class="empty-page" wx:if="{{!records.length && !loading}}">
+      <image src="/images/empty-order.jpg"></image>
+      <view class="empty-title">暂无积分记录</view>
+    </view>
+    <view class="list-end" wx:if="{{!hasMore && records.length}}">—— 没有更多了 ~ ——</view>
+    <view class="list-end" wx:if="{{hasMore && records.length}}">上拉加载更多</view>
+  </block>
+
+  <!-- 兑换 -->
+  <block wx:if="{{tab === 'shop'}}">
+    <view class="card shop-item" wx:for="{{shops}}" wx:key="id">
+      <view class="shop-icon">{{item.type === 'coupon' ? '券' : '礼'}}</view>
+      <view class="shop-info">
+        <view class="shop-name">{{item.name}}</view>
+        <view class="shop-desc">{{item.desc}}</view>
+        <view class="shop-cost">{{item.cost}} 积分</view>
+      </view>
+      <view class="shop-exchange {{balance < item.cost ? 'disabled' : ''}}" data-id="{{item.id}}" bindtap="exchange">
+        {{balance < item.cost ? '积分不足' : '兑换'}}
+      </view>
+    </view>
+  </block>
+
+  <view class="skeleton" wx:if="{{loading}}">
+    <view class="sk-row"><view class="sk-line w80"></view></view>
+    <view class="sk-row"><view class="sk-line w80"></view></view>
+  </view>
+</view>

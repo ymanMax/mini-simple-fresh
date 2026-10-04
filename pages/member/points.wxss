@@ -1,0 +1,64 @@
+.points-page { padding-bottom: 40rpx; }
+
+.points-header {
+  background: linear-gradient(135deg, #e93b3d, #ff6b6b);
+  margin: 0;
+  padding: 48rpx 32rpx;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #fff;
+}
+.ph-num { font-size: 56rpx; font-weight: bold; }
+.ph-label { font-size: 24rpx; opacity: 0.9; }
+.ph-checkin { text-align: center; }
+.checkin-btn {
+  background: #fff;
+  color: #e93b3d;
+  padding: 12rpx 36rpx;
+  border-radius: 999rpx;
+  font-size: 26rpx;
+  font-weight: bold;
+}
+.checkin-btn.done { background: rgba(255,255,255,.3); color: #fff; }
+.checkin-sub { font-size: 20rpx; margin-top: 8rpx; opacity: 0.9; }
+
+.tabs { display: flex; background: #fff; border-bottom: 1rpx solid #f2f2f2; }
+.tab { flex: 1; text-align: center; padding: 20rpx 0; font-size: 27rpx; color: #555; position: relative; }
+.tab.on { color: #e93b3d; font-weight: bold; }
+.tab.on::after {
+  content: ''; position: absolute; bottom: 0; left: 50%;
+  transform: translateX(-50%);
+  width: 48rpx; height: 6rpx; background: #e93b3d; border-radius: 3rpx;
+}
+
+.record { display: flex; justify-content: space-between; align-items: center; }
+.rec-desc { font-size: 28rpx; }
+.rec-meta { font-size: 22rpx; color: #838383; margin-top: 6rpx; }
+.rec-points { font-size: 34rpx; font-weight: bold; }
+.rec-points.add { color: #43a047; }
+.rec-points.sub { color: #e93b3d; }
+
+.shop-item { display: flex; align-items: center; gap: 16rpx; }
+.shop-icon {
+  width: 80rpx; height: 80rpx;
+  background: #fdecec;
+  color: #e93b3d;
+  border-radius: 16rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 36rpx;
+  font-weight: bold;
+}
+.shop-info { flex: 1; }
+.shop-name { font-size: 28rpx; font-weight: 600; }
+.shop-desc { font-size: 22rpx; color: #838383; margin-top: 4rpx; }
+.shop-cost { color: #e93b3d; font-weight: bold; font-size: 26rpx; margin-top: 4rpx; }
+.shop-exchange {
+  background: #e93b3d; color: #fff;
+  padding: 10rpx 28rpx;
+  border-radius: 999rpx;
+  font-size: 24rpx;
+}
+.shop-exchange.disabled { background: #ddd; }

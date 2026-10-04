@@ -1,0 +1,83 @@
+.review-page { padding-bottom: 160rpx; }
+
+.rv-goods { display: flex; align-items: center; padding-bottom: 16rpx; border-bottom: 1rpx solid #f2f2f2; margin-bottom: 16rpx; }
+.rv-goods image { width: 90rpx; height: 90rpx; border-radius: 12rpx; background: #f0f0f0; }
+.rv-goods-name { margin-left: 16rpx; font-size: 28rpx; font-weight: 600; }
+
+.rv-row { display: flex; align-items: center; padding: 14rpx 0; }
+.rv-row.column { flex-direction: column; align-items: flex-start; }
+.rv-label { font-size: 26rpx; color: #555; width: 160rpx; flex-shrink: 0; }
+.rv-row.column .rv-label { width: auto; margin-bottom: 12rpx; }
+
+.stars { font-size: 36rpx; }
+.star-on { color: #ffb400; }
+.star-off { color: #ddd; }
+
+.tag-cloud { display: flex; flex-wrap: wrap; }
+.chip-tag {
+  font-size: 24rpx;
+  padding: 8rpx 22rpx;
+  border-radius: 999rpx;
+  background: #f0f1f3;
+  color: #555;
+  margin: 0 12rpx 12rpx 0;
+}
+.chip-tag.on { background: #fdecec; color: #e93b3d; border: 2rpx solid #e93b3d; }
+
+.rv-text {
+  width: 100%;
+  background: #f0f1f3;
+  border-radius: 12rpx;
+  padding: 16rpx;
+  font-size: 26rpx;
+  min-height: 120rpx;
+  box-sizing: border-box;
+}
+
+.photo-grid { display: flex; flex-wrap: wrap; gap: 12rpx; }
+.photo { width: 140rpx; height: 140rpx; border-radius: 12rpx; position: relative; overflow: hidden; }
+.photo image { width: 100%; height: 100%; }
+.photo-del {
+  position: absolute;
+  top: 0; right: 0;
+  width: 36rpx; height: 36rpx;
+  background: rgba(0,0,0,.6);
+  color: #fff;
+  font-size: 22rpx;
+  text-align: center;
+  line-height: 36rpx;
+}
+.add-photo {
+  background: #f0f1f3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 48rpx;
+  color: #b0b0b0;
+}
+
+.block-title { font-size: 30rpx; font-weight: bold; margin-bottom: 12rpx; }
+
+.submit-bar {
+  position: fixed;
+  left: 0; right: 0; bottom: 0;
+  background: #fff;
+  padding: 16rpx 24rpx;
+  display: flex;
+  align-items: center;
+  gap: 24rpx;
+  box-shadow: 0 -2rpx 12rpx rgba(0,0,0,.06);
+  z-index: 50;
+}
+.sb-tip { flex: 1; font-size: 24rpx; color: #b0b0b0; }
+.sb-btn {
+  background: #e93b3d;
+  color: #fff;
+  padding: 0 56rpx;
+  height: 80rpx;
+  line-height: 80rpx;
+  border-radius: 999rpx;
+  font-size: 30rpx;
+}
+.sb-btn.disabled { background: #ddd; }
+.flex1 { flex: 1; }

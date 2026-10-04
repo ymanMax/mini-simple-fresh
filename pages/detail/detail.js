@@ -1,120 +1,176 @@
-// pages/order/order.js
+// pages/detail/detail.js —— 商品详情：轮播 / 规格选择 / 加购 / 收藏 / 评价 / 看了又看
+var api = require('../../utils/api.js')
+var fmt = require('../../utils/format.js')
+var toast = require('../../utils/toast.js')
+var badge = require('../../utils/badge.js')
+var checkout = require('../../utils/checkout.js')
+var imgBehavior = require('../../utils/imgBehavior.js')
+
 Page({
+  behaviors: [imgBehavior],
+  data: {
+    goods: null,
+    reviews: [],
+    recommend: [],
+    avgScore: 5,
+    isCollect: false,
+    loading: true,
+    // 规格弹层
+    showSpec: false,
+    specIndex: 0,
+    quantity: 1,
+    panelMode: 'cart', // cart | buy
+    swiperCurrent: 0,
+    cartCount: 0,
+    panelPriceYuan: '0.00'
+  },
 
-    /**
-     * 页面的初始数据
-     */
-    data: {
-        images: [],
-        name: '',
-        subtitle: '',
-        sales_volume: 0,
-        price: 0,
-        vip_price: 0,
-        country: '',
-        delivery_style: '',
-        promotion: [],
-        securityTitle: '',
-        securityText: '',
-        weight: 0,
-        pack: '',
-        storage_time: '',
-        storage_method: '',
-        instruction: [],
-        priceStr: 0,
-    },
+  onLoad: function (options) {
+    var id = options.id || options.sku
+    this.loadDetail(options.id ? { id: options.id } : { sku: options.sku })
+  },
 
-    /**
-     * 生命周期函数--监听页面加载
-     */
-    onLoad: function(options) {
-        var that = this;
-        // 发送数据请求
-        wx.request({
-            url: 'https://localhost:3001/data/detail.json',
-            // 监听返回
-            success: function(res) {
-                console.log(res)
-                this.setData({
-                    images: res.data.images,
-                    name: res.data.name,
-                    sales_volume: res.data.sales_volume,
-                    subtitle: res.data.subtitle,
-                    price: res.data.price,
-                    vip_price: res.data.vip_price,
-                    country: res.data.country,
-                    delivery_style: res.data.delivery_style,
-                    promotion: res.data.promotion,
-                    securityTitle: res.data.securityTitle,
-                    securityText: res.data.securityText,
-                    weight: res.data.weight,
-                    pack: res.data.pack,
-                    storage_time: res.data.storage_time,
-                    storage_method: res.data.storage_method,
-                    instruction: res.data.instruction
-                })
-                //   console.log(res.data.images)
-            }.bind(this)
-        })
-    },
+  onShow: function () {
+    badge.refreshCartBadge()
+    this.setData({ cartCount: badge.cartCount() })
+  },
 
-    // 跳转到购物车页面 
-    // intoMemberPage:function(){
-    // 	wx.switchTab({
-    // 		url: '',
-    // 	})
-    // },
+  loadDetail: function (query) {
+    var that = this
+    this.setData({ loading: true })
+    api.get('/api/goods/detail', query).then(function (data) {
+      that.setData({
+        goods: data.goods,
+        reviews: data.reviews,
+        recommend: data.recommend,
+        avgScore: data.avgScore,
+        isCollect: data.isCollect,
+        loading: false
+      })
+      wx.setNavigationBarTitle({ title: data.goods.categoryName || '商品详情' })
+    }).catch(function () {
+      that.setData({ loading: false })
+    })
+  },
 
-	intoShoppingCar:function() {
+  onSwiperChange: function (e) {
+    this.setData({ swiperCurrent: e.detail.current })
+  },
 
-	},
+  // ===== 规格弹层 =====
+  openSpec: function (e) {
+    var mode = e.currentTarget.dataset.mode || 'cart'
+    this.setData({ showSpec: true, panelMode: mode, quantity: 1, specIndex: 0 })
+    this.computePanelPrice()
+  },
 
-    /**
-     * 生命周期函数--监听页面初次渲染完成
-     */
-    onReady: function() {
+  closeSpec: function () {
+    this.setData({ showSpec: false })
+  },
 
-    },
+  stopProp: function () {},
 
-    /**
-     * 生命周期函数--监听页面显示
-     */
-    onShow: function() {
+  chooseSpec: function (e) {
+    this.setData({ specIndex: Number(e.currentTarget.dataset.index) })
+    this.computePanelPrice()
+  },
 
-    },
+  computePanelPrice: function () {
+    var spec = this.currentSpec()
+    this.setData({ panelPriceYuan: fmt.yuan(spec.price) })
+  },
 
-    /**
-     * 生命周期函数--监听页面隐藏
-     */
-    onHide: function() {
+  changeQty: function (e) {
+    var delta = Number(e.currentTarget.dataset.delta)
+    var stock = this.currentSpec().stock
+    var q = this.data.quantity + delta
+    q = Math.max(1, Math.min(q, stock))
+    this.setData({ quantity: q })
+  },
 
-    },
+  currentSpec: function () {
+    var specs = this.data.goods.specs
+    return specs[0].values[this.data.specIndex]
+  },
 
-    /**
-     * 生命周期函数--监听页面卸载
-     */
-    onUnload: function() {
-
-    },
-
-    /**
-     * 页面相关事件处理函数--监听用户下拉动作
-     */
-    onPullDownRefresh: function() {
-
-    },
-
-    /**
-     * 页面上拉触底事件的处理函数
-     */
-    onReachBottom: function() {
-
-    },
-
-    /**
-     * 用户点击右上角分享
-     */
-    onShareAppMessage: function() {
-
+  confirmSpec: function () {
+    var g = this.data.goods
+    var spec = this.currentSpec()
+    var count = this.data.quantity
+    if (this.data.panelMode === 'buy') {
+      // 立即购买
+      checkout.setCheckout({
+        mode: 'buyNow',
+        items: [{
+          goodsId: g.id, sku: g.sku, name: g.name, pic: g.pic,
+          specText: spec.label, price: spec.price, count: count
+        }]
+      })
+      this.setData({ showSpec: false })
+      wx.navigateTo({ url: '/pages/buy/buy?mode=buyNow' })
+      return
     }
+    api.post('/api/cart/add', { goodsId: g.id, specLabel: spec.label, count: count }).then(function () {
+      toast.success('加入购物车成功')
+      badge.refreshCartBadge()
+    })
+    this.setData({ showSpec: false, quantity: 1, specIndex: 0 })
+  },
+
+  // ===== 收藏 =====
+  toggleCollect: function () {
+    var that = this
+    api.post('/api/favorites/toggle', { goodsId: this.data.goods.id }).then(function (data) {
+      that.setData({ isCollect: data.isCollect })
+      toast.success(data.isCollect ? '已收藏' : '已取消收藏')
+    })
+  },
+
+  goCart: function () {
+    wx.switchTab({ url: '/pages/shop/shop' })
+  },
+
+  goRecommend: function (e) {
+    var id = e.currentTarget.dataset.id
+    wx.redirectTo({ url: '/pages/detail/detail?id=' + id })
+  },
+
+  goReviewList: function () {
+    // 评价区本地展示，无独立页；滚动到评价
+    wx.pageScrollTo({ selector: '#reviews', duration: 300 })
+  },
+
+  // 图片点击全屏预览（需求6.1）
+  previewImage: function (e) {
+    var idx = e.currentTarget.dataset.index
+    wx.previewImage({
+      current: this.data.goods.pics[idx],
+      urls: this.data.goods.pics
+    })
+  },
+
+  previewReview: function (e) {
+    var idx = e.currentTarget.dataset.index
+    var images = this.data.reviews[idx].images
+    if (!images || !images.length) return
+    wx.previewImage({ current: images[0], urls: images })
+  },
+
+  // 分享（需求6.1）
+  onShareAppMessage: function () {
+    var g = this.data.goods
+    return {
+      title: g.name + ' ￥' + g.minPriceYuan + '，鲜生活产地直发！',
+      imageUrl: g.pic,
+      path: '/pages/detail/detail?sku=' + g.sku
+    }
+  },
+
+  onShareTimeline: function () {
+    var g = this.data.goods
+    return {
+      title: g.name + ' ￥' + g.minPriceYuan + '，鲜生活产地直发！',
+      query: 'id=' + g.id
+    }
+  }
 })

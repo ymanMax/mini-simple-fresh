@@ -1,0 +1,93 @@
+<view class="review-page" wx:if="{{order}}">
+  <!-- 逐商品评价 -->
+  <view class="card" wx:for="{{goodsReviews}}" wx:key="goodsId" wx:for-index="idx">
+    <view class="rv-goods">
+      <image src="{{item.pic}}" mode="aspectFill"></image>
+      <view class="rv-goods-name">{{item.name}}</view>
+    </view>
+
+    <!-- 星级 -->
+    <view class="rv-row">
+      <text class="rv-label">商品评分</text>
+      <view class="stars">
+        <text
+          wx:for="{{[1,2,3,4,5]}}" wx:for-item="star" wx:key="*this"
+          class="{{star <= item.score ? 'star-on' : 'star-off'}}"
+          data-idx="{{idx}}" data-score="{{star}}" bindtap="setScore">★</text>
+      </view>
+    </view>
+
+    <!-- 快捷标签 -->
+    <view class="rv-row">
+      <text class="rv-label">快捷标签</text>
+      <view class="tag-cloud">
+        <text
+          wx:for="{{item.chips}}" wx:for-item="chip" wx:key="name"
+          class="chip-tag {{chip.on ? 'on' : ''}}"
+          data-idx="{{idx}}" data-tag="{{chip.name}}" bindtap="toggleTag">{{chip.name}}</text>
+      </view>
+    </view>
+
+    <!-- 文字 -->
+    <view class="rv-row column">
+      <text class="rv-label">评价内容（100字以内）</text>
+      <textarea class="rv-text" placeholder="说说这个商品的口感/新鲜度/包装吧..." value="{{item.content}}" data-idx="{{idx}}" bindinput="onContent" maxlength="100"></textarea>
+    </view>
+
+    <!-- 晒图 -->
+    <view class="rv-row column">
+      <text class="rv-label">晒图（最多6张）</text>
+      <view class="photo-grid">
+        <view class="photo" wx:for="{{item.images}}" wx:for-item="ph" wx:for-index="pi" wx:key="*this">
+          <image src="{{ph}}" mode="aspectFill"></image>
+          <view class="photo-del" data-idx="{{idx}}" data-i="{{pi}}" bindtap="removeImage">✕</view>
+        </view>
+        <view class="photo add-photo" wx:if="{{item.images.length < 6}}" data-idx="{{idx}}" bindtap="chooseImages">＋</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 店铺服务评价 -->
+  <view class="card">
+    <view class="block-title">店铺服务评价</view>
+    <view class="rv-row">
+      <text class="rv-label">商品新鲜度</text>
+      <view class="stars">
+        <text wx:for="{{[1,2,3,4,5]}}" wx:for-item="star" wx:key="*this"
+          class="{{star <= shopScore.fresh ? 'star-on' : 'star-off'}}"
+          data-dim="fresh" data-score="{{star}}" bindtap="setShopScore">★</text>
+      </view>
+    </view>
+    <view class="rv-row">
+      <text class="rv-label">配送速度</text>
+      <view class="stars">
+        <text wx:for="{{[1,2,3,4,5]}}" wx:for-item="star" wx:key="*this"
+          class="{{star <= shopScore.speed ? 'star-on' : 'star-off'}}"
+          data-dim="speed" data-score="{{star}}" bindtap="setShopScore">★</text>
+      </view>
+    </view>
+    <view class="rv-row">
+      <text class="rv-label">包装质量</text>
+      <view class="stars">
+        <text wx:for="{{[1,2,3,4,5]}}" wx:for-item="star" wx:key="*this"
+          class="{{star <= shopScore.package ? 'star-on' : 'star-off'}}"
+          data-dim="package" data-score="{{star}}" bindtap="setShopScore">★</text>
+      </view>
+    </view>
+    <view class="rv-row column">
+      <text class="rv-label">整体评价</text>
+      <textarea class="rv-text" placeholder="对店铺的整体印象..." value="{{shopText}}" bindinput="onShopText" maxlength="100"></textarea>
+    </view>
+  </view>
+
+  <view style="height: 140rpx;"></view>
+
+  <view class="submit-bar">
+    <view class="sb-tip">提交评价可获 20 积分</view>
+    <view class="sb-btn {{submitting ? 'disabled' : ''}}" bindtap="submit">{{submitting ? '提交中...' : '提交评价'}}</view>
+  </view>
+</view>
+
+<view class="skeleton" wx:if="{{loading}}">
+  <view class="sk-row"><view class="sk-block sk-img"></view><view class="flex1"><view class="sk-line w80"></view><view class="sk-line w60"></view></view></view>
+</view>

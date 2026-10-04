@@ -1,0 +1,156 @@
+<view class="cat-page">
+  <!-- 左侧分类导航 -->
+  <view class="side-nav">
+    <view
+      class="nav-item {{currentId === item.id ? 'active' : ''}}"
+      wx:for="{{categories}}" wx:key="id"
+      data-id="{{item.id}}" data-name="{{item.name}}"
+      bindtap="onTapCat">
+      <image class="nav-icon" src="{{item.icon}}" binderror="imgError" data-list="categories" data-index="{{index}}" data-field="icon"></image>
+      <view class="nav-name">{{item.name}}</view>
+      <view class="nav-count">{{item.count}}</view>
+    </view>
+  </view>
+
+  <!-- 右侧内容 -->
+  <view class="content">
+    <!-- 分类内搜索框 -->
+    <view class="search-wrap">
+      <view class="search-box">
+        <view class="s-icon">🔍</view>
+        <input
+          value="{{keyword}}"
+          placeholder="搜索当前分类商品"
+          confirm-type="search"
+          bindinput="onSearchInput"
+        />
+        <view class="clear" wx:if="{{keyword}}" bindtap="clearKeyword">✕</view>
+      </view>
+      <view class="cancel-btn" bindtap="clearKeyword">取消</view>
+    </view>
+
+    <!-- 吸顶排序栏 -->
+    <view class="sort-bar">
+      <view class="sort-item {{sort === 'default' ? 'on' : ''}}" data-sort="default" bindtap="tapSort">综合</view>
+      <view class="sort-item {{sort === 'price_asc' || sort === 'price_desc' ? 'on' : ''}}" data-sort="price" bindtap="tapSort">
+        价格
+        <text class="arrow">{{sort === 'price_desc' ? '↓' : '↑'}}</text>
+      </view>
+      <view class="sort-item {{sort === 'sells' ? 'on' : ''}}" data-sort="sells" bindtap="tapSort">销量</view>
+      <view class="filter-entry" bindtap="openPanel">
+        <text class="filter-icon">⚙</text>筛选
+      </view>
+    </view>
+
+    <!-- 结果计数（搜索/筛选生效时）-->
+    <view class="result-count" wx:if="{{keyword || filters.inStockOnly || filters.discount.length || filters.tags.length || filters.minPrice || filters.maxPrice}}">
+      共 {{resultCount}} 件商品
+    </view>
+
+    <!-- 骨架屏 -->
+    <block wx:if="{{loading}}">
+      <view class="skeleton" style="padding-left:20rpx;">
+        <view class="sk-row"><view class="sk-block sk-img"></view><view class="flex1"><view class="sk-line w80"></view><view class="sk-line w60"></view></view></view>
+        <view class="sk-row"><view class="sk-block sk-img"></view><view class="flex1"><view class="sk-line w80"></view><view class="sk-line w60"></view></view></view>
+      </view>
+    </block>
+
+    <block wx:else>
+      <!-- 推荐商品（仅无搜索/筛选时展示）-->
+      <view class="recommend" wx:if="{{recommend.length && !keyword && !filters.inStockOnly && !filters.discount.length && !filters.tags.length && !filters.minPrice && !filters.maxPrice}}">
+        <view class="rec-title">⭐ {{currentName}} · 推荐</view>
+        <scroll-view scroll-x show-scrollbar="{{false}}" class="rec-scroll">
+          <view class="rec-item" wx:for="{{recommend}}" wx:key="id" data-id="{{item.id}}" bindtap="goDetail">
+            <image src="{{item.pic}}" mode="aspectFill" binderror="imgError" data-list="recommend" data-index="{{index}}" data-field="pic"></image>
+            <view class="rec-name">{{item.name}}</view>
+            <view class="rec-price">￥{{item.minPriceYuan}}</view>
+          </view>
+        </scroll-view>
+      </view>
+
+      <!-- 商品列表 -->
+      <view class="goods-card" wx:for="{{goods}}" wx:key="id" data-id="{{item.id}}" bindtap="goDetail">
+        <image class="g-pic" src="{{item.pic}}" mode="aspectFill" binderror="imgError" data-list="goods" data-index="{{index}}" data-field="pic"></image>
+        <view class="g-info">
+          <view class="g-name">{{item.name}}</view>
+          <view class="g-sub">{{item.subtitle}} · 销量{{item.numberSells}}份</view>
+          <view class="tag-row">
+            <text class="tag" wx:for="{{item.tags}}" wx:for-item="t" wx:key="*this">{{t}}</text>
+          </view>
+          <view class="g-bottom">
+            <view class="price price-big">￥{{item.minPriceYuan}}</view>
+            <view class="price-origin">￥{{item.originalPriceYuan}}</view>
+            <view class="add-btn" catchtap="addCart" data-id="{{item.id}}">＋</view>
+          </view>
+        </view>
+      </view>
+
+      <!-- 空态：搜索/筛选无结果 -->
+      <view class="empty-page" wx:if="{{!goods.length}}">
+        <image src="/images/empty-order.jpg"></image>
+        <view class="empty-title">未找到相关商品</view>
+        <view class="empty-desc">换个关键词或调整筛选条件试试</view>
+        <view class="empty-btn" bindtap="clearAllAndReload">清空搜索和筛选</view>
+      </view>
+
+      <view class="list-end" wx:if="{{!hasMore && goods.length}}">—— 没有更多了 ~ ——</view>
+      <view class="list-end" wx:if="{{hasMore && goods.length}}">上拉加载更多</view>
+    </block>
+  </view>
+
+  <!-- 筛选抽屉 -->
+  <view class="mask" wx:if="{{panelOpen}}" bindtap="closePanel"></view>
+  <view class="filter-panel {{panelOpen ? 'show' : ''}}">
+    <view class="fp-title">
+      <text>自定义筛选</text>
+      <text class="fp-close" bindtap="closePanel">✕</text>
+    </view>
+
+    <!-- 价格区间（单位：元）-->
+    <view class="fp-block">
+      <view class="fp-label">价格区间（元）</view>
+      <view class="price-range">
+        <input type="digit" placeholder="最低价" value="{{draft.minPrice}}" data-field="minPrice" bindinput="onPriceInput" />
+        <text class="dash">—</text>
+        <input type="digit" placeholder="最高价" value="{{draft.maxPrice}}" data-field="maxPrice" bindinput="onPriceInput" />
+      </view>
+      <view class="fp-hint">支持单边填写，内部按「分」参与比较</view>
+    </view>
+
+    <!-- 仅看有货 -->
+    <view class="fp-block">
+      <view class="fp-label">仅看有货</view>
+      <view class="switch {{draft.inStockOnly ? 'on' : ''}}" bindtap="toggleStock">
+        <view class="switch-dot"></view>
+      </view>
+    </view>
+
+    <!-- 优惠类型（多选胶囊）-->
+    <view class="fp-block">
+      <view class="fp-label">优惠类型</view>
+      <view class="chip-cloud">
+        <text
+          class="chip {{draft.discount.indexOf(item.key) >= 0 ? 'on' : ''}}"
+          wx:for="{{discountOptions}}" wx:key="key"
+          data-key="{{item.key}}" bindtap="toggleDiscount">{{item.name}}</text>
+      </view>
+    </view>
+
+    <!-- 商品标签（多选胶囊）-->
+    <view class="fp-block">
+      <view class="fp-label">商品标签</view>
+      <view class="chip-cloud">
+        <text
+          class="chip {{draft.tags.indexOf(item) >= 0 ? 'on' : ''}}"
+          wx:for="{{allTags}}" wx:key="*this"
+          data-tag="{{item}}" bindtap="toggleTag">{{item}}</text>
+      </view>
+    </view>
+
+    <!-- 底部操作 -->
+    <view class="fp-actions">
+      <view class="fp-reset" bindtap="resetFilters">重置</view>
+      <view class="fp-confirm" bindtap="confirmFilters">确定</view>
+    </view>
+  </view>
+</view>

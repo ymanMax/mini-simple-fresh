@@ -1,1 +1,5 @@
-{}
+{
+  "navigationBarTitleText": "鲜生活",
+  "enablePullDownRefresh": true,
+  "backgroundTextStyle": "dark"
+}

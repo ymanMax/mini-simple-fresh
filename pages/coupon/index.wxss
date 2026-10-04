@@ -1,0 +1,66 @@
+.coupon-page { padding-bottom: 40rpx; }
+
+.tabs {
+  display: flex;
+  background: #fff;
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  border-bottom: 1rpx solid #f2f2f2;
+}
+.tab {
+  flex: 1;
+  text-align: center;
+  padding: 20rpx 0;
+  font-size: 27rpx;
+  color: #555;
+  position: relative;
+}
+.tab.on { color: #e93b3d; font-weight: bold; }
+.tab.on::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 50%;
+  transform: translateX(-50%);
+  width: 48rpx; height: 6rpx;
+  background: #e93b3d;
+  border-radius: 3rpx;
+}
+
+.coupon-card {
+  display: flex;
+  background: #fff;
+  margin: 16rpx 24rpx;
+  border-radius: 16rpx;
+  overflow: hidden;
+}
+.cc-left {
+  width: 200rpx;
+  background: linear-gradient(135deg, #e93b3d, #ff6b6b);
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 32rpx 0;
+  position: relative;
+}
+.cc-left.claimed { background: #ccc; }
+.cc-left.off { background: #ccc; }
+.cc-amount { font-size: 48rpx; font-weight: bold; }
+.cc-rule { font-size: 20rpx; margin-top: 4rpx; opacity: 0.95; }
+.cc-mid { flex: 1; padding: 24rpx; }
+.cc-name { font-size: 30rpx; font-weight: bold; }
+.cc-scope { font-size: 22rpx; color: #838383; margin-top: 8rpx; }
+.cc-expire { font-size: 20rpx; color: #b0b0b0; margin-top: 8rpx; }
+.cc-btn {
+  align-self: center;
+  margin-right: 24rpx;
+  padding: 12rpx 28rpx;
+  background: #e93b3d;
+  color: #fff;
+  border-radius: 999rpx;
+  font-size: 24rpx;
+}
+.cc-btn.claimed { background: #ddd; }
+.cc-btn.off { background: #ddd; color: #fff; }

@@ -1,23 +1,41 @@
-
 {
-  "pages":[
+  "pages": [
     "pages/index/index",
-    "pages/shop/shop",
-    "pages/logs/logs",
     "pages/vip/vip",
+    "pages/shop/shop",
     "pages/me/me",
     "pages/detail/detail",
-    "pages/search/search"
+    "pages/search/search",
+    "pages/buy/buy",
+    "pages/category/index",
+    "pages/logs/logs",
+    "pages/order/list",
+    "pages/order/detail",
+    "pages/order/review",
+    "pages/address/list",
+    "pages/address/edit",
+    "pages/coupon/index",
+    "pages/member/points",
+    "pages/member/checkin",
+    "pages/my/collect",
+    "pages/my/footprint",
+    "pages/promotion/index",
+    "pages/message/index",
+    "pages/group/index",
+    "pages/company/company"
   ],
-  "window":{
-    "backgroundTextStyle":"light",
+  "window": {
+    "backgroundTextStyle": "dark",
+    "backgroundColor": "#f5f6f7",
     "navigationBarBackgroundColor": "#fff",
-    "navigationBarTitleText": "每日优鲜",
-    "navigationBarTextStyle":"black"
+    "navigationBarTitleText": "鲜生活",
+    "navigationBarTextStyle": "black",
+    "enablePullDownRefresh": false
   },
   "tabBar": {
-    "color": "#999",
-    "selectedColor": "red",
+    "color": "#838383",
+    "selectedColor": "#e93b3d",
+    "backgroundColor": "#ffffff",
     "list": [
       {
         "pagePath": "pages/index/index",

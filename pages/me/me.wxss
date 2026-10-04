@@ -1,103 +1,87 @@
-.user {
-    position: relative;
-    padding: 20px 15px;
-    height: 60px;
-    background-color: #FAFAFA;
-}
-arrdow {
-    display: inline-block;
-    margin-left: 5px;
-}
-.pic {
-    display: block;
-    overflow: hidden;
-    height: 60px;
-    width: 60px;
-    border: 1px solid transparent;
-    border-radius: 100px;
-}
-.userinfo {
-    position: absolute;
-    top: 28px;
-    left: 85px;
-}
-.username {
-    margin-bottom: 5px;
-    font-weight: bold;
-}
-.ber {
-    font-size: 10px;
-    background-color: #CACAC8;
-    border-radius: 15px;
-    height: 15px;
-    width: 40px;
-    padding: 0px 5px;
-    border: 1px solid transparent;
-}
-.username {
-    display: inline-block;
+.me-page { padding-bottom: 40rpx; }
 
+/* 用户头部 */
+.user-header {
+  background: linear-gradient(135deg, #e93b3d, #ff6b6b);
+  margin: 0;
+  padding: 48rpx 32rpx 32rpx;
+  color: #fff;
 }
+.uh-top { display: flex; align-items: center; gap: 20rpx; }
+.uh-avatar {
+  width: 110rpx; height: 110rpx;
+  border-radius: 50%;
+  border: 3rpx solid rgba(255,255,255,.6);
+  background: #fff;
+}
+.uh-info { flex: 1; }
+.uh-name { font-size: 34rpx; font-weight: bold; }
+.uh-level { font-size: 22rpx; opacity: 0.9; margin-top: 6rpx; }
+.growth-mini { margin-top: 10rpx; }
+.gm-bar { width: 100%; height: 10rpx; background: rgba(255,255,255,.3); border-radius: 999rpx; overflow: hidden; }
+.gm-fill { height: 100%; background: #fff; border-radius: 999rpx; }
+.gm-text { font-size: 18rpx; opacity: 0.9; margin-top: 4rpx; }
+.login-btn {
+  background: #fff;
+  color: #e93b3d;
+  font-size: 24rpx;
+  padding: 8rpx 24rpx;
+  border-radius: 999rpx;
+  line-height: 1.6;
+  margin: 0;
+}
+.login-btn::after { border: none; }
 
+.uh-stats {
+  display: flex;
+  margin-top: 28rpx;
+  background: rgba(255,255,255,.18);
+  border-radius: 16rpx;
+  padding: 18rpx 0;
+}
+.stat { flex: 1; text-align: center; }
+.stat-num { font-size: 34rpx; font-weight: bold; }
+.stat-label { font-size: 22rpx; opacity: 0.9; margin-top: 4rpx; }
 
-.member {
-    padding: 20px 10px 0px 10px;
-    font-size: 12px;
-    position: relative;
+/* 订单快捷 */
+.order-quick { padding: 24rpx; }
+.oq-head { margin-bottom: 20rpx; }
+.all-orders { font-size: 24rpx; color: #838383; }
+.oq-grid { display: flex; }
+.oq-item {
+  flex: 1;
+  text-align: center;
+  position: relative;
 }
-.member .m-title {
-    font-size: 18px;
-    font-weight: bold;
-}
-.member .m-go {
-    position: absolute;
-    top:20px;
-    right: 15px;
-    color: #666;
-}
-.member .m-text {
-    padding: 2px 0px;
-}
-.member .m-text text {
-    color: #D45A89;
-}
+.oq-icon { font-size: 44rpx; }
+.oq-label { font-size: 22rpx; color: #555; margin-top: 6rpx; }
+.oq-item .badge-dot { right: 10rpx; top: -6rpx; }
 
-.i {
-    flex: 1;
-    text-align: center;
+/* 菜单 */
+.menu-group { padding: 8rpx 24rpx; }
+.group-title { font-size: 26rpx; color: #838383; padding: 16rpx 0 4rpx; }
+.menu-item {
+  display: flex;
+  align-items: center;
+  padding: 22rpx 0;
+  border-bottom: 1rpx solid #f2f2f2;
+  position: relative;
 }
-.icon {
-    display: flex;
-    border-bottom: 1px solid #999;
-    padding: 20px 0 30px 0px;
+.menu-item:last-child { border-bottom: none; }
+.mi-icon { font-size: 34rpx; width: 56rpx; }
+.mi-name { flex: 1; font-size: 28rpx; }
+.mi-red {
+  min-width: 28rpx; height: 28rpx;
+  background: #e93b3d;
+  color: #fff;
+  font-size: 18rpx;
+  border-radius: 999rpx;
+  text-align: center;
+  line-height: 28rpx;
+  margin-right: 16rpx;
+  padding: 0 6rpx;
+  box-sizing: border-box;
 }
-.icon image {
-    width: 30px;
-    height: 30px;
-}
-.icon .text {
-    font-size: 12px;
-}
-
-
-
-
-.ul {
-    padding: 0px 10px;
-}
-.ul .li {
-    border-bottom: 1px solid #999;
-    padding: 15px 0px;
-}
-.gt {
-    float: right;
-    margin-right: 5px;
-}
-.value {
-    float: right;
-    margin-right: 10px;
-}
-.list-arrdow {
-    float: right;
-    margin-top: 7px;
-}
+.mi-arrow { color: #b0b0b0; font-size: 36rpx; }
+.block-title { font-size: 30rpx; font-weight: bold; }
+.flex-between { display: flex; align-items: center; justify-content: space-between; }

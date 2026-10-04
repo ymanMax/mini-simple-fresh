@@ -1,0 +1,25 @@
+<view class="collect-page">
+  <view class="grid" wx:if="{{list.length}}">
+    <view class="collect-card" wx:for="{{list}}" wx:key="id">
+      <image src="{{item.pic}}" mode="aspectFill" data-id="{{item.id}}" bindtap="goDetail"></image>
+      <view class="cc-info">
+        <view class="cc-name">{{item.name}}</view>
+        <view class="cc-bottom">
+          <view class="price">￥{{item.minPriceYuan}}</view>
+          <view class="cc-del" data-id="{{item.id}}" bindtap="removeFav">取消收藏</view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="empty-page" wx:if="{{!list.length && !loading}}">
+    <image src="/images/empty-order.jpg"></image>
+    <view class="empty-title">还没有收藏的商品</view>
+    <view class="empty-desc">在商品详情页点击爱心即可收藏</view>
+    <view class="empty-btn" bindtap="goShop">去逛逛</view>
+  </view>
+
+  <view class="skeleton" wx:if="{{loading}}">
+    <view class="sk-row"><view class="sk-block sk-img"></view><view class="flex1"><view class="sk-line w80"></view><view class="sk-line w60"></view></view></view>
+  </view>
+</view>

@@ -1,0 +1,59 @@
+<view class="group-page">
+  <view class="tabs">
+    <view class="tab {{tab === 'active' ? 'on' : ''}}" data-tab="active" bindtap="switchTab">拼团活动</view>
+    <view class="tab {{tab === 'mine' ? 'on' : ''}}" data-tab="mine" bindtap="switchTab">我的拼团</view>
+  </view>
+
+  <!-- 拼团活动 -->
+  <block wx:if="{{tab === 'active'}}">
+    <view class="card group-card" wx:for="{{active}}" wx:key="id">
+      <image src="{{item.pic}}" mode="aspectFill" data-gid="{{item.goodsId}}" bindtap="goDetail"></image>
+      <view class="g-info">
+        <view class="g-name">{{item.name}}</view>
+        <view class="g-rules">{{item.rules}}</view>
+        <view class="g-price-row">
+          <view class="price">拼团 ￥{{item.groupPrice / 100}}</view>
+          <view class="price-origin">￥{{item.originalPrice / 100}}</view>
+        </view>
+        <view class="g-progress">
+          <view class="gp-bar">
+            <view class="gp-fill" style="width: {{item.joinedCount / item.requiredCount * 100}}%;"></view>
+          </view>
+          <text class="gp-text">{{item.joinedCount}}/{{item.requiredCount}} 人 · {{item.endTime}}</text>
+        </view>
+        <view class="g-members">
+          <image wx:for="{{item.members}}" wx:for-item="m" wx:key="name" src="{{m.avatar}}"></image>
+          <text wx:if="{{item.status === 1}}" class="g-join-btn" data-id="{{item.id}}" bindtap="join">去参团</text>
+          <text wx:else class="g-done">已成团</text>
+        </view>
+      </view>
+    </view>
+  </block>
+
+  <!-- 我的拼团 -->
+  <block wx:if="{{tab === 'mine'}}">
+    <view class="card group-card" wx:for="{{mine}}" wx:key="id">
+      <image src="{{item.pic}}" mode="aspectFill"></image>
+      <view class="g-info">
+        <view class="g-name">{{item.name}}</view>
+        <view class="g-rules">{{item.rules}}</view>
+        <view class="g-price-row">
+          <view class="price">拼团 ￥{{item.groupPrice / 100}}</view>
+          <view class="price-origin">￥{{item.originalPrice / 100}}</view>
+        </view>
+        <view class="g-status {{item.status === 2 ? 'done' : 'doing'}}">
+          {{item.status === 2 ? '已成团' : '拼团中 · ' + item.joinedCount + '/' + item.requiredCount + '人'}}
+        </view>
+      </view>
+    </view>
+    <view class="empty-page" wx:if="{{!mine.length && !loading}}">
+      <image src="/images/empty-order.jpg"></image>
+      <view class="empty-title">还没有参与拼团</view>
+      <view class="empty-desc">去拼团活动挑选心仪好物吧</view>
+    </view>
+  </block>
+
+  <view class="skeleton" wx:if="{{loading}}">
+    <view class="sk-row"><view class="sk-block sk-img"></view><view class="flex1"><view class="sk-line w80"></view><view class="sk-line w60"></view></view></view>
+  </view>
+</view>

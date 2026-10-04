@@ -1,0 +1,31 @@
+.company-page { padding-bottom: 40rpx; }
+.brand-card {
+  background: linear-gradient(135deg, #e93b3d, #ff6b6b);
+  margin: 24rpx;
+  border-radius: 16rpx;
+  padding: 48rpx 32rpx;
+  text-align: center;
+  color: #fff;
+}
+.brand-logo {
+  width: 110rpx; height: 110rpx;
+  background: #fff;
+  color: #e93b3d;
+  border-radius: 24rpx;
+  font-size: 60rpx;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 16rpx;
+}
+.brand-name { font-size: 34rpx; font-weight: bold; }
+.brand-slogan { font-size: 24rpx; opacity: 0.9; margin-top: 8rpx; }
+.block-title { font-size: 30rpx; font-weight: bold; margin-bottom: 12rpx; }
+.p-text { font-size: 26rpx; color: #555; line-height: 1.8; }
+.promise { font-size: 26rpx; color: #555; padding: 8rpx 0; }
+.shop-rating { margin-top: 20rpx; }
+.stars { font-size: 32rpx; letter-spacing: 4rpx; }
+.star-on { color: #ffd54f; }
+.star-off { color: rgba(255,255,255,.5); }
+.rating-text { font-size: 22rpx; opacity: 0.95; margin-top: 6rpx; }

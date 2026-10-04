@@ -1,0 +1,61 @@
+<view class="checkin-page">
+  <!-- 签到卡 -->
+  <view class="checkin-hero">
+    <view class="ch-row">
+      <view class="ch-block">
+        <view class="ch-num">{{streak}}</view>
+        <view class="ch-label">连续签到（天）</view>
+      </view>
+      <view class="ch-block">
+        <view class="ch-num">{{points}}</view>
+        <view class="ch-label">当前积分</view>
+      </view>
+    </view>
+    <view class="ch-btn {{checkedToday ? 'done' : ''}}" bindtap="doCheckin">
+      {{checkedToday ? '今日已签到' : '立即签到 +' + rewards[(streak) % 7]}}
+    </view>
+  </view>
+
+  <!-- 连签奖励梯度 -->
+  <view class="card">
+    <view class="block-title">7天连签奖励</view>
+    <view class="reward-strip">
+      <view class="reward-item {{index === (streak % 7) ? 'cur' : ''}}" wx:for="{{rewards}}" wx:key="*this">
+        <view class="reward-day">第{{index + 1}}天</view>
+        <view class="reward-pts">+{{item}}分</view>
+      </view>
+    </view>
+    <view class="reward-note">连签第7天可获 50 积分大奖；中断则重新计算</view>
+  </view>
+
+  <!-- 当月日历 -->
+  <view class="card">
+    <view class="block-title flex-between">
+      <text>{{month}} 签到日历</text>
+      <text class="sub">红色=已签 · 描边=今天</text>
+    </view>
+    <view class="week-headers">
+      <view class="wh-cell" wx:for="{{weekHeaders}}" wx:key="*this">{{item}}</view>
+    </view>
+    <view class="cal-grid">
+      <view
+        class="cal-cell {{item.blank ? 'blank' : ''}} {{item.signed ? 'signed' : ''}} {{item.isToday ? 'today' : ''}} {{item.future ? 'future' : ''}}"
+        wx:for="{{days}}" wx:key="index">
+        {{item.day}}
+      </view>
+    </view>
+  </view>
+
+  <view class="tip-card card">
+    <view class="tip-title">签到规则</view>
+    <view class="tip-line">· 每日签到获得对应梯度积分（+5/+5/+10/+10/+15/+20/+50）</view>
+    <view class="tip-line">· 连续签到不断签可累计 7 天一循环大奖</view>
+    <view class="tip-line">· 积分可在积分兑换区兑换优惠券与好礼</view>
+    <view class="tip-line" bindtap="goPoints">查看积分明细与兑换 ›</view>
+  </view>
+
+  <view class="skeleton" wx:if="{{loading}}">
+    <view class="sk-block" style="height:240rpx;"></view>
+    <view class="sk-row"><view class="sk-line w80"></view></view>
+  </view>
+</view>

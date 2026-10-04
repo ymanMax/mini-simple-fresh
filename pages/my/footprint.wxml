@@ -1,0 +1,28 @@
+<view class="foot-page">
+  <view class="clear-bar" wx:if="{{groups.length}}">
+    <view class="clear-btn" bindtap="clearAll">清空全部</view>
+  </view>
+
+  <block wx:for="{{groups}}" wx:key="title">
+    <view class="group-title">{{item.title}}</view>
+    <view class="card fp-card" wx:for="{{item.list}}" wx:for-item="fp" wx:key="id">
+      <image src="{{fp.pic}}" mode="aspectFill" data-id="{{fp.id}}" bindtap="goDetail"></image>
+      <view class="fp-info" data-id="{{fp.id}}" bindtap="goDetail">
+        <view class="fp-name">{{fp.name}}</view>
+        <view class="fp-meta">￥{{fp.minPriceYuan}} · {{fp.timeText}}</view>
+      </view>
+      <view class="fp-del" data-gid="{{fp.id}}" bindtap="removeOne">删除</view>
+    </view>
+  </block>
+
+  <view class="empty-page" wx:if="{{!groups.length && !loading}}">
+    <image src="/images/empty-order.jpg"></image>
+    <view class="empty-title">暂无浏览记录</view>
+    <view class="empty-desc">浏览商品后会自动记录在这里</view>
+    <view class="empty-btn" bindtap="goShop">去逛逛</view>
+  </view>
+
+  <view class="skeleton" wx:if="{{loading}}">
+    <view class="sk-row"><view class="sk-block sk-img"></view><view class="flex1"><view class="sk-line w80"></view><view class="sk-line w60"></view></view></view>
+  </view>
+</view>

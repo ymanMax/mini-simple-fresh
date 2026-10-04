@@ -1,0 +1,21 @@
+.collect-page { padding-bottom: 40rpx; }
+.grid { display: flex; flex-wrap: wrap; padding: 16rpx; }
+.collect-card {
+  width: calc(50% - 16rpx);
+  margin: 8rpx;
+  background: #fff;
+  border-radius: 16rpx;
+  overflow: hidden;
+}
+.collect-card image { width: 100%; height: 280rpx; background: #f0f0f0; }
+.cc-info { padding: 12rpx; }
+.cc-name { font-size: 26rpx; line-height: 1.4; height: 72rpx; overflow: hidden; }
+.cc-bottom { display: flex; align-items: center; justify-content: space-between; margin-top: 8rpx; }
+.cc-del {
+  font-size: 22rpx;
+  color: #e93b3d;
+  border: 2rpx solid #e93b3d;
+  padding: 2rpx 16rpx;
+  border-radius: 999rpx;
+}
+.flex1 { flex: 1; }
