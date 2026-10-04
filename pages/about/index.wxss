@@ -1,0 +1,30 @@
+.about-page { min-height: 100vh; padding-bottom: 40rpx; }
+.main-tabs { display: flex; background: #fff; position: sticky; top: 0; z-index: 10; }
+.main-tab { flex: 1; text-align: center; padding: 18rpx 0; font-size: 26rpx; color: #666; }
+.main-tab.on { color: #ff3b30; font-weight: 700; border-bottom: 4rpx solid #ff3b30; }
+
+.brand-hero { font-size: 40rpx; font-weight: 700; text-align: center; padding: 30rpx 0 10rpx; color: #ff3b30; }
+.brand-desc { font-size: 26rpx; line-height: 1.7; color: #444; margin-top: 8rpx; }
+.timeline-item { font-size: 26rpx; line-height: 2; color: #444; }
+
+.shop-hero { text-align: center; padding: 36rpx 24rpx; }
+.shop-logo { font-size: 70rpx; }
+.shop-name { font-size: 30rpx; font-weight: 700; margin-top: 10rpx; }
+.shop-rating { font-size: 24rpx; color: #666; margin-top: 6rpx; }
+
+.score-row { display: flex; align-items: center; font-size: 26rpx; padding: 8rpx 0; color: #444; }
+.score-bar { flex: 1; height: 14rpx; background: #eee; border-radius: 7rpx; margin: 0 14rpx; overflow: hidden; }
+.score-fill { height: 100%; background: linear-gradient(90deg,#ff5b4f,#ff3b30); border-radius: 7rpx; }
+.score-num { font-weight: 700; color: #ff3b30; width: 60rpx; text-align: right; }
+.width98 { width: 98%; }
+.width96 { width: 96%; }
+.delivery-note { font-size: 22rpx; margin-top: 10rpx; }
+
+.review-head { display: flex; align-items: center; }
+.avatar { width: 48rpx; height: 48rpx; border-radius: 50%; margin-right: 12rpx; }
+.review-user { font-size: 26rpx; font-weight: 600; margin-right: 12rpx; }
+.stars { font-size: 20rpx; color: #ddd; }
+.star.on { color: #ffb400; }
+.review-content { font-size: 26rpx; margin: 8rpx 0; line-height: 1.5; }
+.review-time { font-size: 20rpx; }
+.section-title { font-size: 28rpx; font-weight: 700; margin-bottom: 12rpx; }

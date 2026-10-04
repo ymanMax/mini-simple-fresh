@@ -1,0 +1,65 @@
+<view class="points-page">
+  <!-- 积分余额卡 -->
+  <view class="balance-card">
+    <view class="balance-label">我的积分</view>
+    <view class="balance-num">{{balance}}</view>
+    <view class="balance-sub">每日签到 +5 · 购物返积分 · 评价 +20</view>
+  </view>
+
+  <!-- Tab -->
+  <view class="main-tabs">
+    <view class="main-tab {{tab === 'points' ? 'on' : ''}}" bindtap="setTab" data-tab="points">积分明细</view>
+    <view class="main-tab {{tab === 'exchange' ? 'on' : ''}}" bindtap="setTab" data-tab="exchange">积分兑换</view>
+    <view class="main-tab {{tab === 'checkin' ? 'on' : ''}}" bindtap="setTab" data-tab="checkin">每日签到</view>
+  </view>
+
+  <!-- 积分明细 -->
+  <block wx:if="{{tab === 'points'}}">
+    <view class="record card" wx:for="{{records}}" wx:key="id">
+      <view class="rec-left">
+        <view class="rec-desc">{{item.desc}}</view>
+        <view class="muted">{{item.createTime}}</view>
+      </view>
+      <view class="rec-points {{item.points > 0 ? 'plus' : 'minus'}}">{{item.points > 0 ? '+' : ''}}{{item.points}}</view>
+    </view>
+    <view class="empty" wx:if="{{!loading && !records.length}}">
+      <view class="empty-img">📊</view>
+      <view class="empty-text">暂无积分记录</view>
+    </view>
+    <view class="nomore" wx:if="{{!hasMore && records.length}}">— 没有更多了 —</view>
+  </block>
+
+  <!-- 积分兑换 -->
+  <block wx:if="{{tab === 'exchange'}}">
+    <view class="ex-card card" wx:for="{{exchange}}" wx:key="id">
+      <view class="ex-icon">{{item.icon}}</view>
+      <view class="ex-info">
+        <view class="ex-name">{{item.name}}</view>
+        <view class="muted">{{item.desc}}</view>
+      </view>
+      <view class="ex-cost">{{item.cost}}积分</view>
+      <view class="ex-btn {{balance >= item.cost ? '' : 'disabled'}}" bindtap="exchange" data-id="{{item.id}}">兑换</view>
+    </view>
+  </block>
+
+  <!-- 签到 -->
+  <block wx:if="{{tab === 'checkin'}}">
+    <view class="checkin-card card">
+      <view class="checkin-title">📅 每日签到</view>
+      <view class="muted">连续签到 {{checkinStreak}} 天 · 每日签到奖励 +5 积分</view>
+      <view class="checkin-grid">
+        <view class="ci {{index < checkinStreak % 7 ? 'done' : ''}}" wx:for="{{[1,2,3,4,5,6,7]}}" wx:key="*this">
+          <view class="ci-day">周{{item}}</view>
+          <view class="ci-point">+5</view>
+        </view>
+      </view>
+      <view class="checkin-btn {{lastDate ? 'done' : ''}}" bindtap="doCheckin">{{lastDate ? '今日已签到' : '立即签到'}}</view>
+      <view class="muted checkin-tip">签到规则：每日可签到一次，连续签到积分奖励累积</view>
+    </view>
+  </block>
+
+  <view class="skeleton" wx:if="{{loading}}">
+    <view class="sk-line" style="width:100%;height:100rpx;margin:16rpx 24rpx"></view>
+    <view class="sk-line" style="width:100%;height:100rpx;margin:0 24rpx"></view>
+  </view>
+</view>

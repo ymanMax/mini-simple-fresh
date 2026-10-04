@@ -1,0 +1,16 @@
+.msg-page { min-height: 100vh; padding-bottom: 40rpx; }
+.tabs { display: flex; background: #fff; position: sticky; top: 0; z-index: 10; }
+.tab { flex: 1; text-align: center; padding: 18rpx 0; font-size: 26rpx; color: #666; }
+.tab.on { color: #ff3b30; font-weight: 700; border-bottom: 4rpx solid #ff3b30; }
+.msg-toolbar { display: flex; justify-content: flex-end; padding: 12rpx 28rpx; font-size: 24rpx; }
+.msg-card { display: flex; padding: 18rpx 24rpx; margin-bottom: 10rpx; }
+.msg-card.unread { background: #fffafa; }
+.msg-icon { font-size: 40rpx; margin-right: 14rpx; }
+.msg-body { flex: 1; }
+.msg-head { display: flex; align-items: center; justify-content: space-between; }
+.msg-title { font-size: 28rpx; font-weight: 600; }
+.msg-dot { width: 14rpx; height: 14rpx; border-radius: 50%; background: #ff3b30; }
+.msg-content { font-size: 25rpx; color: #555; margin-top: 6rpx; line-height: 1.5; }
+.msg-time { font-size: 20rpx; margin-top: 6rpx; }
+.nomore { text-align: center; color: #bbb; font-size: 24rpx; padding: 30rpx 0; }
+.loading-more { text-align: center; color: #999; font-size: 24rpx; padding: 20rpx 0; }

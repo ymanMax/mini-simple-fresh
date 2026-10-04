@@ -1,0 +1,30 @@
+<view class="gb-page">
+  <view class="gb-card card" wx:for="{{list}}" wx:key="id">
+    <pic src="{{item.pic}}" mode="aspectFill" radius="12rpx" class="gb-pic" bindtap="goDetail" data-sku="{{item.goodsId}}"/>
+    <view class="gb-info">
+      <view class="gb-name">{{item.name}}</view>
+      <view class="gb-status s{{item.status}}">{{item.statusText}}</view>
+      <view class="gb-prices">
+        <text class="price primary">￥{{item.groupPriceYuan}}</text>
+        <text class="price-origin">￥{{item.originalPriceYuan}}</text>
+      </view>
+      <view class="muted">{{item.rules}} · 成团截止 {{item.endTime}}</view>
+      <view class="gb-progress">
+        <view class="gb-members">
+          <pic wx:for="{{item.members}}" wx:for-item="m" wx:key="name" src="{{m.avatar}}" mode="aspectFill" radius="50%" class="gb-member"/>
+        </view>
+        <view class="muted">{{item.joinedCount}}/{{item.requiredCount}}人</view>
+        <view class="gb-join {{item.status !== 1 ? 'disabled' : ''}}" bindtap="join" data-id="{{item.id}}">
+          {{item.status === 1 ? '参与拼团' : (item.status === 2 ? '已成团' : '已退款')}}
+        </view>
+      </view>
+    </view>
+  </view>
+  <view class="empty" wx:if="{{!loading && !list.length}}">
+    <view class="empty-img">👥</view>
+    <view class="empty-text">暂无拼团活动</view>
+  </view>
+  <view class="skeleton" wx:if="{{loading}}">
+    <view class="sk-line" style="width:100%;height:200rpx;margin:16rpx 24rpx"></view>
+  </view>
+</view>

@@ -1,0 +1,26 @@
+<view class="edit-page">
+  <view class="card">
+    <view class="form-row"><text class="flabel">收货人</text><input class="finput" value="{{form.name}}" placeholder="请输入姓名" data-field="name" bindinput="onInput"/></view>
+    <view class="form-row"><text class="flabel">手机号</text><input class="finput" value="{{form.phone}}" placeholder="11位手机号" type="number" maxlength="11" data-field="phone" bindinput="onInput"/></view>
+    <view class="form-row"><text class="flabel">省/市</text><input class="finput" value="{{form.province}}" placeholder="省份" data-field="province" bindinput="onInput"/></view>
+    <view class="form-row"><text class="flabel">市</text><input class="finput" value="{{form.city}}" placeholder="城市" data-field="city" bindinput="onInput"/></view>
+    <view class="form-row"><text class="flabel">区/县</text><input class="finput" value="{{form.district}}" placeholder="如朝阳区" data-field="district" bindinput="onInput"/></view>
+    <view class="form-row column"><text class="flabel">详细地址</text><textarea class="finput area" value="{{form.detail}}" placeholder="街道、门牌号、小区、楼层等" data-field="detail" bindinput="onInput"/></view>
+  </view>
+
+  <view class="card">
+    <view class="form-row"><text class="flabel">标签</text>
+      <view class="tags">
+        <view class="rv-tag {{form.tag === t ? 'on' : ''}}" wx:for="{{tags}}" wx:key="*this" bindtap="pickTag" data-tag="{{t}}">{{t}}</view>
+      </view>
+    </view>
+    <view class="form-row" bindtap="toggleDefault">
+      <text class="flabel">设为默认</text>
+      <view class="checkbox {{form.isDefault ? 'on' : ''}}">{{form.isDefault ? '✓' : ''}}</view>
+    </view>
+  </view>
+
+  <view class="submit-bar">
+    <button class="btn-primary btn-block" bindtap="save">{{loading ? '保存中…' : '保存地址'}}</button>
+  </view>
+</view>

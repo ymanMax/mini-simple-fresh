@@ -1,0 +1,56 @@
+<view class="coupon-page">
+  <!-- 主 Tab：领券中心 / 我的优惠券 -->
+  <view class="main-tabs">
+    <view class="main-tab {{mainTab === 'center' ? 'on' : ''}}" bindtap="setMainTab" data-tab="center">领券中心</view>
+    <view class="main-tab {{mainTab === 'my' ? 'on' : ''}}" bindtap="setMainTab" data-tab="my">我的优惠券</view>
+  </view>
+
+  <!-- 领券中心 -->
+  <block wx:if="{{mainTab === 'center'}}">
+    <view class="coupon-card" wx:for="{{center}}" wx:key="id">
+      <view class="cc-left">
+        <view class="cc-amount">{{item.discountText}}</view>
+        <view class="muted">{{item.conditionText}}</view>
+      </view>
+      <view class="cc-right">
+        <view class="cc-name">{{item.name}}</view>
+        <view class="muted">{{item.scope}} · 有效期至{{item.expireShort}}</view>
+        <view class="muted">剩余 {{item.remaining}}/{{item.total}} 张</view>
+      </view>
+      <view class="cc-claim" bindtap="claim" data-id="{{item.id}}">立即领取</view>
+    </view>
+  </block>
+
+  <!-- 我的优惠券 -->
+  <block wx:if="{{mainTab === 'my'}}">
+    <view class="sub-tabs">
+      <view class="sub-tab {{myTab === 1 ? 'on' : ''}}" bindtap="setMyTab" data-tab="1">未使用</view>
+      <view class="sub-tab {{myTab === 2 ? 'on' : ''}}" bindtap="setMyTab" data-tab="2">已使用</view>
+      <view class="sub-tab {{myTab === 3 ? 'on' : ''}}" bindtap="setMyTab" data-tab="3">已过期</view>
+    </view>
+
+    <view class="coupon-card my {{item.status !== 1 ? 'disabled' : ''}}" wx:for="{{myCoupons}}" wx:key="id">
+      <view class="cc-left">
+        <view class="cc-amount">{{item.discountText}}</view>
+        <view class="muted">{{item.conditionText}}</view>
+      </view>
+      <view class="cc-right">
+        <view class="cc-name">{{item.name}}</view>
+        <view class="muted">{{item.scope}} · 有效期至{{item.expireShort}}</view>
+      </view>
+      <view class="cc-claim {{item.status !== 1 ? 'got' : ''}}" bindtap="goUse" wx:if="{{item.status === 1}}">去使用</view>
+      <view class="cc-claim got" wx:else>{{item.status === 2 ? '已使用' : '已过期'}}</view>
+    </view>
+
+    <view class="empty" wx:if="{{!loading && !myCoupons.length}}">
+      <view class="empty-img">🎫</view>
+      <view class="empty-text">暂无优惠券，去领券中心领取吧</view>
+      <view class="empty-btn" bindtap="setMainTab" data-tab="center">去领券 →</view>
+    </view>
+  </block>
+
+  <view class="skeleton" wx:if="{{loading}}">
+    <view class="sk-line" style="width:100%;height:140rpx;margin:16rpx 24rpx"></view>
+    <view class="sk-line" style="width:100%;height:140rpx;margin:0 24rpx"></view>
+  </view>
+</view>

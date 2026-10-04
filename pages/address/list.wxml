@@ -1,0 +1,32 @@
+<view class="addr-list-page">
+  <view class="skeleton" wx:if="{{loading}}">
+    <view class="sk-row"><view class="sk-img" style="width:100%;height:100rpx"></view></view>
+  </view>
+
+  <view class="empty" wx:if="{{!loading && !addresses.length}}">
+    <view class="empty-img">📍</view>
+    <view class="empty-text">还没有收货地址</view>
+    <view class="empty-btn" bindtap="add">添加地址 →</view>
+  </view>
+
+  <block wx:else>
+    <view class="addr-card card" wx:for="{{addresses}}" wx:key="id" bindtap="pickAddress" data-id="{{item.id}}">
+      <view class="addr-row">
+        <view class="addr-name">{{item.name}}</view>
+        <view class="addr-phone">{{item.phone}}</view>
+        <view class="tag" wx:if="{{item.isDefault}}">默认</view>
+        <view class="tag tag-gray">{{item.tag}}</view>
+      </view>
+      <view class="addr-detail">{{item.province}}{{item.city}}{{item.district}}{{item.detail}}</view>
+      <view class="addr-ops">
+        <view class="op" bindtap="setDefault" data-id="{{item.id}}" catchtap>设为默认</view>
+        <view class="op" bindtap="edit" data-id="{{item.id}}" catchtap>编辑</view>
+        <view class="op danger" bindtap="remove" data-id="{{item.id}}" catchtap>删除</view>
+      </view>
+    </view>
+
+    <view class="addr-add-bar">
+      <button class="btn-primary btn-block" bindtap="add">＋ 新增收货地址</button>
+    </view>
+  </block>
+</view>

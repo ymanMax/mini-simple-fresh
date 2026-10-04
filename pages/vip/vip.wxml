@@ -1,64 +1,91 @@
-<view class="header">
-    <view class="content">
-        <view class="userimg">
-            <open-data class="user-img" type="userAvatarUrl"></open-data>
-        </view>
-        <view class="username">
-            <open-data type='userNickName'></open-data>
-        </view>
-        <view class="open-vip">
-            <button>立即开通</button>
-        </view>
+<view class="vip-page">
+  <!-- 会员卡：渐变 + 等级徽章 + 成长值进度条 -->
+  <view class="vip-header">
+    <view class="vh-row">
+      <pic src="/images/avatar.png" mode="aspectFill" radius="50%" class="vh-avatar"/>
+      <view class="vh-info">
+        <view class="vh-name">鲜生活用户</view>
+        <view class="vh-level">{{member.levelName || '银卡会员'}} · 有效期至{{member.validDate}}</view>
+      </view>
+      <view class="vh-open" bindtap="openVip">立即开通</view>
     </view>
-    <view class="arrow"></view>
-    <view class="free">
-        <text class="free-exp">免费体验></text>
+    <!-- 成长值进度条（纯CSS） -->
+    <view class="growth-row">
+      <view class="growth-label">成长值 {{member.growthValue}} / {{member.nextLevelGrowth}}</view>
+      <view class="growth-bar"><view class="growth-fill" style="width:{{growthPercent}}%"></view></view>
+      <view class="growth-next">距{{nextLevelName}}还需 {{needGrowth}} 成长值</view>
     </view>
-    <view class="discount">预计一年为您节省
-        <text>1121.30</text>元</view>
-</view>
-<view class="little-tag">
-    <view class="icons">
-        <view class="item" wx:for='{{list}}' wx:key="this" data-id="a{{item.id}}">
-            <image src="{{item.descSelectIcon}}" bindtouchstart='tonewPage'></image>
-            <view>{{item.primaryName}}</view>
+    <view class="vh-save">开通优享会员，预计一年为您节省 <text class="vh-amount">{{saveYuan}}</text> 元</view>
+  </view>
 
+  <!-- 生日礼包横幅 -->
+  <view class="birthday-banner" wx:if="{{birthdayGift}}" bindtap="goCoupon">
+    🎂 生日月专属礼包已到账：8.8折券 + 双倍积分卡 ›
+  </view>
+
+  <!-- 成长体系表 -->
+  <view class="card priv-card">
+    <view class="section-title">会员成长体系</view>
+    <view class="level-table">
+      <view class="level-row {{member.level === item.level ? 'current' : ''}}" wx:for="{{levels}}" wx:key="level">
+        <view class="level-name">{{item.name}}</view>
+        <view class="muted">{{item.growth}}成长值 · {{item.discount}} · {{item.freightFree}}</view>
+      </view>
+    </view>
+    <view class="muted growth-tip">成长值获取：购物1元=1成长值，签到+5，评价+20。</view>
+  </view>
+
+  <!-- 权益 -->
+  <view class="card priv-card">
+    <view class="section-title">会员权益</view>
+    <view class="priv-grid">
+      <view class="priv-item" wx:for="{{privileges}}" wx:key="name">
+        <pic src="{{item.icon}}" mode="aspectFit" class="priv-icon"/>
+        <view class="priv-name">{{item.name}}</view>
+        <view class="priv-desc muted">{{item.desc}}</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 红包 -->
+  <view class="card">
+    <view class="section-title">会员红包</view>
+    <view class="redbag-row">
+      <view class="redbag {{item.received ? 'received' : ''}}" wx:for="{{redbags}}" wx:key="id">
+        <view class="rb-amount">{{item.amountText}}</view>
+        <view class="rb-cond">{{item.condition}}</view>
+        <view class="rb-name">{{item.name}}</view>
+        <view class="rb-btn {{item.received ? 'got' : ''}}" bindtap="claimBag" data-cid="{{item.cid}}">{{item.received ? '已领取' : '立即领取'}}</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 会员专属优惠商品区 -->
+  <view class="section-title">会员专享价商品</view>
+  <scroll-view scroll-x class="vp-scroll">
+    <view class="vip-product" wx:for="{{products}}" wx:key="sku" bindtap="goDetail" data-sku="{{item.sku}}">
+      <pic src="{{item.pic}}" mode="aspectFill" radius="12rpx" class="vp-pic"/>
+      <view class="vp-info">
+        <view class="vp-name">{{item.name}}</view>
+        <view class="muted vp-sub">{{item.subtext}}</view>
+        <view class="vp-price-row">
+          <view class="member-tag">会员价</view>
+          <text class="price-sm primary">￥{{item.vipPriceYuan}}</text>
+          <text class="price-origin">￥{{item.originPriceYuan}}</text>
         </view>
+      </view>
     </view>
-    <view class="redbags">
-        <block wx:for="{{redbag}}" wx:key="this">
-            <image id="b{{item.id}}"src="{{item.src}}" bindtouchstart='totips'></image>
-        </block>
-    </view>
-</view>
-<view class="vip-title">
-    <view class="up-title">会员商品&会员专享价</view>
-    <view class="down-title">以下商品已抢光</view>
-</view>
-<view class="vip-product">
-    <view class="products">
-        <block wx:for="{{products}}" wx:key="this">
-            <view class="pro-item">
-                <view class="img-info">
-                    <image src="{{item.img}}" bindtouchstart='toDetailpage'></image>
-                </view>
-                <view class="pro-info">
-                    <view class="item-txt">{{item.text}}</view>
-                    <view class="item-subtxt">{{item.subtext}}</view>
-                    <view class="item-info">
-                        <view class="price">
-                            <text class="origin-pri">￥{{item.originPrice}}</text>
-                            <text class="vip-pri">￥{{item.vipPrice}}</text>
-                        </view>
-                        <text class="item-ari" bindtap='showword'>{{item.arrive}}</text>
-                    </view>
-                </view>
-            </view>
-        </block>
-    </view>
-</view>
-<view class="nomore">没有更多商品啦~</view>
-<view class="footer">
-    <text>开通优享会员预计一年为您节省1121元</text>
-    <button>立即开通</button>
+  </scroll-view>
+
+  <!-- 快捷入口：签到/积分/优惠券 -->
+  <view class="card quick-row">
+    <view class="quick-item" bindtap="goCheckin"><view class="quick-icon">📅</view><view class="quick-label">每日签到</view></view>
+    <view class="quick-item" bindtap="goPoints"><view class="quick-icon">⭐</view><view class="quick-label">我的积分</view></view>
+    <view class="quick-item" bindtap="goCoupon"><view class="quick-icon">🎫</view><view class="quick-label">我的优惠券</view></view>
+  </view>
+
+  <view class="skeleton" wx:if="{{loading}}">
+    <view class="sk-line" style="width:100%;height:120rpx"></view>
+    <view class="sk-line" style="width:100%;height:80rpx;margin-top:16rpx"></view>
+  </view>
 </view>

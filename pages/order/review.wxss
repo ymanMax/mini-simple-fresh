@@ -1,0 +1,18 @@
+.review-page { min-height: 100vh; padding-bottom: 140rpx; }
+.rv-head { display: flex; align-items: center; margin-bottom: 14rpx; }
+.rv-pic { width: 90rpx; height: 90rpx; margin-right: 14rpx; }
+.rv-name { font-size: 27rpx; font-weight: 600; flex: 1; }
+.stars-row { display: flex; gap: 6rpx; margin: 10rpx 0; }
+.star { font-size: 40rpx; color: #ddd; }
+.star.on { color: #ffb400; }
+.tags { display: flex; flex-wrap: wrap; margin: 10rpx 0; }
+.rv-tag { background: #f4f5f7; border-radius: 28rpx; padding: 8rpx 20rpx; font-size: 22rpx; margin: 0 10rpx 10rpx 0; color: #555; }
+.rv-tag.on { background: #fff1f0; color: #ff3b30; border: 1rpx solid #ff3b30; }
+.rv-input { width: 100%; height: 120rpx; background: #f4f5f7; border-radius: 12rpx; padding: 14rpx; font-size: 26rpx; margin-top: 10rpx; }
+.img-row { display: flex; flex-wrap: wrap; margin-top: 12rpx; }
+.rv-img { width: 110rpx; height: 110rpx; border-radius: 10rpx; margin-right: 10rpx; }
+.add-img { width: 110rpx; height: 110rpx; border-radius: 10rpx; border: 2rpx dashed #ccc; display: flex; align-items: center; justify-content: center; font-size: 22rpx; color: #999; }
+.section-title { font-size: 28rpx; font-weight: 700; margin-bottom: 12rpx; }
+.shop-score { display: flex; align-items: center; padding: 6rpx 0; }
+.shop-dim { width: 120rpx; font-size: 26rpx; }
+.submit-bar { padding: 24rpx; }

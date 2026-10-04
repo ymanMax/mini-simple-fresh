@@ -1,1 +1,70 @@
-/* pages/buy/buy.wxss */
+.buy-page { padding-bottom: 150rpx; }
+.addr-card { padding: 24rpx; }
+.addr-row { display: flex; align-items: center; }
+.addr-name { font-size: 30rpx; font-weight: 700; margin-right: 16rpx; }
+.addr-phone { font-size: 26rpx; color: #555; margin-right: 12rpx; }
+.addr-detail { font-size: 26rpx; color: #666; margin-top: 10rpx; line-height: 1.5; }
+.addr-empty { display: flex; justify-content: space-between; font-size: 28rpx; color: #555; }
+.addr-go { color: #ff3b30; }
+
+.seg-tabs { display: flex; background: #f0f1f3; border-radius: 36rpx; padding: 6rpx; }
+.seg { flex: 1; text-align: center; padding: 14rpx 0; border-radius: 30rpx; font-size: 26rpx; color: #666; }
+.seg.on { background: #fff; color: #ff3b30; font-weight: 700; }
+.slots { display: flex; flex-wrap: wrap; margin-top: 14rpx; }
+.slot { padding: 10rpx 20rpx; background: #f4f5f7; border-radius: 28rpx; font-size: 22rpx; margin: 0 10rpx 10rpx 0; color: #555; }
+.slot.on { background: #fff1f0; color: #ff3b30; border: 1rpx solid #ff3b30; }
+
+.section-title { font-size: 28rpx; font-weight: 700; margin-bottom: 12rpx; }
+.order-item { display: flex; align-items: center; padding: 12rpx 0; border-bottom: 1rpx solid #f2f2f2; }
+.order-item:last-child { border-bottom: none; }
+.oi-pic { width: 110rpx; height: 110rpx; margin-right: 14rpx; }
+.oi-info { flex: 1; }
+.oi-name { font-size: 26rpx; font-weight: 600; line-height: 1.4; }
+.oi-bottom { display: flex; justify-content: space-between; margin-top: 6rpx; }
+
+.row-card { display: flex; justify-content: space-between; align-items: center; padding: 24rpx; }
+.row-label { font-size: 28rpx; }
+.row-value { font-size: 26rpx; }
+
+.pay-row { display: flex; align-items: center; padding: 14rpx 0; }
+.radio { width: 40rpx; height: 40rpx; border-radius: 50%; border: 2rpx solid #ccc; display: flex; align-items: center; justify-content: center; font-size: 24rpx; color: #fff; margin-right: 14rpx; }
+.radio.on { background: #ff3b30; border-color: #ff3b30; }
+.pay-icon { font-size: 32rpx; margin-right: 10rpx; }
+.pay-name { font-size: 28rpx; flex: 1; }
+
+.remark-input { background: #f4f5f7; border-radius: 12rpx; padding: 16rpx 20rpx; font-size: 26rpx; }
+.remark-count { text-align: right; font-size: 20rpx; margin-top: 6rpx; }
+
+.money-row { display: flex; justify-content: space-between; font-size: 26rpx; padding: 8rpx 0; color: #555; }
+.total-row { font-size: 28rpx; font-weight: 700; border-top: 1rpx dashed #eee; margin-top: 10rpx; padding-top: 14rpx; }
+
+.footer-bar { justify-content: flex-start; gap: 16rpx; }
+.total-box { flex: 1; }
+.total-box .muted { font-size: 22rpx; }
+.price.big { font-size: 40rpx; }
+.submit-btn { background: linear-gradient(90deg,#ff5b4f,#ff3b30); color: #fff; padding: 18rpx 56rpx; border-radius: 44rpx; font-size: 28rpx; font-weight: 600; }
+.submit-btn.disabled { background: #ffb3ad; }
+
+/* 优惠券弹层 */
+.mask { position: fixed; inset: 0; background: rgba(0,0,0,.5); z-index: 200; }
+.coupon-sheet { position: fixed; left: 0; right: 0; bottom: 0; background: #f5f6f7; border-radius: 24rpx 24rpx 0 0; z-index: 201; max-height: 75vh; display: flex; flex-direction: column; }
+.sheet-head { display: flex; justify-content: space-between; padding: 24rpx; background: #fff; border-radius: 24rpx 24rpx 0 0; }
+.sheet-title { font-size: 30rpx; font-weight: 700; }
+.sheet-close { font-size: 30rpx; color: #999; }
+.coupon-list { padding: 16rpx; max-height: 55vh; }
+.coupon-item { background: #fff; border-radius: 12rpx; margin-bottom: 14rpx; padding: 18rpx; display: flex; align-items: center; position: relative; }
+.coupon-item.disabled { opacity: .6; }
+.coupon-left { width: 140rpx; text-align: center; border-right: 1rpx dashed #ddd; }
+.coupon-amount { font-size: 36rpx; font-weight: 700; color: #ff3b30; }
+.coupon-right { flex: 1; padding-left: 16rpx; }
+.coupon-name { font-size: 26rpx; font-weight: 600; }
+.coupon-select { font-size: 22rpx; padding: 6rpx 16rpx; border-radius: 24rpx; border: 1rpx solid #ff3b30; color: #ff3b30; }
+.coupon-select.on { background: #ff3b30; color: #fff; }
+.no-coupon { text-align: center; padding: 20rpx; color: #666; font-size: 26rpx; }
+
+.pay-mask { position: fixed; inset: 0; background: rgba(0,0,0,.6); z-index: 300; display: flex; align-items: center; justify-content: center; }
+.pay-box { background: #fff; border-radius: 20rpx; padding: 40rpx 50rpx; text-align: center; }
+.pay-spinner { width: 50rpx; height: 50rpx; border: 4rpx solid #eee; border-top-color: #ff3b30; border-radius: 50%; margin: 0 auto 16rpx; animation: spin 1s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.pay-text { font-size: 28rpx; font-weight: 600; }
+.pay-tip { font-size: 20rpx; color: #999; margin-top: 8rpx; }

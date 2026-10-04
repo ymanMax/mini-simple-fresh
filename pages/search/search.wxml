@@ -1,25 +1,89 @@
-<view class='large'>
-    <view class='search'>
-    <input placeholder='请输入商品名称' data-value='{{search}}' value='{{search}}'></input><text bindtap='goSearch'>搜索</text>
+<view class="search-page">
+  <!-- 顶部搜索框 -->
+  <view class="search-top">
+    <view class="search-box">
+      <view class="search-icon">🔍</view>
+      <input class="search-input" value="{{kw}}" placeholder="请输入商品名称" confirm-type="search"
+             bindinput="onInput" bindconfirm="onSearchConfirm"/>
+      <view class="search-clear" wx:if="{{kw}}" bindtap="clearKw">✕</view>
     </view>
-    <view class='hot'>
-        <text class='module-title'>热门搜索</text>
-        <text wx:for="{{data}}" wx:key="this" class='module-msg' bindtap='hotSearch' data-id='{{item}}'>{{item}}</text>
-    </view>
-    <view class='hot re' hidden="'{{dis}}'">
-        <text class='module-title fl'>历史记录</text><view class='fr' bindtap='clear'>清除历史记录</view>
-        <text wx:for="{{history}}" wx:key="this" class='module-msg' bindtap='hotSearch' data-id='{{item}}'>{{item}}</text>
-    </view>
-    <view class='module-title like'>推荐商品</view>
-    <view class='product' wx:for="{{products}}" wx:key="this">
-        <image class='product-img' src='{{item.image}}'></image>
-        <image class='product-zhe' src='{{item.promote_tag}}'></image>
-        <view class='product-msg'>
-            <view class='msg-title'>{{item.name}}</view>
-            <view class='msg-intro'>{{item.subtitle}}</view>
-                <text class='price'></text>
-                <image src='{{item.cart_image}}' class='icon' bindtap='addCar'></image>
-        </view>
-    </view>
-</view>
+    <view class="search-btn" bindtap="onSearchConfirm">搜索</view>
+  </view>
 
+  <!-- 输入联想 -->
+  <view class="suggest-list" wx:if="{{mode === 'home' && suggest.length}}">
+    <view class="suggest-item" wx:for="{{suggest}}" wx:key="sku" bindtap="suggestTap" data-kw="{{item.name}}">
+      <pic src="{{item.pic}}" mode="aspectFill" radius="8rpx" class="s-pic"/>
+      <view class="s-name">{{item.name}}</view>
+      <view class="price-sm primary">￥{{item.priceYuan}}</view>
+    </view>
+  </view>
+
+  <!-- 主页：历史 + 热门 -->
+  <block wx:if="{{mode === 'home' && !suggest.length}}">
+    <view class="block" wx:if="{{history.length}}">
+      <view class="block-head">
+        <text class="block-title">历史搜索</text>
+        <text class="block-clear" bindtap="clearHistory">清空</text>
+      </view>
+      <view class="tag-list">
+        <view class="h-tag" wx:for="{{history}}" wx:key="*this" bindtap="hotTap" data-kw="{{item}}">
+          {{item}}<text class="h-del" catchtap="removeHistory" data-kw="{{item}}"> ✕</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="block">
+      <view class="block-head"><text class="block-title">🔥 热门搜索</text></view>
+      <view class="tag-list">
+        <view class="h-tag" wx:for="{{hotWords}}" wx:key="*this" bindtap="hotTap" data-kw="{{item}}">{{item}}</view>
+      </view>
+    </view>
+
+    <view class="empty" wx:if="{{!history.length && !hotWords.length}}">
+      <view class="empty-img">🔍</view>
+      <view class="empty-text">输入关键词开始搜索吧</view>
+    </view>
+  </block>
+
+  <!-- 结果页 -->
+  <block wx:if="{{mode === 'result'}}">
+    <view class="sort-bar">
+      <view class="sort-item {{sort === 'default' ? 'on' : ''}}" bindtap="setSort" data-sort="default">综合</view>
+      <view class="sort-item {{sort === 'price_asc' ? 'on' : ''}}" bindtap="setSort" data-sort="price_asc">价格 ↑</view>
+      <view class="sort-item {{sort === 'price_desc' ? 'on' : ''}}" bindtap="setSort" data-sort="price_desc">价格 ↓</view>
+      <view class="sort-item" bindtap="setSort" data-sort="sales">销量</view>
+    </view>
+
+    <view class="skeleton" wx:if="{{loading}}">
+      <view class="sk-row" wx:for="{{[1,2,3]}}" wx:key="this">
+        <view class="sk-img" style="width:150rpx;height:150rpx"></view>
+        <view class="sk-body"><view class="sk-line" style="width:75%"></view><view class="sk-line" style="width:50%"></view></view>
+      </view>
+    </view>
+
+    <block wx:else>
+      <view class="goods-card" wx:for="{{results}}" wx:key="sku" bindtap="goDetail" data-sku="{{item.sku}}">
+        <pic src="{{item.pic}}" mode="aspectFill" radius="12rpx" class="pic"/>
+        <view class="info">
+          <view class="name">{{item.name}}</view>
+          <view class="sub muted">{{item.subtitle}} · {{item.unit}}</view>
+          <view class="tags"><text class="tag" wx:for="{{item.tags}}" wx:for-item="t" wx:key="*this">{{t}}</text></view>
+          <view class="bottom">
+            <view><text class="price">{{item.priceYuan}}</text><text class="price-origin">￥{{item.originPriceYuan}}</text></view>
+            <view class="cell-add" catchtap="addCart" data-sku="{{item.sku}}">＋</view>
+          </view>
+        </view>
+      </view>
+
+      <view class="empty" wx:if="{{!results.length}}">
+        <view class="empty-img">🛒</view>
+        <view class="empty-text">没有找到「{{kw}}」相关商品</view>
+        <view class="empty-btn" bindtap="hotTap" data-kw="草莓">去看看热门商品</view>
+      </view>
+
+      <view class="nomore" wx:if="{{!hasMore && results.length}}">— 没有更多了 —</view>
+      <view class="loading-more" wx:if="{{loadingMore}}">加载中…</view>
+    </block>
+  </block>
+</view>

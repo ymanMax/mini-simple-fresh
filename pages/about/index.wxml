@@ -1,0 +1,95 @@
+<view class="about-page">
+  <view class="main-tabs">
+    <view class="main-tab {{tab === 'about' ? 'on' : ''}}" bindtap="setTab" data-tab="about">品牌介绍</view>
+    <view class="main-tab {{tab === 'shop' ? 'on' : ''}}" bindtap="setTab" data-tab="shop">店铺主页</view>
+    <view class="main-tab {{tab === 'review' ? 'on' : ''}}" bindtap="setTab" data-tab="review">店铺评价</view>
+    <view class="main-tab {{tab === 'delivery' ? 'on' : ''}}" bindtap="setTab" data-tab="delivery">配送说明</view>
+  </view>
+
+  <!-- 品牌介绍 / 公司简介 -->
+  <view wx:if="{{tab === 'about'}}">
+    <view class="card">
+      <view class="brand-hero">鲜生活 FRESH LIFE</view>
+      <view class="brand-desc">鲜生活是一家专注于生鲜直供的生活服务平台，提供水果、蔬菜、肉类、水产、乳品、零食、饮品及日用百货，产地直采、冷链直达，承诺坏果包赔、100%第三方权威检测。</view>
+      <view class="brand-desc">我们的使命：让每一餐都新鲜、健康、实惠。满59元免基础配送费，预约配送最快45分钟送达。</view>
+    </view>
+    <view class="card">
+      <view class="section-title">发展历程</view>
+      <view class="timeline-item">2018年 平台成立，覆盖北京核心城区</view>
+      <view class="timeline-item">2020年 建成冷链仓储中心，实现当日达</view>
+      <view class="timeline-item">2023年 上线会员体系，累计服务用户超千万</view>
+      <view class="timeline-item">2026年 拓展至36个品类，坏果包赔零顾虑</view>
+    </view>
+    <view class="card">
+      <view class="section-title">联系我们</view>
+      <view class="brand-desc">客服热线：400-888-9999（9:00-22:00）</view>
+      <view class="brand-desc">商务合作：bd@fresh-life.demo</view>
+      <view class="brand-desc">公司地址：北京市朝阳区望京SOHO T1座</view>
+      <button class="btn-ghost" bindtap="callService">拨打客服（模拟）</button>
+    </view>
+  </view>
+
+  <!-- 店铺主页 -->
+  <view wx:if="{{tab === 'shop'}}">
+    <view class="card shop-hero">
+      <view class="shop-logo">店铺</view>
+      <view class="shop-name">鲜生活生鲜旗舰店</view>
+      <view class="shop-rating">综合评分 4.9 / 5.0</view>
+    </view>
+    <view class="card">
+      <view class="section-title">服务评分</view>
+      <view class="score-row"><text>新鲜度</text><view class="score-bar"><view class="score-fill width98"></view></view><text class="score-num">4.9</text></view>
+      <view class="score-row"><text>配送速度</text><view class="score-bar"><view class="score-fill width96"></view></view><text class="score-num">4.8</text></view>
+      <view class="score-row"><text>包装服务</text><view class="score-bar"><view class="score-fill width98"></view></view><text class="score-num">4.9</text></view>
+      <view class="muted delivery-note">月销量 10万+，好评率 99.2%，坏果包赔</view>
+    </view>
+    <view class="card">
+      <view class="section-title">店铺承诺</view>
+      <view class="brand-desc">100%第三方权威检测</view>
+      <view class="brand-desc">坏果包赔，48小时内退款</view>
+      <view class="brand-desc">冷链直达，当日新鲜</view>
+      <view class="brand-desc">满59元免基础配送费</view>
+    </view>
+  </view>
+
+  <!-- 店铺评价 -->
+  <view wx:if="{{tab === 'review'}}">
+    <view class="card">
+      <view class="section-title">顾客评价</view>
+      <view class="shop-review" wx:for="{{reviews}}" wx:key="id">
+        <view class="review-head">
+          <pic src="{{item.avatar}}" mode="aspectFill" radius="50%" class="avatar"/>
+          <view class="review-user">{{item.userName}}</view>
+          <view class="stars">
+            <text wx:for="{{[1,2,3,4,5]}}" wx:for-item="s" wx:key="*this" class="star {{s <= item.score ? 'on' : ''}}">★</text>
+          </view>
+        </view>
+        <view class="review-content">{{item.content}}</view>
+        <view class="muted review-time">{{item.createTime}}</view>
+      </view>
+      <view class="empty" wx:if="{{!reviews.length}}">
+        <view class="empty-img">评价</view>
+        <view class="empty-text">暂无评价</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 配送说明 -->
+  <view wx:if="{{tab === 'delivery'}}">
+    <view class="card">
+      <view class="section-title">配送范围与运费</view>
+      <view class="brand-desc">北京市主城区全覆盖，3-15公里内配送</view>
+      <view class="brand-desc">普通会员：满59元免基础配送费，未满收6元配送费</view>
+      <view class="brand-desc">银卡会员及以上：满39元免基础配送费</view>
+      <view class="brand-desc">预约配送时段：今天10:00-12:00 / 14:00-16:00 / 16:00-18:00 / 明天09:00-11:00</view>
+      <view class="brand-desc">尽快送达：预计45分钟内送达</view>
+    </view>
+    <view class="card">
+      <view class="section-title">冷链与售后</view>
+      <view class="brand-desc">全程冷链配送，冷藏0-4度，冷冻-18度</view>
+      <view class="brand-desc">坏果包赔：签收后48小时内凭照片退款</view>
+      <view class="brand-desc">退款原路返回，1-3个工作日到账</view>
+      <view class="brand-desc">客服热线 400-888-9999（9:00-22:00）</view>
+    </view>
+  </view>
+</view>

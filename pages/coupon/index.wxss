@@ -1,0 +1,17 @@
+.coupon-page { min-height: 100vh; padding-bottom: 40rpx; }
+.main-tabs { display: flex; background: #fff; position: sticky; top: 0; z-index: 10; }
+.main-tab { flex: 1; text-align: center; padding: 20rpx 0; font-size: 28rpx; color: #666; }
+.main-tab.on { color: #ff3b30; font-weight: 700; border-bottom: 4rpx solid #ff3b30; }
+.sub-tabs { display: flex; background: #f0f1f3; margin: 16rpx 24rpx; border-radius: 36rpx; padding: 6rpx; }
+.sub-tab { flex: 1; text-align: center; padding: 12rpx 0; border-radius: 30rpx; font-size: 24rpx; color: #666; }
+.sub-tab.on { background: #fff; color: #ff3b30; font-weight: 700; }
+
+.coupon-card { display: flex; align-items: center; background: #fff; border-radius: 14rpx; margin: 16rpx 24rpx; overflow: hidden; }
+.coupon-card.disabled { opacity: .65; }
+.cc-left { width: 180rpx; text-align: center; background: linear-gradient(135deg,#ff6b6b,#ff3b30); color: #fff; padding: 24rpx 0; border-radius: 14rpx 0 0 14rpx; }
+.cc-my .cc-left, .my .cc-left { background: linear-gradient(135deg,#ff8a7a,#ff5b4f); }
+.cc-amount { font-size: 34rpx; font-weight: 700; }
+.cc-right { flex: 1; padding: 16rpx; }
+.cc-name { font-size: 27rpx; font-weight: 600; }
+.cc-claim { background: #fff1f0; color: #ff3b30; font-size: 22rpx; padding: 8rpx 20rpx; border-radius: 28rpx; margin-right: 16rpx; border: 1rpx solid #ff3b30; white-space: nowrap; }
+.cc-claim.got { background: #eee; color: #999; border-color: #ddd; }

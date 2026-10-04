@@ -1,0 +1,57 @@
+<view class="checkin-page">
+  <!-- 连续签到 + 积分卡 -->
+  <view class="checkin-hero">
+    <view class="hero-streak">连续签到 {{streak}} 天</view>
+    <view class="hero-points">当前积分 {{balance}}</view>
+    <view class="hero-sub">7天一循环奖励，第7天大奖50积分</view>
+  </view>
+
+  <!-- 当月日历 -->
+  <view class="card cal-card">
+    <view class="cal-head">
+      <view class="cal-nav" bindtap="prevMonth">‹</view>
+      <view class="cal-title">{{month}}</view>
+      <view class="cal-nav" bindtap="nextMonth">›</view>
+    </view>
+    <view class="cal-week">
+      <view class="cal-wd" wx:for="{{['日','一','二','三','四','五','六']}}" wx:key="*this">{{item}}</view>
+    </view>
+    <view class="cal-grid">
+      <view class="cal-week-row" wx:for="{{calendar}}" wx:key="*this" wx:for-item="week">
+        <view class="cal-cell" wx:for="{{week}}" wx:key="dateStr" wx:for-item="cell">
+          <view class="cell-inner {{cell.signed ? 'signed' : ''}} {{cell.isToday ? 'today' : ''}} {{cell.future ? 'future' : ''}}">
+            <text wx:if="{{cell}}">{{cell.day}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+    <view class="cal-legend">
+      <view class="legend"><view class="dot signed-dot"></view>已签到</view>
+      <view class="legend"><view class="dot today-dot"></view>今天</view>
+      <view class="legend"><view class="dot future-dot"></view>未来</view>
+    </view>
+  </view>
+
+  <!-- 7天奖励条 -->
+  <view class="card">
+    <view class="section-title">连续签到奖励</view>
+    <view class="reward-bar">
+      <view class="reward-item {{(streak % 7 || 7) === index + 1 ? 'active' : ''}}" wx:for="{{rewards}}" wx:key="*this" wx:for-index="index">
+        <view class="reward-day">第{{index + 1}}天</view>
+        <view class="reward-pts">+{{item}}积分</view>
+      </view>
+    </view>
+    <view class="muted checkin-rules">签到规则：每日可签到一次；中断后连签天数重新计算；积分自动入账，可在积分明细查看。</view>
+  </view>
+
+  <!-- 签到按钮 -->
+  <view class="checkin-action">
+    <view class="checkin-btn {{checkinDone ? 'done' : ''}}" bindtap="doCheckin">
+      {{checkinDone ? '今日已签到' : '立即签到（+' + rewards[(streak) % 7] + '积分）'}}
+    </view>
+  </view>
+
+  <view class="skeleton" wx:if="{{loading}}">
+    <view class="sk-line" style="width:100%;height:200rpx;margin:16rpx 24rpx"></view>
+  </view>
+</view>

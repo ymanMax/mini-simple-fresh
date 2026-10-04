@@ -1,59 +1,72 @@
-<!-- 搜索部分 -->
- <view class="search" catchtap="goSearch">搜索</view>
-<!-- 顶部列表 -->
-  <view class="list">
-  <block catchtap="changeStyle" id="list">
-    <text wx:for="{{list}}" wx:key="this" data-cur="cur">{{item}}</text>
-  </block>
-
+<view class="page index-page">
+  <!-- 搜索栏 -->
+  <view class="search-bar" bindtap="goSearch">
+    <view class="search-icon">🔍</view>
+    <text class="search-ph">搜索水果、蔬菜、肉类、水产…</text>
   </view>
-  <!-- 滚动视图部分 -->
-  <scroll-view scroll-y style="height: {{height}}px;">
-    <!-- banner部分 -->
-    <swiper interval='2000' autoplay>
-      <swiper-item wx:for="{{banner}}" wx:key="this">
-         <image src="{{item.path}}"></image>
-     </swiper-item>
-    </swiper> 
-    <!-- lanternArea部分 -->
-    <view class="lanternArea">
-      <view class="item" wx:for="{{lanternArea}}" wx:key="this"> 
-        <image src="{{item.image}}"></image>
-        <view class="lanternText">{{item.name}}</view>
+
+  <!-- 骨架屏 -->
+  <view class="skeleton" wx:if="{{loading}}">
+    <view class="sk-row"><view class="sk-img" style="width:686rpx;height:280rpx"></view></view>
+    <view class="sk-row" wx:for="{{[1,2,3,4]}}" wx:key="this">
+      <view class="sk-img" style="width:160rpx;height:160rpx"></view>
+      <view class="sk-body"><view class="sk-line" style="width:80%"></view><view class="sk-line" style="width:50%"></view><view class="sk-line" style="width:60%"></view></view>
+    </view>
+  </view>
+
+  <block wx:else>
+    <!-- 轮播 -->
+    <swiper class="banner" indicator-dots autoplay interval="3000" circular indicator-color="rgba(255,255,255,.5)" indicator-active-color="#fff">
+      <swiper-item wx:for="{{banners}}" wx:key="id" bindtap="goBanner" data-link="{{item.link}}">
+        <pic src="{{item.path}}" mode="aspectFill" radius="16rpx" class="banner-img"/>
+      </swiper-item>
+    </swiper>
+
+    <!-- 金刚区 -->
+    <view class="nav-grid">
+      <view class="nav-item" wx:for="{{navArea}}" wx:key="id" bindtap="goNav" data-link="{{item.link}}">
+        <pic src="{{item.image}}" mode="aspectFit" class="nav-icon"/>
+        <view class="nav-name">{{item.name}}</view>
       </view>
     </view>
-    <!-- tileArea部分 -->
-    <view class="tileArea">
-      <view class="item" wx:for="{{tileArea}}" wx:key="this">
-        <image src="{{item.image}}"></image>
-        <view class="lanternText">{{item.name}}</view>
-      </view>
-    </view>
-    <!-- todayHot -->
-    <view class="todayHot">
-      <image mode="aspectFit" src="../../images/hot.png"></image>
-    </view>
-    <!-- hotList -->
-    <view class="hotList" wx:for="{{products}}" wx:key="this">
-        <view class="item" catchtap="goDetail">
-          <image src="{{item.image}}"></image>
-          <view class="content" >
-            <view class="item-name">{{item.name}}</view>
-            <view class="item-subtitle">{{item.subtitle}}</view>
-            <view class="item-product_tags-name">{{item.product_tags.name}}</view>
-            <view class="item-info">
-              <view class="item-price">
-                 <view class="item-price-up">¥{{item.non_vip_price_pro.price_up.price}}</view>
-                  <view class="item-price-down">¥{{item.non_vip_price_pro.price_down.price}}</view>
-              </view>
-              <view class="buy">
-                <text class="item-add" bindtap='addProductNum' data-type="{{index}}" data-id="{{product_index}}">+</text>
-                <text class="item-num" hidden='{{product_item.num <= 0}}'>{{product_item.num}}</text>
-                <text class="item-reduce" hidden='{{product_item.num <= 0}}' data-type="{{index}}" data-id="{{product_index}}" bindtap="reduceProductNum">-</text>
-              </view>
-            
-            </view>
-          </view>
+
+    <!-- 限时秒杀（含倒计时 + 更多入口） -->
+    <view class="seckill card" wx:if="{{seckill.length}}">
+      <view class="seckill-head">
+        <text class="seckill-title">⚡ 限时秒杀</text>
+        <view class="cd-inline">
+          <text class="cd-num">{{countdown.h}}</text>:<text class="cd-num">{{countdown.m}}</text>:<text class="cd-num">{{countdown.s}}</text>
         </view>
+        <text class="seckill-more" bindtap="goPromotion">更多 ›</text>
+      </view>
+      <scroll-view scroll-x class="seckill-scroll">
+        <view class="seckill-item" wx:for="{{seckill}}" wx:key="goodsId" bindtap="goSeckill" data-sku="{{item.goodsId}}">
+          <pic src="{{item.pic}}" mode="aspectFill" radius="12rpx" class="seckill-pic"/>
+          <view class="seckill-price primary">￥{{item.seckillPriceYuan}}</view>
+          <view class="seckill-bar"><view class="seckill-bar-fill" style="width:{{item.soldPercent}}%"></view></view>
+          <view class="seckill-sold muted">已抢{{item.soldPercent}}%</view>
+        </view>
+      </scroll-view>
     </view>
-</scroll-view>
+
+    <!-- 商品列表 -->
+    <view class="section-title">为你推荐</view>
+    <view class="goods-grid">
+      <view class="goods-cell" wx:for="{{goods}}" wx:key="sku" bindtap="goDetail" data-sku="{{item.sku}}">
+        <pic src="{{item.pic}}" mode="aspectFill" radius="12rpx" class="cell-pic"/>
+        <view class="cell-name">{{item.name}}</view>
+        <view class="cell-sub muted">{{item.subtitle}}</view>
+        <view class="cell-tags">
+          <text class="tag" wx:for="{{item.tags}}" wx:for-item="t" wx:key="*this">{{t}}</text>
+        </view>
+        <view class="cell-bottom">
+          <view class="price">{{item.priceYuan}}</view>
+          <view class="cell-add" catchtap="addCart" data-sku="{{item.sku}}">＋</view>
+        </view>
+      </view>
+    </view>
+
+    <view class="nomore" wx:if="{{!hasMore && goods.length}}">— 没有更多了 —</view>
+    <view class="loading-more" wx:if="{{loadingMore}}">加载中…</view>
+  </block>
+</view>

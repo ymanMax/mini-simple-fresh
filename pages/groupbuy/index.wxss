@@ -1,0 +1,13 @@
+.gb-page { min-height: 100vh; padding: 16rpx 0 40rpx; }
+.gb-card { display: flex; padding: 18rpx; }
+.gb-pic { width: 150rpx; height: 150rpx; margin-right: 16rpx; }
+.gb-info { flex: 1; }
+.gb-name { font-size: 27rpx; font-weight: 600; line-height: 1.4; }
+.gb-status { font-size: 20rpx; margin: 4rpx 0; }
+.s1 { color: #ff9500; } .s2 { color: #12b76a; } .s3 { color: #999; }
+.gb-prices { display: flex; align-items: baseline; gap: 10rpx; margin: 4rpx 0; }
+.gb-progress { display: flex; align-items: center; margin-top: 10rpx; gap: 10rpx; }
+.gb-members { display: flex; }
+.gb-member { width: 44rpx; height: 44rpx; border: 2rpx solid #fff; margin-right: -8rpx; }
+.gb-join { background: #ff3b30; color: #fff; font-size: 22rpx; padding: 6rpx 18rpx; border-radius: 28rpx; margin-left: auto; }
+.gb-join.disabled { background: #ccc; }

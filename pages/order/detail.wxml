@@ -1,0 +1,133 @@
+<view class="order-detail-page">
+  <view class="skeleton" wx:if="{{loading}}">
+    <view class="sk-row"><view class="sk-img" style="width:100%;height:160rpx"></view></view>
+    <view class="sk-row"><view class="sk-img" style="width:150rpx;height:150rpx"></view><view class="sk-body"><view class="sk-line" style="width:70%"></view><view class="sk-line" style="width:45%"></view></view></view>
+  </view>
+
+  <block wx:elseif="{{order}}">
+    <!-- 状态头部 -->
+    <view class="status-head sh-{{order.status}}">
+      <view class="status-big">{{order.statusName}}</view>
+      <view class="status-sub" wx:if="{{order.status === 1}}">请在30分钟内完成支付</view>
+      <view class="status-sub" wx:if="{{order.status === 2}}">商家正在分拣打包，可点击"催发货"推进配送</view>
+      <view class="status-sub" wx:if="{{order.status === 3}}">骑手 {{order.rider.name}} 正在配送，请保持电话畅通</view>
+      <view class="status-sub" wx:if="{{order.status === 4}}">商品已送达站点，请确认收货</view>
+      <view class="status-sub" wx:if="{{order.status === 5}}">感谢品尝，期待您的评价</view>
+      <view class="status-sub" wx:if="{{order.status === 6}}">订单已取消，退款已原路退回</view>
+      <view class="status-sub" wx:if="{{order.status === 7}}">退款成功，{{order.refund.amount / 100}}元已原路退回</view>
+    </view>
+
+    <!-- 配送跟踪 timeline（含未达节点置灰） -->
+    <view class="card">
+      <view class="section-title">配送跟踪</view>
+      <view class="timeline">
+        <view class="tl-item {{index === order.timeline.length - 1 ? 'active' : ''}}" wx:for="{{order.timeline}}" wx:key="time">
+          <view class="tl-dot"></view>
+          <view class="tl-line {{index === order.timeline.length - 1 ? 'last' : ''}}"></view>
+          <view class="tl-body">
+            <view class="tl-status">{{item.status}}</view>
+            <view class="tl-remark">{{item.remark}}</view>
+            <view class="tl-time muted">{{item.time}}</view>
+          </view>
+        </view>
+        <!-- 未达节点置灰 -->
+        <view class="tl-item pending" wx:if="{{order.status === 1}}">
+          <view class="tl-dot gray"></view>
+          <view class="tl-line last"></view>
+          <view class="tl-body"><view class="tl-status gray-text">支付成功</view><view class="tl-time muted">等待支付</view></view>
+        </view>
+        <view class="tl-item pending" wx:if="{{order.status === 2}}">
+          <view class="tl-dot gray"></view>
+          <view class="tl-line last"></view>
+          <view class="tl-body"><view class="tl-status gray-text">骑手已取货</view><view class="tl-time muted">商家分拣中</view></view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 骑手卡片（配送中/待收货） -->
+    <view class="card rider-card" wx:if="{{order.status === 3 || order.status === 4}}" bindtap="callRider">
+      <view class="rider-avatar">🛵</view>
+      <view class="rider-info">
+        <view class="rider-name">{{order.rider.name}}（骑手）</view>
+        <view class="muted">{{order.rider.phone}} · 点击联系</view>
+      </view>
+      <view class="rider-call">联系</view>
+    </view>
+
+    <!-- 收货信息 -->
+    <view class="card">
+      <view class="section-title">收货信息</view>
+      <view class="addr-row"><text class="addr-name">{{order.addressSnapshot.name}}</text><text>{{order.addressSnapshot.phone}}</text></view>
+      <view class="muted">{{order.addressSnapshot.detail}}</view>
+      <view class="muted" style="margin-top:6rpx">配送时间：{{order.deliverySlot}}</view>
+    </view>
+
+    <!-- 商品清单 -->
+    <view class="card">
+      <view class="section-title">商品清单</view>
+      <view class="oc-item" wx:for="{{order.items}}" wx:key="goodsId">
+        <pic src="{{item.pic}}" mode="aspectFill" radius="10rpx" class="oc-pic"/>
+        <view class="oc-item-info">
+          <view class="oc-name">{{item.name}}</view>
+          <view class="muted">{{item.specText}} x{{item.count}}</view>
+        </view>
+        <view class="price-sm primary">￥{{item.totalYuan}}</view>
+      </view>
+    </view>
+
+    <!-- 金额明细（拆分满减/优惠券） -->
+    <view class="card">
+      <view class="section-title">金额明细</view>
+      <view class="money-row"><text>商品总价</text><text>￥{{order.totalAmountYuan}}</text></view>
+      <view class="money-row" wx:if="{{order.fullReduceAmount > 0}}"><text>满减优惠</text><text class="primary">-￥{{order.fullReduceAmountYuan}}</text></view>
+      <view class="money-row" wx:if="{{order.discountAmount > 0}}"><text>优惠券优惠{{order.couponTitle ? '（' + order.couponTitle + '）' : ''}}</text><text class="primary">-￥{{order.discountAmountYuan}}</text></view>
+      <view class="money-row"><text>配送费</text><text>{{order.freight === 0 ? '免配送费' : '￥' + order.freightYuan}}</text></view>
+      <view class="money-row total-row"><text>实付金额</text><text class="price">￥{{order.payAmountYuan}}</text></view>
+    </view>
+
+    <!-- 订单信息 -->
+    <view class="card">
+      <view class="section-title">订单信息</view>
+      <view class="money-row"><text>订单号</text><text class="copy-link" bindtap="copyOrderNo">{{order.orderNo}} 复制</text></view>
+      <view class="money-row"><text>下单时间</text><text>{{order.createTime}}</text></view>
+      <view class="money-row"><text>支付方式</text><text>{{order.payType === 1 ? '微信支付' : '货到付款'}}</text></view>
+      <view class="money-row" wx:if="{{order.couponTitle}}"><text>优惠券</text><text>{{order.couponTitle}}</text></view>
+      <view class="money-row" wx:if="{{order.remark}}"><text>订单备注</text><text>{{order.remark}}</text></view>
+    </view>
+
+    <!-- 售后记录 -->
+    <view class="card" wx:if="{{order.refund}}">
+      <view class="section-title">售后记录</view>
+      <view class="money-row"><text>退款原因</text><text>{{order.refund.reason}}</text></view>
+      <view class="money-row"><text>退款金额</text><text class="primary">￥{{order.refund.amount / 100}}</text></view>
+      <view class="money-row"><text>退款时间</text><text>{{order.refund.time}}</text></view>
+    </view>
+
+    <!-- 底部操作 -->
+    <view class="footer-bar">
+      <view class="foot-spacer"></view>
+      <view class="oc-btn" wx:if="{{order.status === 1}}" bindtap="cancel">取消订单</view>
+      <view class="oc-btn" wx:if="{{order.status === 2}}" bindtap="advance">催发货/推进</view>
+      <view class="oc-btn" wx:if="{{order.status === 3 || order.status === 4}}" bindtap="advance">推进配送</view>
+      <view class="oc-btn" wx:if="{{order.status === 5 && !order.isReviewed}}" bindtap="review">去评价</view>
+      <view class="oc-btn" wx:if="{{order.status === 5}}" bindtap="openRefund">申请退款</view>
+      <view class="oc-btn" wx:if="{{order.status === 5 || order.status === 6 || order.status === 7}}" bindtap="reorder">再来一单</view>
+      <view class="oc-btn primary-btn" wx:if="{{order.status === 1}}" bindtap="pay">立即支付</view>
+      <view class="oc-btn primary-btn" wx:if="{{order.status === 4}}" bindtap="confirm">确认收货</view>
+    </view>
+  </block>
+
+  <!-- 退款原因弹层 -->
+  <view class="mask" wx:if="{{showRefund}}" bindtap="closeRefund"></view>
+  <view class="refund-sheet" wx:if="{{showRefund}}">
+    <view class="sheet-head">
+      <view class="sheet-title">申请退款</view>
+      <view class="sheet-close" bindtap="closeRefund">✕</view>
+    </view>
+    <view class="refund-tip">选择退款原因，提交后订单状态将变更为"退款成功"，金额原路退回。</view>
+    <view class="reason-list">
+      <view class="reason-item {{refundReason === item ? 'on' : ''}}" wx:for="{{refundReasons}}" wx:key="*this" bindtap="pickReason" data-reason="{{item}}">{{item}}</view>
+    </view>
+    <view class="refund-submit" bindtap="submitRefund">提交退款申请</view>
+  </view>
+</view>

@@ -1,0 +1,10 @@
+.addr-list-page { min-height: 100vh; padding-bottom: 140rpx; }
+.addr-card { padding: 20rpx; }
+.addr-row { display: flex; align-items: center; gap: 14rpx; }
+.addr-name { font-size: 30rpx; font-weight: 700; }
+.addr-phone { font-size: 26rpx; color: #555; }
+.addr-detail { font-size: 26rpx; color: #666; margin-top: 8rpx; line-height: 1.5; }
+.addr-ops { display: flex; justify-content: flex-end; gap: 20rpx; margin-top: 12rpx; }
+.op { font-size: 24rpx; color: #666; padding: 6rpx 16rpx; border: 1rpx solid #ddd; border-radius: 24rpx; }
+.op.danger { color: #ff3b30; border-color: #ff3b30; }
+.addr-add-bar { position: fixed; left: 0; right: 0; bottom: 0; background: #fff; padding: 16rpx; padding-bottom: calc(16rpx + env(safe-area-inset-bottom)); }

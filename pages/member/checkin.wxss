@@ -1,0 +1,37 @@
+.checkin-page { min-height: 100vh; padding-bottom: 160rpx; }
+.checkin-hero { background: linear-gradient(135deg,#ff5b4f,#ff3b30); color: #fff; margin: 20rpx 24rpx; border-radius: 16rpx; padding: 32rpx 28rpx; text-align: center; }
+.hero-streak { font-size: 36rpx; font-weight: 700; }
+.hero-points { font-size: 26rpx; margin-top: 8rpx; opacity: .95; }
+.hero-sub { font-size: 20rpx; opacity: .85; margin-top: 6rpx; }
+
+.cal-card { padding: 20rpx 24rpx; }
+.cal-head { display: flex; justify-content: space-between; align-items: center; padding: 0 10rpx 12rpx; }
+.cal-title { font-size: 28rpx; font-weight: 700; }
+.cal-nav { font-size: 36rpx; padding: 0 16rpx; color: #999; }
+.cal-week { display: flex; }
+.cal-wd { flex: 1; text-align: center; font-size: 22rpx; color: #999; padding: 8rpx 0; }
+.cal-grid { }
+.cal-week-row { display: flex; }
+.cal-cell { flex: 1; padding: 4rpx; }
+.cell-inner { height: 72rpx; display: flex; align-items: center; justify-content: center; border-radius: 50%; font-size: 24rpx; }
+.cell-inner.signed { background: #ff3b30; color: #fff; font-weight: 700; }
+.cell-inner.today { border: 2rpx solid #ff3b30; color: #ff3b30; font-weight: 700; }
+.cell-inner.future { color: #ccc; }
+.cal-legend { display: flex; gap: 24rpx; margin-top: 14rpx; padding: 0 10rpx; font-size: 20rpx; color: #999; }
+.legend { display: flex; align-items: center; gap: 6rpx; }
+.dot { width: 14rpx; height: 14rpx; border-radius: 50%; }
+.signed-dot { background: #ff3b30; }
+.today-dot { border: 2rpx solid #ff3b30; }
+.future-dot { background: #ccc; }
+
+.section-title { font-size: 28rpx; font-weight: 700; margin-bottom: 14rpx; }
+.reward-bar { display: flex; }
+.reward-item { flex: 1; text-align: center; background: #f4f5f7; border-radius: 10rpx; margin: 0 4rpx; padding: 10rpx 0; }
+.reward-item.active { background: #fff1f0; border: 1rpx solid #ff3b30; }
+.reward-day { font-size: 20rpx; color: #666; }
+.reward-pts { font-size: 22rpx; font-weight: 700; color: #ff3b30; margin-top: 2rpx; }
+.checkin-rules { font-size: 20rpx; margin-top: 12rpx; line-height: 1.6; }
+
+.checkin-action { position: fixed; left: 0; right: 0; bottom: 0; background: #fff; padding: 16rpx 24rpx; padding-bottom: calc(16rpx + env(safe-area-inset-bottom)); }
+.checkin-btn { background: linear-gradient(90deg,#ff5b4f,#ff3b30); color: #fff; text-align: center; padding: 20rpx 0; border-radius: 44rpx; font-size: 30rpx; font-weight: 600; }
+.checkin-btn.done { background: #ccc; }

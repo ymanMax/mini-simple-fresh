@@ -1,0 +1,7 @@
+.collect-page { min-height: 100vh; padding: 16rpx 24rpx 40rpx; }
+.grid { display: flex; flex-wrap: wrap; justify-content: space-between; }
+.cell { width: 48%; background: #fff; border-radius: 16rpx; margin-bottom: 18rpx; padding: 12rpx; }
+.cell-pic { width: 100%; height: 220rpx; }
+.cell-name { font-size: 25rpx; font-weight: 600; margin-top: 8rpx; line-height: 1.4; height: 70rpx; overflow: hidden; }
+.cell-bottom { display: flex; align-items: center; justify-content: space-between; margin-top: 4rpx; }
+.cell-del { font-size: 20rpx; color: #999; border: 1rpx solid #ddd; border-radius: 20rpx; padding: 3rpx 14rpx; }

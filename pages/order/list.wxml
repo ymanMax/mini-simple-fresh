@@ -1,0 +1,56 @@
+<view class="order-list-page">
+  <!-- 状态 Tab -->
+  <view class="tabs">
+    <view class="tab {{status === item.key ? 'on' : ''}}" wx:for="{{tabs}}" wx:key="key"
+          bindtap="switchTab" data-status="{{item.key}}">{{item.name}}</view>
+  </view>
+
+  <!-- 骨架屏 -->
+  <view class="skeleton" wx:if="{{loading}}">
+    <view class="sk-row"><view class="sk-img" style="width:150rpx;height:150rpx"></view><view class="sk-body"><view class="sk-line" style="width:70%"></view><view class="sk-line" style="width:45%"></view></view></view>
+    <view class="sk-row"><view class="sk-img" style="width:150rpx;height:150rpx"></view><view class="sk-body"><view class="sk-line" style="width:70%"></view><view class="sk-line" style="width:45%"></view></view></view>
+  </view>
+
+  <!-- 空态 -->
+  <view class="empty" wx:if="{{!loading && !orders.length}}">
+    <view class="empty-img">📦</view>
+    <view class="empty-text">暂无相关订单</view>
+    <view class="empty-btn" bindtap="goShopping">去逛逛 →</view>
+  </view>
+
+  <!-- 订单卡片 -->
+  <block wx:else>
+    <view class="order-card card" wx:for="{{orders}}" wx:key="id">
+      <view class="oc-head" bindtap="goDetail" data-id="{{item.id}}">
+        <view class="oc-no">订单号：{{item.orderNo}}</view>
+        <view class="oc-status s{{item.status}}">{{item.statusName}}</view>
+      </view>
+      <view class="oc-items" bindtap="goDetail" data-id="{{item.id}}">
+        <view class="oc-thumbs">
+          <pic wx:for="{{item.thumbs}}" wx:key="*this" src="{{item}}" mode="aspectFill" radius="8rpx" class="oc-thumb"/>
+          <view class="oc-count" wx:if="{{item.itemCount > 3}}">共{{item.itemCount}}件</view>
+        </view>
+        <view class="oc-item-info">
+          <view class="oc-name">{{item.firstName}}{{item.itemCount > 1 ? ' 等' + item.itemCount + '件商品' : ''}}</view>
+          <view class="muted">{{item.orderNo}}</view>
+        </view>
+      </view>
+      <view class="oc-foot">
+        <view class="muted">实付 <text class="price primary">￥{{item.payAmountYuan}}</text> · {{item.createTime}}</view>
+        <view class="oc-actions">
+          <view class="oc-btn" wx:if="{{item.status === 1}}" bindtap="cancel" data-id="{{item.id}}">取消订单</view>
+          <view class="oc-btn primary-btn" wx:if="{{item.status === 1}}" bindtap="pay" data-id="{{item.id}}">立即支付</view>
+          <view class="oc-btn" wx:if="{{item.status === 2}}" bindtap="advance" data-id="{{item.id}}">催发货</view>
+          <view class="oc-btn" wx:if="{{item.status === 3}}" bindtap="advance" data-id="{{item.id}}">推进配送</view>
+          <view class="oc-btn primary-btn" wx:if="{{item.status === 4}}" bindtap="confirm" data-id="{{item.id}}">确认收货</view>
+          <view class="oc-btn primary-btn" wx:if="{{item.status === 5 && !item.isReviewed}}" bindtap="review" data-id="{{item.id}}">去评价</view>
+          <view class="oc-btn" wx:if="{{item.status === 5 || item.status === 6 || item.status === 7}}" bindtap="reorder" data-id="{{item.id}}">再来一单</view>
+          <view class="oc-btn" bindtap="goDetail" data-id="{{item.id}}">查看详情</view>
+        </view>
+      </view>
+    </view>
+
+    <view class="nomore" wx:if="{{!hasMore && orders.length}}">— 没有更多了 —</view>
+    <view class="loading-more" wx:if="{{loadingMore}}">加载中…</view>
+  </block>
+</view>

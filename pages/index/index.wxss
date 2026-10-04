@@ -1,156 +1,37 @@
+.index-page { padding-bottom: 40rpx; }
+.banner { width: 702rpx; height: 300rpx; margin: 16rpx 24rpx 0; border-radius: 16rpx; overflow: hidden; }
+.banner-img { width: 100%; height: 100%; }
 
+.nav-grid { display: flex; flex-wrap: wrap; background: #fff; margin: 20rpx 24rpx; border-radius: 16rpx; padding: 20rpx 0; }
+.nav-item { width: 25%; display: flex; flex-direction: column; align-items: center; padding: 12rpx 0; }
+.nav-icon { width: 88rpx; height: 88rpx; }
+.nav-name { font-size: 24rpx; color: #555; margin-top: 8rpx; }
 
-.search {
-	width: 100px;
-	height: 20px;
-	line-height: 20px;
-	padding-left: 10px;
-	border: 1px solid #ccc;
-	border-radius: 10px;
-	font-size: 12px;
-}
-.list {
-	height: 30px;
-	line-height: 30px;
-	font-size: 14px;
-	padding-left: 10px;
-	border-bottom: 1px solid #efefef;
-}
-.list text {
-	margin-right: 20px;
-}
-.list text.cur {
-	color: red;
-	text-decoration: normal;
-}
-/*轮播图*/
-swiper swiper-item image {
-	/*width: 375px;
-	height: 175px;*/
-}
+.seckill { margin: 20rpx 24rpx; padding: 20rpx; }
+.seckill-head { display: flex; align-items: baseline; margin-bottom: 16rpx; }
+.seckill-title { font-size: 30rpx; font-weight: 700; color: #ff3b30; }
+.seckill-sub { font-size: 22rpx; color: #999; margin-left: 12rpx; }
+.seckill-scroll { white-space: nowrap; }
+.seckill-item { display: inline-block; width: 150rpx; margin-right: 16rpx; text-align: center; }
+.seckill-pic { width: 150rpx; height: 150rpx; }
+.seckill-price { font-weight: 700; font-size: 28rpx; margin: 6rpx 0; }
+.seckill-bar { height: 10rpx; background: #ffe3e0; border-radius: 5rpx; overflow: hidden; }
+.seckill-bar-fill { height: 100%; background: #ff3b30; border-radius: 5rpx; }
+.seckill-sold { font-size: 18rpx; margin-top: 2rpx; }
 
-/*lanternArea部分*/
-.lanternArea {
-	display: flex; /**指定flex 布局*/
- 	align-items: center; /**交叉轴居中*/
- 	padding: 20rpx 30rpx;
- 	justify-content: space-between; /**主轴两边对其*/
- 	text-align: center;
-}
-.lanternArea .item {
-}
-.lanternArea .item image {
-	width: 70rpx;
-	height: 70rpx;
-}
-.lanternArea .item .lanternText {
-	font-size: 10px;
-}
+.section-title { font-size: 30rpx; font-weight: 700; padding: 16rpx 28rpx; }
+.goods-grid { display: flex; flex-wrap: wrap; justify-content: space-between; padding: 0 24rpx; }
+.goods-cell { width: 48%; background: #fff; border-radius: 16rpx; margin-bottom: 20rpx; padding: 12rpx; position: relative; }
+.cell-pic { width: 100%; height: 240rpx; }
+.cell-name { font-size: 26rpx; font-weight: 600; margin-top: 10rpx; line-height: 1.4; height: 72rpx; overflow: hidden; }
+.cell-sub { font-size: 20rpx; margin-top: 4rpx; }
+.cell-tags { margin-top: 4rpx; min-height: 28rpx; }
+.cell-bottom { display: flex; align-items: center; justify-content: space-between; margin-top: 8rpx; }
+.cell-add { width: 44rpx; height: 44rpx; border-radius: 50%; background: #ff3b30; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 30rpx; }
 
+.nomore { text-align: center; color: #bbb; font-size: 24rpx; padding: 30rpx 0; }
+.loading-more { text-align: center; color: #999; font-size: 24rpx; padding: 20rpx 0; }
 
-/*tileArea部分*/
-.tileArea {
-	display: flex; /**指定flex 布局*/
- 	align-items: center; /**交叉轴居中*/
- 	padding: 20rpx 30rpx;
- 	justify-content: space-between; /**主轴两边对其*/
- 	text-align: center;
-}
-.tileArea .item {
-	height: 100px;
-}
-.tileArea .item image {
-	width: 340rpx;
-	height: 200rpx;
-}
-.tileArea .item .lanternText {
-	font-size: 10px;
-}
-
-/*todayHot部分*/
-.todayHot {
-	/*height: 100rpx;*/
-	display: flex;
-	align-items: center; /**交叉轴居中*/
- 	padding: 20rpx 30rpx;
- 	justify-content: space-between; /**主轴两边对其*/
-}
-.todayHot image {
-	width: 100%;
-	height: 72px;
-}
-.hotList {
-	padding: 10px 10px;
-	width: 100%;
-}
-.hotList .item {
-	display: flex;
-	border-bottom: 1px solid #efefef;
-	align-items: center; /**交叉轴居中*/
- 	justify-content: space-between; /**主轴两边对其*/
-}
-.hotList .item image {
-	width: 120px;
-	height: 120px;
-	margin-right: 20px;
-}
-.hotList .item .content {
-	flex: 1;
-}
-.hotList .item .content .item-name {
-	font-size: 12px;
-}
-.hotList .item .content .item-subtitle {
-	font-size: 10px;
-	color: #474245;
-}
-.hotList .item .content .item-product_tags-name {
-	height: 25px;
-}
-.hotList .item .content .item-info {
-	font-size: 10px;
-	line-height: 15px;
-	display: block;
-}
-.hotList .item .content .item-info {
-
-}
-.hotList .item .content .item-info .item-price {
-	float: left;
-	margin-right: 100px;
-}
-.hotList .item .content .item-info .item-price .item-price-up {
-	color: red;
-}
-.hotList .item .content .item-info .item-price .item-price-down {
-	font-size: 12px;
-	color: gold;
-}
-.hotList .item .content .item-info .buy {
-	float: left;
-}
-.hotList .item .content .item-info .buy .item-add {
-
-}
-.hotList .item .content .item-info .buy .item-num {
-	
-}
-.hotList .item .content .item-info .buy .item-reduce {
-	
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+.cd-inline { display: flex; align-items: center; font-size: 22rpx; margin-left: 12rpx; }
+.cd-num { background: #333; color: #fff; border-radius: 6rpx; padding: 2rpx 8rpx; margin: 0 2rpx; font-weight: 700; }
+.seckill-more { margin-left: auto; font-size: 22rpx; color: #999; }

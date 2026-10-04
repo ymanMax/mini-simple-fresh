@@ -1,151 +1,91 @@
-// pages/search/search.js
+const api = require('../../utils/api.js')
+const toast = require('../../utils/toast.js')
+const badge = require('../../utils/badge.js')
+const dec = require('../../utils/decorate.js')
+
 Page({
-
-  /**
-   * 页面的初始数据
-   */
   data: {
-      data: {},
-      products: {},
-      search: '',
-      history: [],
-      historyArr: [],
-      dis: false
-      
-  },
-  //点击热门搜索，添加到搜索框
-  hotSearch(e) {
-    //   console.log(e)
-      this.setData({
-          search: e.target.dataset.id
-      })
-  },
-    //点击搜索，保存搜索结果到本地
-    goSearch() {
-       
-        console.log(this.data.history)
-        var arr = this.data.historyArr
-        arr.push(this.data.search)
-        
-       this.setData({
-           historyArr: arr
-       });
-        
-        wx.setStorage({
-            key: 'history',
-            data: this.data.historyArr,
-            success: function(res) {
-                // console.log(res)
-            },
-        })
-    },
-    clear() {
-        wx.removeStorage({
-            key: 'history',
-        })
-        wx.setStorage({
-            key: 'history',
-            data: [],
-            success: function(res) {
-               this.setData({
-                history: [],
-                dis: false
-               })
-               console.log(this.data.dis)
-            }.bind(this)
-        })
-        this.onLoad();
-       
-    },  
-    addCar() {
-
-    },
-  /**
-   * 生命周期函数--监听页面加载
-   */
-  onLoad: function () {
-      wx.request({
-          url: 'https://localhost:3001/data/searchMsg.json',
-          success: function(res) {
-              if (res.errMsg == "request:ok") {
-                //   console.log(res.data.like_result.product_list)
-                  this.setData({
-                      data: res.data.data,
-                      products: res.data.like_result.product_list,
-                  })
-              }
-            //   console.log(this.data.products)
-             
-          }.bind(this)
-      });
-   
-        var his = wx.getStorageSync('history');
-        // console.log(his)
-        this.setData({
-            history: his
-        })
-        // wx.getStorage({
-        //     key: 'history',
-        //     success: function(res) {
-        //         // this.data.history = res
-        //         var s = res.data
-        //         this.setData({
-        //             history: s
-        //         })
-        //         console.log(this.data.history)
-        //     },
-        // })
-    
-       
-     
+    kw: '', hotWords: [], history: [],
+    suggest: [], results: [],
+    mode: 'home', // home | result
+    sort: 'default',
+    page: 1, hasMore: true, loading: false, loadingMore: false
   },
 
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady: function () {
-      console.log(this.products)
+  onLoad() {
+    api.hotWords().then(h => this.setData({ hotWords: h })).catch(() => {})
+    const hist = wx.getStorageSync('fl_search_history')
+    this.setData({ history: Array.isArray(hist) ? hist : [] })
   },
 
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow: function () {
-  
+  onShow() { this.refreshCartBadge() },
+  refreshCartBadge() {
+    api.cart().then(c => badge.setCartBadge(c.reduce((s, x) => s + x.count, 0))).catch(() => {})
   },
 
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide: function () {
-  
+  onInput(e) {
+    const kw = e.detail.value.trim()
+    this.setData({ kw: kw })
+    if (!kw) { this.setData({ suggest: [], mode: 'home' }); return }
+    api.suggest(kw).then(list => this.setData({ suggest: list.map(dec.goods) })).catch(() => {})
   },
 
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload: function () {
-  
+  clearKw() {
+    this.setData({ kw: '', suggest: [], mode: 'home' })
   },
 
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh: function () {
-  
+  // 执行搜索
+  doSearch(kw) {
+    kw = (kw || this.data.kw).trim()
+    if (!kw) { toast.toast('请输入搜索关键词'); return }
+    const history = [kw].concat(this.data.history.filter(h => h !== kw)).slice(0, 10)
+    wx.setStorageSync('fl_search_history', history)
+    this.setData({ history: history, kw: kw, mode: 'result', sort: 'default' })
+    this.loadResults(1, 'default')
+  },
+  onSearchConfirm() { this.doSearch() },
+
+  hotTap(e) { this.doSearch(e.currentTarget.dataset.kw) },
+  suggestTap(e) { this.doSearch(e.currentTarget.dataset.kw) },
+
+  clearHistory() {
+    wx.setStorageSync('fl_search_history', [])
+    this.setData({ history: [] })
+  },
+  removeHistory(e) {
+    const kw = e.currentTarget.dataset.kw
+    const history = this.data.history.filter(h => h !== kw)
+    wx.setStorageSync('fl_search_history', history)
+    this.setData({ history: history })
   },
 
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom: function () {
-  
+  setSort(e) {
+    const sort = e.currentTarget.dataset.sort
+    this.setData({ sort: sort })
+    this.loadResults(1, sort)
   },
 
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage: function () {
-  
+  loadResults(page, sort) {
+    this.setData({ loading: page === 1, loadingMore: page > 1 })
+    api.searchResults({ q: this.data.kw, sort: sort || this.data.sort, page: page }).then(res => {
+      const items = res.list.map(dec.goods)
+      const list = page === 1 ? items : this.data.results.concat(items)
+      this.setData({ results: list, page: page, hasMore: res.hasMore, loading: false, loadingMore: false })
+    }).catch(() => { this.setData({ loading: false, loadingMore: false }) })
+  },
+
+  onReachBottom() {
+    if (this.data.mode === 'result' && this.data.hasMore && !this.data.loadingMore) this.loadResults(this.data.page + 1)
+  },
+  onPullDownRefresh() {
+    if (this.data.mode === 'result') this.loadResults(1)
+    wx.stopPullDownRefresh()
+  },
+
+  goDetail(e) { wx.navigateTo({ url: '/pages/detail/detail?sku=' + e.currentTarget.dataset.sku }) },
+  addCart(e) {
+    const sku = e.currentTarget.dataset.sku
+    api.addCart(sku, '标准装 · 1份', 1).then(() => { toast.success('加入购物车成功'); this.refreshCartBadge() })
+      .catch(err => toast.toast(err.message || '加入失败'))
   }
 })

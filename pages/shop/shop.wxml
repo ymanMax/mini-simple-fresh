@@ -1,26 +1,86 @@
-<view class="list">
-	<scroll-view class="header">
-		<image src="/images/shop.png"></image>
-		<view class="text">您还没有添加任何商品哦~</view>
-	</scroll-view>
-	<scroll-view class="item-list">
-		<view class="title">推荐商品</view>
-		<view class="content">
-			<view class="item" wx:for="{{list}}" wx:key="this">
-				<view class="item-img">
-					<image src="https://localhost:3001/{{item.icon}}"></image>
-				</view>
-				<view class="item-title">{{item.title}}</view>
-				<view class="item-price">￥{{item.price}}</view>
-				<view class="gowucar">
-					<image  src="/images/gouwu.png" bindtap="addShopCar"></image>
-				</view>
-			</view>
-			<view class="nomore">
-				<text>没有更多了~</text>
-			</view>
-			
-		</view>
-	</scroll-view>
-</view>
+<view class="shop-page">
+  <!-- 骨架屏 -->
+  <view class="skeleton" wx:if="{{loading}}">
+    <view class="sk-row"><view class="sk-img" style="width:150rpx;height:150rpx"></view><view class="sk-body"><view class="sk-line" style="width:70%"></view><view class="sk-line" style="width:45%"></view></view></view>
+    <view class="sk-row"><view class="sk-img" style="width:150rpx;height:150rpx"></view><view class="sk-body"><view class="sk-line" style="width:70%"></view><view class="sk-line" style="width:45%"></view></view></view>
+  </view>
 
+  <!-- 空态 -->
+  <view class="empty" wx:if="{{!loading && !cart.length}}">
+    <view class="empty-img">🛒</view>
+    <view class="empty-text">购物车还是空的，去逛逛吧</view>
+    <view class="empty-btn" bindtap="goShopping">去逛逛 →</view>
+  </view>
+
+  <block wx:else>
+    <!-- 免配送费进度 -->
+    <view class="freight-hint">
+      <block wx:if="{{totalAmount >= freeThreshold}}">🎉 已满足满59免配送费，本单免基础配送费</block>
+      <block wx:else>还差 ￥{{remainToFreeYuan}} 免配送费（满59元免基础配送费）</block>
+    </view>
+
+    <!-- 有效商品 -->
+    <view class="cart-item card" wx:for="{{validItems}}" wx:key="id">
+      <view class="checkbox {{item.checked ? 'on' : ''}}" bindtap="toggleItem" data-id="{{item.id}}">{{item.checked ? '✓' : ''}}</view>
+      <pic src="{{item.pic}}" mode="aspectFill" radius="12rpx" class="item-pic" bindtap="goDetail" data-sku="{{item.sku}}"/>
+      <view class="item-info">
+        <view class="item-name" bindtap="goDetail" data-sku="{{item.sku}}">{{item.name}}</view>
+        <view class="muted item-spec">{{item.specText}} · {{item.unit}}</view>
+        <view class="item-bottom">
+          <view class="price">{{item.totalYuan}}</view>
+          <view class="stepper">
+            <view class="minus" bindtap="changeCount" data-id="{{item.id}}" data-d="-1">−</view>
+            <view class="num">{{item.count}}</view>
+            <view class="plus" bindtap="changeCount" data-id="{{item.id}}" data-d="1">＋</view>
+          </view>
+        </view>
+      </view>
+      <view class="item-del" bindtap="removeItem" data-id="{{item.id}}">🗑️</view>
+    </view>
+
+    <!-- 失效商品 -->
+    <view class="invalid-section card" wx:if="{{invalidItems.length}}">
+      <view class="invalid-head">
+        <text>失效商品（{{invalidItems.length}}）</text>
+        <text class="invalid-clear" bindtap="clearInvalid">清空</text>
+      </view>
+      <view class="cart-item invalid-item" wx:for="{{invalidItems}}" wx:key="id">
+        <view class="checkbox"></view>
+        <pic src="{{item.pic}}" mode="aspectFill" radius="12rpx" class="item-pic gray"/>
+        <view class="item-info">
+          <view class="item-name disabled">{{item.name}}</view>
+          <view class="muted">{{item.specText}} · 已售罄</view>
+        </view>
+        <view class="item-del" bindtap="removeItem" data-id="{{item.id}}">🗑️</view>
+      </view>
+    </view>
+
+    <!-- 优惠明细 -->
+    <view class="card promo-detail" wx:if="{{selectedCount > 0}}">
+      <view class="pd-row"><text>已选商品金额</text><text>￥{{totalYuan}}</text></view>
+      <view class="pd-row" wx:if="{{fullReduction > 0}}"><text>满减优惠（自动）</text><text class="primary">-￥{{fullReductionYuan}}</text></view>
+      <view class="pd-row" wx:else><text>满减活动</text><text class="muted">满59减8 / 满99减20 / 满199减50，凑单更优惠</text></view>
+    </view>
+
+    <!-- 猜你喜欢 -->
+    <view class="section-title">猜你喜欢</view>
+    <scroll-view scroll-x class="rec-scroll">
+      <view class="rec-item" wx:for="{{recommends}}" wx:key="sku" bindtap="goDetail" data-sku="{{item.sku}}">
+        <pic src="{{item.pic}}" mode="aspectFill" radius="10rpx" class="rec-pic"/>
+        <view class="rec-name">{{item.name}}</view>
+        <view class="price-sm primary">￥{{item.priceYuan}}</view>
+        <view class="rec-add" bindtap="addCartRecommend" data-sku="{{item.sku}}">＋</view>
+      </view>
+    </scroll-view>
+
+    <!-- 底部结算栏 -->
+    <view class="footer-bar">
+      <view class="checkbox {{allChecked ? 'on' : ''}}" bindtap="toggleAll">{{allChecked ? '✓' : ''}}</view>
+      <view class="total">
+        <view class="muted">合计</view>
+        <view class="price">{{totalYuan}}</view>
+      </view>
+      <view class="checkout-btn" bindtap="goCheckout">去结算({{selectedCount}})</view>
+    </view>
+  </block>
+</view>

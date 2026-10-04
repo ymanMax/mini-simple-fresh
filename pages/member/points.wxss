@@ -1,0 +1,35 @@
+.points-page { min-height: 100vh; padding-bottom: 40rpx; }
+.balance-card { background: linear-gradient(135deg,#ff5b4f,#ff3b30); color: #fff; margin: 20rpx 24rpx; border-radius: 16rpx; padding: 32rpx 28rpx; }
+.balance-label { font-size: 24rpx; opacity: .9; }
+.balance-num { font-size: 56rpx; font-weight: 700; margin: 6rpx 0; }
+.balance-sub { font-size: 20rpx; opacity: .9; }
+
+.main-tabs { display: flex; background: #fff; position: sticky; top: 0; z-index: 10; }
+.main-tab { flex: 1; text-align: center; padding: 18rpx 0; font-size: 26rpx; color: #666; }
+.main-tab.on { color: #ff3b30; font-weight: 700; border-bottom: 4rpx solid #ff3b30; }
+
+.record { display: flex; justify-content: space-between; align-items: center; padding: 18rpx 24rpx; margin-bottom: 12rpx; }
+.rec-desc { font-size: 27rpx; font-weight: 600; }
+.rec-points { font-size: 30rpx; font-weight: 700; }
+.rec-points.plus { color: #12b76a; }
+.rec-points.minus { color: #ff3b30; }
+
+.ex-card { display: flex; align-items: center; padding: 18rpx 24rpx; }
+.ex-icon { font-size: 48rpx; margin-right: 16rpx; }
+.ex-info { flex: 1; }
+.ex-name { font-size: 28rpx; font-weight: 600; }
+.ex-cost { font-size: 24rpx; color: #ff8c00; margin-right: 14rpx; font-weight: 600; }
+.ex-btn { background: #ff3b30; color: #fff; font-size: 24rpx; padding: 8rpx 24rpx; border-radius: 28rpx; }
+.ex-btn.disabled { background: #ccc; }
+
+.checkin-card { text-align: center; padding: 30rpx 24rpx; }
+.checkin-title { font-size: 32rpx; font-weight: 700; margin-bottom: 8rpx; }
+.checkin-grid { display: flex; justify-content: space-between; margin: 24rpx 0; }
+.ci { flex: 1; margin: 0 6rpx; background: #f4f5f7; border-radius: 10rpx; padding: 14rpx 0; }
+.ci.done { background: #fff1f0; color: #ff3b30; }
+.ci-day { font-size: 22rpx; }
+.ci-point { font-size: 20rpx; font-weight: 700; }
+.checkin-btn { background: linear-gradient(90deg,#ff5b4f,#ff3b30); color: #fff; padding: 14rpx 48rpx; border-radius: 40rpx; font-size: 28rpx; font-weight: 600; display: inline-block; }
+.checkin-btn.done { background: #ccc; }
+.checkin-tip { margin-top: 14rpx; font-size: 20rpx; }
+.nomore { text-align: center; color: #bbb; font-size: 24rpx; padding: 30rpx 0; }

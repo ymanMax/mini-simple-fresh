@@ -1,0 +1,28 @@
+.order-list-page { min-height: 100vh; padding-bottom: 40rpx; }
+.tabs { background: #fff; display: flex; position: sticky; top: 0; z-index: 10; }
+.tab { flex: 1; text-align: center; padding: 18rpx 0; font-size: 26rpx; color: #666; }
+.tab.on { color: #ff3b30; font-weight: 700; border-bottom: 4rpx solid #ff3b30; }
+
+.order-card { padding: 20rpx; margin-top: 16rpx; }
+.oc-head { display: flex; justify-content: space-between; align-items: center; padding-bottom: 12rpx; border-bottom: 1rpx solid #f2f2f2; }
+.oc-no { font-size: 24rpx; color: #999; }
+.oc-status { font-size: 24rpx; font-weight: 600; }
+.s1 { color: #ff9500; } .s2 { color: #007aff; } .s3 { color: #af52de; }
+.s4 { color: #007aff; } .s5 { color: #12b76a; } .s6 { color: #999; }
+
+.oc-item { display: flex; align-items: center; padding: 12rpx 0; }
+.oc-pic { width: 100rpx; height: 100rpx; margin-right: 14rpx; }
+.oc-item-info { flex: 1; }
+.oc-name { font-size: 26rpx; font-weight: 600; line-height: 1.4; }
+
+.oc-foot { display: flex; justify-content: space-between; align-items: center; padding-top: 12rpx; border-top: 1rpx dashed #eee; margin-top: 4rpx; }
+.oc-actions { display: flex; gap: 10rpx; }
+.oc-btn { font-size: 24rpx; padding: 8rpx 20rpx; border-radius: 28rpx; border: 1rpx solid #ddd; color: #666; }
+.oc-btn.primary-btn { border-color: #ff3b30; color: #ff3b30; }
+
+.nomore { text-align: center; color: #bbb; font-size: 24rpx; padding: 30rpx 0; }
+.loading-more { text-align: center; color: #999; font-size: 24rpx; padding: 20rpx 0; }
+
+.oc-thumbs { display: flex; }
+.oc-thumb { width: 72rpx; height: 72rpx; margin-right: 8rpx; }
+.oc-count { font-size: 20rpx; color: #999; display: flex; align-items: center; }

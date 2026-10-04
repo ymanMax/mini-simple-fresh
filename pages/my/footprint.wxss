@@ -1,0 +1,8 @@
+.foot-page { min-height: 100vh; padding-bottom: 40rpx; }
+.foot-toolbar { display: flex; justify-content: flex-end; padding: 12rpx 28rpx; font-size: 24rpx; }
+.group-label { font-size: 26rpx; font-weight: 700; padding: 12rpx 28rpx 8rpx; }
+.foot-scroll { white-space: nowrap; padding: 0 24rpx 16rpx; }
+.foot-card { display: inline-block; width: 170rpx; margin-right: 14rpx; background: #fff; border-radius: 12rpx; padding: 10rpx; position: relative; }
+.foot-pic { width: 100%; height: 150rpx; }
+.foot-name { font-size: 20rpx; margin-top: 6rpx; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.foot-del { position: absolute; top: 6rpx; right: 6rpx; background: rgba(0,0,0,.45); color: #fff; font-size: 16rpx; padding: 2rpx 10rpx; border-radius: 16rpx; }

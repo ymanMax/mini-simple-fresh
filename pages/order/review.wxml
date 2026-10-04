@@ -1,0 +1,56 @@
+<view class="review-page">
+  <view class="skeleton" wx:if="{{loading}}">
+    <view class="sk-row"><view class="sk-img" style="width:150rpx;height:150rpx"></view><view class="sk-body"><view class="sk-line" style="width:70%"></view><view class="sk-line" style="width:45%"></view></view></view>
+  </view>
+
+  <block wx:else>
+    <!-- 逐商品评价 -->
+    <view class="card" wx:for="{{reviews}}" wx:key="goodsId" wx:for-index="idx">
+      <view class="rv-head">
+        <pic src="{{item.pic}}" mode="aspectFill" radius="10rpx" class="rv-pic"/>
+        <view class="rv-name">{{item.name}}</view>
+      </view>
+      <view class="stars-row">
+        <text class="star {{item.score >= s ? 'on' : ''}}" wx:for="{{[1,2,3,4,5]}}" wx:for-item="s" wx:key="*this"
+              bindtap="setScore" data-idx="{{idx}}" data-score="{{s}}">★</text>
+      </view>
+      <view class="tags">
+        <view class="rv-tag {{item.tags.indexOf(t) >= 0 ? 'on' : ''}}" wx:for="{{tagsPool}}" wx:for-item="t" wx:key="*this"
+              bindtap="toggleTag" data-idx="{{idx}}" data-tag="{{t}}">{{t}}</view>
+      </view>
+      <textarea class="rv-input" value="{{item.content}}" placeholder="说说商品口感、新鲜度…（100字）" maxlength="100" bindinput="onContent" data-idx="{{idx}}"/>
+      <view class="img-row">
+        <image wx:for="{{item.images}}" wx:for-item="im" wx:key="*this" src="{{im}}" mode="aspectFill" class="rv-img" bindtap="removeImage" data-idx="{{idx}}" data-imgIdx="{{index}}"/>
+        <view class="add-img" bindtap="pickImage" data-idx="{{idx}}">＋晒图</view>
+      </view>
+    </view>
+
+    <!-- 店铺服务评价 -->
+    <view class="card">
+      <view class="section-title">店铺服务评价</view>
+      <view class="shop-score">
+        <view class="shop-dim">新鲜度</view>
+        <view class="stars-row">
+          <text class="star {{shopScore.fresh >= s ? 'on' : ''}}" wx:for="{{[1,2,3,4,5]}}" wx:for-item="s" wx:key="*this" bindtap="setShopScore" data-dim="fresh" data-score="{{s}}">★</text>
+        </view>
+      </view>
+      <view class="shop-score">
+        <view class="shop-dim">配送速度</view>
+        <view class="stars-row">
+          <text class="star {{shopScore.speed >= s ? 'on' : ''}}" wx:for="{{[1,2,3,4,5]}}" wx:for-item="s" wx:key="*this" bindtap="setShopScore" data-dim="speed" data-score="{{s}}">★</text>
+        </view>
+      </view>
+      <view class="shop-score">
+        <view class="shop-dim">包装服务</view>
+        <view class="stars-row">
+          <text class="star {{shopScore.package >= s ? 'on' : ''}}" wx:for="{{[1,2,3,4,5]}}" wx:for-item="s" wx:key="*this" bindtap="setShopScore" data-dim="package" data-score="{{s}}">★</text>
+        </view>
+      </view>
+      <textarea class="rv-input" value="{{shopContent}}" placeholder="对店铺的整体评价（100字）" maxlength="100" bindinput="onShopContent"/>
+    </view>
+
+    <view class="submit-bar">
+      <button class="btn-primary btn-block" bindtap="submit">{{submitting ? '提交中…' : '提交评价（+20积分）'}}</button>
+    </view>
+  </block>
+</view>

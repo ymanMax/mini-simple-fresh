@@ -1,0 +1,141 @@
+<view class="cat-page">
+  <!-- 1. 顶部搜索框（导航栏下方） -->
+  <view class="top-search">
+    <view class="search-box">
+      <view class="search-icon">🔍</view>
+      <input class="search-input" value="{{kw}}" placeholder="搜索当前分类商品" confirm-type="search" bindinput="onSearchInput"/>
+      <view class="search-clear" wx:if="{{kw}}" bindtap="clearKw">✕</view>
+    </view>
+    <view class="search-cancel" bindtap="cancelSearch">取消</view>
+  </view>
+
+  <!-- 2. 排序栏（搜索框下方，吸顶）+ 筛选按钮 -->
+  <view class="sort-bar">
+    <view class="sort-item {{sortKey === 'default' ? 'on' : ''}}" bindtap="switchSort" data-key="default">综合</view>
+    <view class="sort-item {{sortKey === 'price' ? 'on' : ''}}" bindtap="switchSort" data-key="price">
+      价格<text class="arrow">{{sortKey === 'price' ? (priceAsc ? '↑' : '↓') : '↕'}}</text>
+    </view>
+    <view class="sort-item {{sortKey === 'sales' ? 'on' : ''}}" bindtap="switchSort" data-key="sales">销量</view>
+    <view class="filter-btn {{filteringActive ? 'on' : ''}}" bindtap="openFilter">
+      <text>⚙ 筛选</text>
+    </view>
+  </view>
+
+  <view class="cat-body">
+    <!-- 左侧分类导航 -->
+    <view class="side">
+      <view class="side-item {{current === item.name ? 'on' : ''}}" wx:for="{{categories}}" wx:key="name"
+            bindtap="switchCategory" data-cat="{{item.name}}">
+        <view class="side-name">{{item.name}}</view>
+        <view class="side-count muted">{{item.count}}件</view>
+      </view>
+    </view>
+
+    <!-- 右侧商品 -->
+    <view class="main">
+      <!-- 结果数提示（筛选/搜索激活时显示） -->
+      <view class="result-bar" wx:if="{{filteringActive}}">
+        共 {{resultCount}} 件商品
+        <text class="result-clear" bindtap="cancelSearch">清除条件</text>
+      </view>
+
+      <!-- 推荐商品（完整列表时展示） -->
+      <view class="rec" wx:if="{{!filteringActive && recommends.length}}">
+        <view class="rec-title">🔥 {{current}}推荐</view>
+        <scroll-view scroll-x class="rec-scroll">
+          <view class="rec-item" wx:for="{{recommends}}" wx:key="sku" bindtap="goDetail" data-sku="{{item.sku}}">
+            <pic src="{{item.pic}}" mode="aspectFill" radius="10rpx" class="rec-pic"/>
+            <view class="rec-name">{{item.name}}</view>
+            <view class="price-sm primary">￥{{item.priceYuan}}</view>
+          </view>
+        </scroll-view>
+      </view>
+
+      <!-- 骨架屏 -->
+      <view class="skeleton" wx:if="{{loading}}">
+        <view class="sk-row"><view class="sk-img" style="width:160rpx;height:160rpx"></view><view class="sk-body"><view class="sk-line" style="width:70%"></view><view class="sk-line" style="width:45%"></view></view></view>
+        <view class="sk-row"><view class="sk-img" style="width:160rpx;height:160rpx"></view><view class="sk-body"><view class="sk-line" style="width:70%"></view><view class="sk-line" style="width:45%"></view></view></view>
+      </view>
+
+      <!-- 商品列表 -->
+      <block wx:else>
+        <view class="goods-card" wx:for="{{products}}" wx:key="sku" bindtap="goDetail" data-sku="{{item.sku}}">
+          <pic src="{{item.pic}}" mode="aspectFill" radius="12rpx" class="pic"/>
+          <view class="info">
+            <view class="name">{{item.name}}</view>
+            <view class="sub muted">{{item.subtitle}} · {{item.unit}}</view>
+            <view class="tags">
+              <text class="tag" wx:for="{{item.tags}}" wx:for-item="t" wx:key="*this">{{t}}</text>
+              <text class="tag tag-green" wx:if="{{item.vipPrice < item.price}}">会员价</text>
+              <text class="tag" wx:if="{{item.originalPrice > item.price}}">促销直降</text>
+            </view>
+            <view class="bottom">
+              <view><text class="price">{{item.priceYuan}}</text><text class="price-origin">￥{{item.originPriceYuan}}</text></view>
+              <view class="cell-add" catchtap="addCart" data-sku="{{item.sku}}">＋</view>
+            </view>
+          </view>
+        </view>
+
+        <!-- 空态：未找到相关商品 -->
+        <view class="empty" wx:if="{{!products.length}}">
+          <view class="empty-img">🔍</view>
+          <view class="empty-text">未找到相关商品</view>
+          <view class="empty-btn" bindtap="cancelSearch">清除搜索与筛选</view>
+        </view>
+
+        <view class="nomore" wx:if="{{!hasMore && products.length}}">— 没有更多了 —</view>
+        <view class="loading-more" wx:if="{{loadingMore}}">加载中…</view>
+      </block>
+    </view>
+  </view>
+
+  <!-- 3. 自定义筛选抽屉面板 -->
+  <view class="mask" wx:if="{{showFilterPanel}}" bindtap="closeFilter"></view>
+  <view class="filter-sheet" wx:if="{{showFilterPanel}}">
+    <view class="sheet-head">
+      <view class="sheet-title">自定义筛选</view>
+      <view class="sheet-close" bindtap="closeFilter">✕</view>
+    </view>
+
+    <!-- 价格区间（单位：元，内部转分比较） -->
+    <view class="filter-group">
+      <view class="filter-gname">价格区间（元）</view>
+      <view class="price-range">
+        <input class="price-input" type="digit" placeholder="最低价" value="{{draft.minPrice}}" bindinput="onMinInput"/>
+        <view class="price-dash">—</view>
+        <input class="price-input" type="digit" placeholder="最高价" value="{{draft.maxPrice}}" bindinput="onMaxInput"/>
+      </view>
+    </view>
+
+    <!-- 仅看有货 -->
+    <view class="filter-group">
+      <view class="filter-gname">库存</view>
+      <view class="switch-row" bindtap="toggleInStock">
+        <text>仅看有货（库存&gt;0）</text>
+        <view class="switch {{draft.inStockOnly ? 'on' : ''}}"><view class="switch-dot"></view></view>
+      </view>
+    </view>
+
+    <!-- 优惠类型：多选胶囊 -->
+    <view class="filter-group">
+      <view class="filter-gname">优惠类型</view>
+      <view class="capsule-row">
+        <view class="capsule {{item.selected ? 'on' : ''}}" wx:for="{{discountOptions}}" wx:key="key" bindtap="pickDiscount" data-key="{{item.key}}">{{item.label}}</view>
+      </view>
+    </view>
+
+    <!-- 商品标签：多选胶囊 -->
+    <view class="filter-group">
+      <view class="filter-gname">商品标签</view>
+      <view class="capsule-row">
+        <view class="capsule {{item.selected ? 'on' : ''}}" wx:for="{{allTags}}" wx:key="tag" bindtap="pickTag" data-tag="{{item.tag}}">{{item.tag}}</view>
+      </view>
+    </view>
+
+    <!-- 底部：重置 / 确定 -->
+    <view class="filter-actions">
+      <view class="reset-btn" bindtap="resetFilter">重置</view>
+      <view class="apply-btn" bindtap="applyFilterPanel">确定（共 {{resultCount}} 件商品）</view>
+    </view>
+  </view>
+</view>

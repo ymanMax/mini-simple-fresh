@@ -1,0 +1,27 @@
+<view class="foot-page">
+  <view class="foot-toolbar" wx:if="{{groups.length}}">
+    <text class="muted" bindtap="clearAll">清空全部</text>
+  </view>
+
+  <block wx:for="{{groups}}" wx:key="label">
+    <view class="group-label">{{item.label}}</view>
+    <scroll-view scroll-x class="foot-scroll">
+      <view class="foot-card" wx:for="{{item.items}}" wx:for-item="g" wx:key="sku" bindtap="goDetail" data-sku="{{g.sku}}">
+        <pic src="{{g.pic}}" mode="aspectFill" radius="10rpx" class="foot-pic"/>
+        <view class="foot-name">{{g.name}}</view>
+        <view class="price-sm primary">￥{{g.priceYuan}}</view>
+        <view class="foot-del" catchtap="remove" data-sku="{{g.sku}}">删除</view>
+      </view>
+    </scroll-view>
+  </block>
+
+  <view class="empty" wx:if="{{!loading && !groups.length}}">
+    <view class="empty-img">👣</view>
+    <view class="empty-text">暂无浏览记录</view>
+    <view class="empty-btn" bindtap="goHome">去逛逛 →</view>
+  </view>
+
+  <view class="skeleton" wx:if="{{loading}}">
+    <view class="sk-row"><view class="sk-img" style="width:160rpx;height:160rpx"></view><view class="sk-body"><view class="sk-line" style="width:70%"></view><view class="sk-line" style="width:45%"></view></view></view>
+  </view>
+</view>

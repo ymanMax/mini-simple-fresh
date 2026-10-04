@@ -1,0 +1,22 @@
+<view class="collect-page">
+  <view class="grid">
+    <view class="cell" wx:for="{{goods}}" wx:key="sku" bindtap="goDetail" data-sku="{{item.sku}}">
+      <pic src="{{item.pic}}" mode="aspectFill" radius="12rpx" class="cell-pic"/>
+      <view class="cell-name">{{item.name}}</view>
+      <view class="cell-bottom">
+        <view class="price-sm primary">￥{{item.priceYuan}}</view>
+        <view class="cell-del" catchtap="remove" data-sku="{{item.sku}}">取消收藏</view>
+      </view>
+    </view>
+  </view>
+
+  <view class="empty" wx:if="{{!loading && !goods.length}}">
+    <view class="empty-img">❤️</view>
+    <view class="empty-text">还没有收藏的商品</view>
+    <view class="empty-btn" bindtap="goHome">去逛逛 →</view>
+  </view>
+
+  <view class="skeleton" wx:if="{{loading}}">
+    <view class="sk-row"><view class="sk-img" style="width:160rpx;height:160rpx"></view><view class="sk-body"><view class="sk-line" style="width:70%"></view><view class="sk-line" style="width:45%"></view></view></view>
+  </view>
+</view>

@@ -1,0 +1,1 @@
+<image class="pic-img" src="{{resolved}}" mode="{{mode}}" binderror="onError" style="border-radius:{{radius}}"/>

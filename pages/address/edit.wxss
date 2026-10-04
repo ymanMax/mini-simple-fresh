@@ -1,0 +1,10 @@
+.edit-page { min-height: 100vh; padding-bottom: 140rpx; }
+.form-row { display: flex; align-items: center; padding: 16rpx 0; border-bottom: 1rpx solid #f2f2f2; }
+.form-row.column { flex-direction: column; align-items: flex-start; }
+.flabel { width: 140rpx; font-size: 28rpx; color: #555; }
+.finput { flex: 1; font-size: 26rpx; }
+.finput.area { height: 100rpx; margin-top: 10rpx; width: 100%; background: #f4f5f7; border-radius: 10rpx; padding: 12rpx; }
+.tags { display: flex; gap: 10rpx; }
+.rv-tag { background: #f4f5f7; border-radius: 28rpx; padding: 8rpx 22rpx; font-size: 24rpx; color: #555; }
+.rv-tag.on { background: #fff1f0; color: #ff3b30; border: 1rpx solid #ff3b30; }
+.submit-bar { padding: 24rpx; }
